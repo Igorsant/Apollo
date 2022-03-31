@@ -1,15 +1,13 @@
 import React from 'react'
-import { HeadContainer } from './style'
+import { HeadContainer, NavBar, NavItem, Logo } from './style'
 
 
 export const Header = () => (
   <HeadContainer>
-    <div>Apollo</div>
-    <div>
-      <ul>
-        <li>Entrar</li>
-        <li>Criar conta</li>
-      </ul>
-    </div>
+    <Logo>Apollo (logo)</Logo>
+    <NavBar>
+      <NavItem>Entrar</NavItem>
+      <NavItem>Criar conta</NavItem>
+    </NavBar>
   </HeadContainer>
 )

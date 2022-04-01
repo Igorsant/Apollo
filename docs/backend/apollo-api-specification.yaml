@@ -243,7 +243,7 @@ paths:
         '403':
           description: Usuário não possui permissão para realizar a operação
   /schedulings/{schedulingId}/accept:
-    post:
+    patch:
       tags:
         - scheduling
       summary: Profissional aceita um agendamento pendente
@@ -260,7 +260,7 @@ paths:
         '404':
           description: Agendamento com id schedulingId não encontrado
   /schedulings/{schedulingId}/refuse:
-    post:
+    patch:
       tags:
         - scheduling
       summary: Profissional recusa um agendamento pendente

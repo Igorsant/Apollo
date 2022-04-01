@@ -1,0 +1,489 @@
+openapi: '3.0.2'
+info:
+  title: API Apollo
+  version: '1.0'
+  description: Especificação da API da aplicação Apollo. Para esse documento entende-se consumidor/consumer como aquele usuário que consome os serviços ofertados na aplicação e profissional/professional como aquele usuário que oferta seus serviços na plataforma
+servers:
+  - url: http://localhost:3000/
+tags:
+  - name: consumer
+    description: Tudo relacionado aos consumidores
+  - name: professional
+    description: Tudo relacionado aos profissionais
+  - name: scheduling
+    description: Tudo relacionado aos agendamentos de serviços
+  - name: review
+    description: Tudo relacionado às avaliações de profissionais
+paths:
+  /consumers:
+    post:
+      tags:
+      - consumer
+      summary: Registra um novo consumidor na aplicação
+      operationId: registerConsumer
+      requestBody:
+        description: Objeto consumidor que será registrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consumer'
+      responses:
+        '201':
+          description: Consumidor registrado com sucesso
+        '400':
+          description: Objeto enviado no corpo da requisição inválido
+  /consumers/{consumerId}:
+    put:
+      tags:
+        - consumer
+      summary: Atualiza as informações do consumidor de id consumerId
+      operationId: updateConsumer
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Objeto consumidor com as informações atualizadas do usuário
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consumer'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Consumidor com id consumerId não encontrado
+  /consumers/login:
+    post:
+      tags:
+        - consumer
+      summary: Realiza o login de um consumidor e retorna o token JWT
+      operationId: loginConsumer
+      requestBody:
+        description: Informações de login do usuário
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInfo'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Informações de login inválidas
+  /professionals:
+    post:
+      tags:
+        - professional
+      summary: Registra um novo profissional na aplicação
+      operationId: registerProfessional
+      requestBody:
+        description: Objeto profissional que será registrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Professional'
+      responses:
+        '201':
+          description: Profissional registrado com sucesso
+        '400':
+          description: Objeto enviado no corpo da requisição inválido
+  /professionals/{professionalId}:
+    get:
+      tags:
+        - professional
+      summary: Retorna as informações do profissional de id professionalId
+      operationId: getProfessional
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Profissional com id professionalId não encontrado
+    put:
+      tags:
+        - professional
+      summary: Atualiza as informações do profisisonal com id professionalId
+      operationId: updateProfessional
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Objeto profissional que será registrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Professional'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Profissional com id professionalId não encontrado
+  /professionals/login:
+    post:
+      tags:
+        - professional
+      summary: Realiza o login de um profissional e retorna o token JWT
+      operationId: loginProfessional
+      requestBody:
+        description: Informações de login do usuário
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInfo'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Informações de login inválidas
+  /professionals/worktime:
+    post:
+      tags:
+        - professional
+      summary: Altera o horário de um profissional de indisponível para disponível ou vice versa
+      operationId: changeWorktime
+      requestBody:
+        description: Informações do horário de trabalho a ser alterado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorktimeChange'
+      responses:
+        '200':
+          description: OK
+  /schedulings:
+    get:
+      tags:
+        - scheduling
+      summary: Retorna todos os agendamentos do usuário logado
+      parameters:
+        - name: confirmed
+          in: query
+          required: true
+          schema:
+            type: boolean
+      operationId: getSchedulings
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - scheduling
+      summary: Cria um novo agendamento
+      operationId: createScheduling
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Objeto agendamento que será criado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Scheduling'
+      responses:
+        '201':
+          description: Agendamento criado com sucesso
+        '400':
+          description: Corpo da requisição inválido
+  /schedulings/{schedulingId}:
+    get:
+      tags:
+        - scheduling
+      summary: Retorna um agendamento específico do usuário
+      operationId: getScheduling
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - scheduling
+      summary: Cancela um agendamento
+      operationId: cancelScheduling
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: No Content
+        '403':
+          description: Usuário não possui permissão para realizar a operação
+  /schedulings/{schedulingId}/accept:
+    post:
+      tags:
+        - scheduling
+      summary: Profissional aceita um agendamento pendente
+      operationId: acceptScheduling
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Agendamento com id schedulingId não pode ser aceito
+        '403':
+          description: Usuário não possui permissão para realizar a operação
+        '404':
+          description: Agendamento com id schedulingId não encontrado
+  /schedulings/{schedulingId}/refuse:
+    post:
+      tags:
+        - scheduling
+      summary: Profissional recusa um agendamento pendente
+      operationId: refuseScheduling
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Agendamento com id schedulingId não pode ser recusado
+        '403':
+          description: Usuário não possui permissão para realizar a operação
+        '404':
+          description: Agendamento com id schedulingId não encontrado
+  /reviews:
+    get:
+      tags:
+        - review
+      summary: Retorna todas as avaliações de um profissional
+      parameters:
+        - name: professionalId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: rating
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - review
+      summary: Cria uma nova avaliação
+      operationId: createReview
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Informações da avaliação
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '201':
+          description: Avaliação criada com sucesso
+        '400':
+          description: Corpo da requisição inválido
+  /reviews/{reviewId}:
+    put:
+      tags:
+        - review
+      summary: Atualiza uma avaliação caso o usuário possua permissão
+      operationId: updateReview
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Informações da avaliação
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Corpo da requisição inválido
+        '403':
+          description: Usuário não possui permissão para realizar a operação
+        '404':
+          description: Avaliação com id reviewId não encontrada
+    delete:
+      tags:
+        - review
+      summary: Deleta uma avaliação caso o usuário possua permissão
+      operationId: deleteReview
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: No Content
+        '403':
+          description: Usuário não possui permissão para realizar a operação
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: Token JWT no cabeçalho Authorization utilizando o esquema Bearer
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Consumer:
+      type: object
+      required:
+        - fullName
+        - nickname
+        - pictureBase64
+        - email
+        - phone
+        - cpf
+        - password
+      properties:
+        fullName:
+          type: string
+        nickname:
+          type: string
+        pictureBase64:
+          type: string
+          description: Imagem do usuário em base64
+        email:
+          type: string
+        phone:
+          type: string
+        cpf:
+          type: string
+        password:
+          type: string
+    Professional:
+      type: object
+      required:
+        - fullName
+        - nickname
+        - pictureBase64
+        - aboutMe
+        - email
+        - phone
+        - cpf
+        - password
+        - workHours
+        - services
+        - workplace
+      properties:
+        fullName:
+          type: string
+        nickname:
+          type: string
+        pictureBase64:
+          type: string
+          description: Imagem do profissional em base64
+        aboutMe:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        cpf:
+          type: string
+        password:
+          type: string
+        services:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+              - startingPrice
+              - estimatedTime
+            properties:
+              name:
+                type: string
+              startingPrice:
+                type: number
+              estimatedTime:
+                type: integer
+        workHours:
+          type: array
+          items:
+            type: object
+            required:
+              - weekday
+              - startTime
+              - endTime
+            properties:
+              weekday:
+                type: integer
+              startTime:
+                type: string
+              endTime:
+                type: string
+        workplace:
+          type: object
+          required:
+            - street
+            - streetNumber
+            - phone1
+            - isPhone1Whatsapp
+          properties:
+            street:
+              type: string
+            streetNumber:
+              type: integer
+            complement:
+              type: string
+            phone1:
+              type: string
+            isPhone1Whatsapp:
+              type: boolean
+            phone2:
+              type: string
+            isPhone2Whatsapp:
+              type: boolean
+    Scheduling:
+      type: object
+      properties:
+        professionalId:
+          type: integer
+        datetime:
+          type: string
+        serviceIds:
+          type: array
+          items:
+            type: integer
+    LoginInfo:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    Review:
+      type: object
+      required:
+        - professionalId
+        - rating
+      properties:
+        professionalId:
+          type: integer
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+    WorktimeChange:
+      type: object
+      required:
+        - startTime
+        - endTime
+        - disable
+      properties:
+        startTime:
+          type: string
+        endTime:
+          type: string
+        disable:
+          type: boolean
+          description: Se TRUE indisponibiliza o horário, caso contrário disponibiliza o horário.

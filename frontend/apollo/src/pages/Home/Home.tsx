@@ -16,8 +16,8 @@ const DownGridContainer = styled.div`
 `;
 
 const FirstParallax = styled.div`
-  background-color: rgba(0, 0, 0, 0.6);
-  min-height: 600px;
+  background-color: rgba(0, 0, 0, 0.8);
+  min-height: 100vh;
   font-size: 2em;
 `;
 
@@ -26,6 +26,7 @@ const SecondParallax = styled(FirstParallax)`
   justify-content: center;
   flex-direction: column;
   align-items: start;
+  padding-left: 20px;
 `;
 
 const SecondParallaxSubTitle = styled.h2`

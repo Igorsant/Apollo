@@ -2,12 +2,12 @@ openapi: '3.0.2'
 info:
   title: API Apollo
   version: '1.0'
-  description: Especificação da API da aplicação Apollo. Para esse documento entende-se consumidor/consumer como aquele usuário que consome os serviços ofertados na aplicação e profissional/professional como aquele usuário que oferta seus serviços na plataforma
+  description: Especificação da API da aplicação Apollo. Para esse documento entende-se cliente/customer como aquele usuário que consome os serviços ofertados na aplicação e profissional/professional como aquele usuário que oferta seus serviços na plataforma
 servers:
   - url: http://localhost:3000/
 tags:
-  - name: consumer
-    description: Tudo relacionado aos consumidores
+  - name: customer
+    description: Tudo relacionado aos clientes
   - name: professional
     description: Tudo relacionado aos profissionais
   - name: scheduling
@@ -15,50 +15,62 @@ tags:
   - name: review
     description: Tudo relacionado às avaliações de profissionais
 paths:
-  /consumers:
+  /customers:
     post:
       tags:
-      - consumer
-      summary: Registra um novo consumidor na aplicação
-      operationId: registerConsumer
+      - customer
+      summary: Registra um novo cliente na aplicação
+      operationId: registerCustomer
       requestBody:
-        description: Objeto consumidor que será registrado
+        description: Objeto cliente que será registrado
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Consumer'
+              $ref: '#/components/schemas/Customer'
       responses:
         '201':
-          description: Consumidor registrado com sucesso
+          description: cliente registrado com sucesso
         '400':
           description: Objeto enviado no corpo da requisição inválido
-  /consumers/{consumerId}:
-    put:
+  /customers/{customerId}:
+    get:
       tags:
-        - consumer
-      summary: Atualiza as informações do consumidor de id consumerId
-      operationId: updateConsumer
+        - customer
+      summary: Retorna as informações do usuário de id customerId
+      operationId: getCustomer
       security:
         - bearerAuth: []
-      requestBody:
-        description: Objeto consumidor com as informações atualizadas do usuário
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Consumer'
       responses:
         '200':
           description: OK
         '404':
-          description: Consumidor com id consumerId não encontrado
-  /consumers/login:
+          description: Usuário com id customerId não encontrado
+    put:
+      tags:
+        - customer
+      summary: Atualiza as informações do cliente de id customerId
+      operationId: updateCustomer
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Objeto cliente com as informações atualizadas do usuário
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: cliente com id customerId não encontrado
+  /customers/login:
     post:
       tags:
-        - consumer
-      summary: Realiza o login de um consumidor e retorna o token JWT
-      operationId: loginConsumer
+        - customer
+      summary: Realiza o login de um cliente e retorna o token JWT
+      operationId: loginCustomer
       requestBody:
         description: Informações de login do usuário
         required: true
@@ -137,8 +149,26 @@ paths:
           description: OK
         '400':
           description: Informações de login inválidas
+  /professionals/search:
+    get:
+      tags:
+        - professional
+      operationId: searchProfessionals
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
   /professionals/worktime:
-    post:
+    put:
       tags:
         - professional
       summary: Altera o horário de um profissional de indisponível para disponível ou vice versa
@@ -328,7 +358,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    Consumer:
+    Customer:
       type: object
       required:
         - fullName

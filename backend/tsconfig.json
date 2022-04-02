@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "module": "ES6",
+    "module": "CommonJS",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "./build",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "target": "ES6"
   },
   "include": [
     "src/**/*"

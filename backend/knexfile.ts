@@ -5,10 +5,11 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'apollo',
-      user: 'apollo_user',
+      database: env['DB_NAME'],
+      user: env['DB_USER'],
       password: env['DB_PASSWORD'],
-      port: 5432
+      port: Number.parseInt(env['DB_PORT']),
+      host: env['DB_HOST']
     },
     pool: {
       min: 2,

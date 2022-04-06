@@ -3,7 +3,7 @@ import { Header } from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
 import { Parallax, UpFirstContent, DownFirstContent } from "./style";
 import styled from "styled-components";
-import { ApolloButton } from "../../components/Button/ApolloButton";
+import {Button } from "../../components/Button/ApolloButton";
 import { TextInput } from "../../components/TextInput/TextInput";
 import p1 from "../../images/parallax1.png";
 import p2 from "../../images/parallax2.png";
@@ -45,11 +45,13 @@ const Home = () => (
             <DownGridContainer>
               <TextInput hint="Cidade" />
               <TextInput hint="Busque algum profissional" />
-              <ApolloButton
-                style={{ gridColumnStart: "1", gridColumnEnd: "3" }}
+              <Button
+              variant="contained"
+              onClick={()=>{console.log("Clicked")}}
+              style={{ gridColumnStart: "1", gridColumnEnd: "3" }}
               >
                 Buscar
-              </ApolloButton>
+              </Button>
             </DownGridContainer>
           </DownFirstContent>
         </FirstParallax>
@@ -59,7 +61,7 @@ const Home = () => (
           <SecondParallaxSubTitle>
             Encontre barbearias próximas à você
           </SecondParallaxSubTitle>
-          <ApolloButton>Sou profissional</ApolloButton>
+          <Button variant="contained" onClick={()=>{console.log("Clicked")}}>Sou profissional</Button>
         </SecondParallax>
       </Parallax>
     </div>

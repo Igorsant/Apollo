@@ -8,6 +8,8 @@ import { TextInput } from "../../components/TextInput/TextInput";
 import p1 from "../../images/parallax1.png";
 import p2 from "../../images/parallax2.png";
 
+import { Link } from "react-router-dom";
+
 const DownGridContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -35,7 +37,8 @@ const SecondParallaxSubTitle = styled.h2`
 
 const Home = () => (
   <>
-    <Header></Header>
+    <Header> <Button component={Link} to="/cadastrocliente" color="secondary" variant="text" style={{ gridColumnStart: "1", gridColumnEnd: "3" }}>Criar conta</Button>
+    <Button component={Link} to="/login" color="secondary" variant="text" style={{ gridColumnStart: "1", gridColumnEnd: "3" }}>Entrar</Button></Header>
     <div id="main">
       <Parallax url={p1}>
         <FirstParallax>

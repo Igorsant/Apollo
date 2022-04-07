@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const HeadContainer = styled.div`
   display: flex;
@@ -7,18 +7,19 @@ export const HeadContainer = styled.div`
   padding: 0 20px;
   background-color: var(--header);
   font-weight: 20px;
-`
+`;
 
 export const NavBar = styled.ul`
+  height: 70px;
   list-style: none;
   display: flex;
   flex-direction: row;
-`
+`;
 
 export const NavItem = styled.li`
   margin: 0 10px;
-`
+`;
 
 export const Logo = styled.div`
   font-size: 1.5em;
-`
+`;

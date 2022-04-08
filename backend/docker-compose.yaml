@@ -1,0 +1,12 @@
+version: '3.0'
+
+services:
+  database:
+    container_name: apollo-db
+    image: 'postgres:12.10'
+    ports: 
+      - 5432:5432
+    env_file:
+      - .db.env
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/

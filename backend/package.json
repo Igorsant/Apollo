@@ -2,13 +2,25 @@
   "name": "apollo-api",
   "version": "0.0.1",
   "description": "API para o sistema Apollo",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --require dotenv/config --respawn src/index.ts",
+    "build": "tsc",
+    "migrate:make": "knex --knexfile knexfile.ts migrate:make -x ts --",
+    "migrate:up": "knex --knexfile knexfile.ts migrate:latest",
+    "migrate:down": "knex --knexfile knexfile.ts migrate:rollback"
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "dotenv": "^16.0.0",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "knex": "^1.0.4",
+    "pg": "^8.7.3"
   }
 }

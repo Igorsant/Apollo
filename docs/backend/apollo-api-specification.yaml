@@ -131,6 +131,31 @@ paths:
           description: OK
         '404':
           description: Profissional com id professionalId não encontrado
+  /professionals/{professionalId}/favorite:
+    post:
+      tags:
+        - professional
+      summary: Favorita profissional para o usuário logado
+      operationId: favoriteProfessional
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Profissional favoritado com sucesso
+        '404':
+          description: Profissional com id professionalId não encontrado
+    delete:
+      tags:
+        - professional
+      summary: Remove profissional dos favoritos para usuário logado
+      operationId: unfavoriteProfessional
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Profissional com id professionalId não encontrado
   /professionals/login:
     post:
       tags:

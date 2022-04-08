@@ -15,7 +15,7 @@ class DatabaseService {
       this.pg
         .raw('select 1+1;') // checa se a conexão foi efetuada com sucesso executando uma query simples
         .then(() => resolve(this.pg))
-        .catch(() => reject('Erro ao conectar ao banco de dados'));
+        .catch((err) => reject(err));
     });
   }
 

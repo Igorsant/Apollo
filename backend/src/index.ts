@@ -7,6 +7,7 @@ async function init() {
 
     // inciar servidor express
   } catch (err) {
+    console.log('Erro ao conectar ao banco de dados');
     console.error(err);
     process.exit(1);
   }

@@ -7,13 +7,15 @@
     "outDir": "./build",
     "sourceMap": true,
     "moduleResolution": "node",
-    "target": "ES6"
+    "target": "ES6",
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "migrations/**/*"
   ]
 }

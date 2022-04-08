@@ -1,6 +1,10 @@
 import type { Knex } from 'knex';
 import { env } from 'process';
 
+if (!env['NODE_ENV'] || env['NODE_ENV'].toUpperCase() != 'PRODUCTION') {
+  require('dotenv').config();
+}
+
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'postgresql',

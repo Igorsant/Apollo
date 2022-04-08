@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components'
 import MuiButton, {ButtonProps} from '@mui/material/Button';
 
+
+
 // export const ApolloButton = styled.button`
 //   padding: 7px 60px;
 //   border-radius: 3px;
@@ -13,19 +15,22 @@ import MuiButton, {ButtonProps} from '@mui/material/Button';
   // `
 
   interface ApolloButtonProps extends ButtonProps {
-    onClick: () => void;
+    onClick?: () => void
     style?: React.CSSProperties
-    props?: any
+    component?:any
+    to?:string
   }
 
   export const Button : React.FC<ApolloButtonProps> = ({
     children,
     onClick,
     variant,
-    style, 
+    style,
+    component,
+    to, 
     ...props
   }) => {
     return(
-    <MuiButton variant={variant} onClick={onClick} style = {style} {...props}>{children}</MuiButton>)
+    <MuiButton component={component} to={to} variant={variant} onClick={onClick} style = {style} {...props}>{children}</MuiButton>)
   }
 

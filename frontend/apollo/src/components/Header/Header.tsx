@@ -1,15 +1,17 @@
-import React from 'react'
+import React, {FC} from 'react'
 import { HeadContainer, NavBar, Logo } from './style'
+import { Link } from 'react-router-dom'
+import { Button } from '@mui/material'
 
-import { Button } from '../Button/ApolloButton'
+interface HeaderProps {
+ 
+}
 
-
-export const Header = () => (
+export const Header:FC<HeaderProps> = ({children, ...props}) => (
   <HeadContainer>
     <Logo>Apollo (logo)</Logo>
-    <NavBar>
-      <Button variant="text" color="secondary" onClick={()=>{console.log("Clicked")}}>Entrar</Button>
-      <Button variant="text" color="secondary" onClick={()=>{console.log("Clicked")}}>Criar conta</Button>
+    <NavBar {...props}>
+      {children}
     </NavBar>
   </HeadContainer>
 )

@@ -22,7 +22,7 @@ Nesta pasta ficam os arquivos referentes ao backend da aplicação Apollo, mais 
 
 1. [Iniciar banco de dados](#iniciar-banco-de-dados)
 
-2. Instalar as dependências  
+2. Instalar as dependências node  
     `$ npm ci`
 
 3. Editar arquivo [.env](./.env) com as variáveis de ambiente
@@ -31,9 +31,18 @@ Nesta pasta ficam os arquivos referentes ao backend da aplicação Apollo, mais 
     * DB_PORT: Porta do host onde o banco de dados é servido (padrão: 5432)
     * DB_NAME: Nome do banco de dados da aplicação (Mesmo nome utilizado na variável POSTGRES_DB na criação do banco)
     * DB_USER: Usuário utilizado para conectar na aplicação
-    * DB_PASSWORD: Senha do usuário utilizado para conectar na aplicação
+    * DB_PASSWORD: Senha do usuário utilizado para conectar na aplicação  
 
 4. Executar o comando  
     `$ npm run dev`
 
-## 
+## Migrations
+
+* Criar Migration:  
+`$ npm run migrate:make nome_da_migration`
+
+* Subir Migrações:  
+`$ npm run migrate:up`
+
+* Voltar Migrações:  
+`$ npm run migrate:down`

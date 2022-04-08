@@ -142,6 +142,8 @@ paths:
       responses:
         '201':
           description: Profissional favoritado com sucesso
+        '404':
+          description: Profissional com id professionalId não encontrado
     delete:
       tags:
         - professional
@@ -152,6 +154,8 @@ paths:
       responses:
         '204':
           description: No Content
+        '404':
+          description: Profissional com id professionalId não encontrado
   /professionals/login:
     post:
       tags:

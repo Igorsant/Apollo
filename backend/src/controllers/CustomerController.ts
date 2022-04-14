@@ -87,6 +87,7 @@ export default class CustomerController {
 
     const accessToken = jwt.sign(
       {
+        id: customer.id,
         fullName: customer.full_name,
         nickname: customer.nickname,
         picturePath: customer.picture_path,

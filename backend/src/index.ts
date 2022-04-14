@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 
-import customerRouter from './routes/customer.routes';
+import professionalRouter from './routes/professional.routes';
 import databaseService from './services/DatabaseService';
 
 databaseService
@@ -21,7 +21,7 @@ databaseService
     app.use(express.json({ limit: '20mb' }));
 
     app.use('/pictures', express.static(picturesDirPath));
-    app.use('/customers', customerRouter);
+    app.use('/professionals', professionalRouter);
 
     app.listen(port, () => {
       console.log(`Servidor disponível em http://localhost:${port}`);

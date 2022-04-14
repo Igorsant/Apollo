@@ -1,11 +1,11 @@
 import Joi from 'joi';
 
-import customerSchema from './customer.schema';
+import { baseCustomerSchema } from './customer.schema';
 
 const professionalSchema = Joi.object({
-  ...customerSchema,
+  ...baseCustomerSchema,
   aboutMe: Joi.string().max(500),
-  services: Joi.array().has(
+  services: Joi.array().items(
     Joi.object({
       name: Joi.string().min(3).max(50).required(),
       startingPrice: Joi.number().positive().required(),
@@ -13,9 +13,9 @@ const professionalSchema = Joi.object({
     })
   ),
 
-  workHours: Joi.array().has(
+  workHours: Joi.array().items(
     Joi.object({
-      weekday: Joi.number().integer().positive().max(6).required(),
+      weekday: Joi.number().integer().min(0).max(6).required(),
       startTime: Joi.string()
         .pattern(new RegExp(/^\d{1,2}:\d{2}$/))
         .required(),

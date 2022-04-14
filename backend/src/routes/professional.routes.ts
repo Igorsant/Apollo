@@ -1,7 +1,7 @@
 import express from 'express';
 
 import ProfessionalController from '../controllers/ProfessionalController';
-import professionalSchema from '../schemas/customer.schema';
+import professionalSchema from '../schemas/professional.schema';
 import validateReq from '../middlewares/validateRequest.middleware';
 
 const professionalRouter = express.Router();

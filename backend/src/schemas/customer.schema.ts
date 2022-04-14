@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const customerSchema = Joi.object({
+export const baseCustomerSchema = {
   cpf: Joi.string()
     .length(11)
     .pattern(new RegExp(/^[0-9]{11}$/))
@@ -28,6 +28,8 @@ const customerSchema = Joi.object({
     .required(),
 
   pictureBase64: Joi.string().base64()
-});
+};
+
+const customerSchema = Joi.object(baseCustomerSchema);
 
 export default customerSchema;

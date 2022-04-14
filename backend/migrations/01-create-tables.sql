@@ -54,6 +54,9 @@ CREATE TABLE Workday (
 	id SERIAL NOT NULL,
 	professional_id INTEGER NOT NULL,
 	week_day SMALLINT NOT NULL,
+	start_time TIME NOT NULL,
+	end_time TIME NOT NULL,
+	break_time BOOLEAN NOT NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (professional_id) REFERENCES Professional(id)
@@ -101,15 +104,4 @@ CREATE TABLE Schedulling_Service (
 	PRIMARY KEY (schedule_id, service_id),
 	FOREIGN KEY (schedule_id) REFERENCES Schedulling(id),
 	FOREIGN KEY (service_id) REFERENCES Service(id)
-);
-
-CREATE TABLE Time_Range (
-	id SERIAL NOT NULL,
-	workday_id INTEGER NOT NULL,
-	start_time TIME NOT NULL,
-	end_time TIME NOT NULL,
-	break_time BOOLEAN NOT NULL,
-
-	PRIMARY KEY (id),
-	FOREIGN KEY (workday_id) REFERENCES Workday(id)
 );

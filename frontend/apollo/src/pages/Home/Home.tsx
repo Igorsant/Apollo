@@ -3,7 +3,7 @@ import { Header } from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
 import { Parallax, UpFirstContent, DownFirstContent } from "./style";
 import styled from "styled-components";
-import {Button } from "../../components/Button/ApolloButton";
+import { Button } from "../../components/Button/ApolloButton";
 import { TextInput } from "../../components/TextInput/TextInput";
 import p1 from "../../images/parallax1.png";
 import p2 from "../../images/parallax2.png";
@@ -28,17 +28,32 @@ const SecondParallax = styled(FirstParallax)`
   justify-content: center;
   flex-direction: column;
   align-items: start;
-  padding-left: 20px;
+  padding-left: 5%;
 `;
 
 const SecondParallaxSubTitle = styled.h2`
   width: 40%;
 `;
 
+const ButtonStyle = {
+  gridColumnStart: "1",
+  gridColumnEnd: "3", 
+  fontSize: "1.1em"
+}
+
 const Home = () => (
   <>
-    <Header> <Button component={Link} to="/cadastrocliente" color="secondary" variant="text" style={{ gridColumnStart: "1", gridColumnEnd: "3" }}>Criar conta</Button>
-    <Button component={Link} to="/login" color="secondary" variant="text" style={{ gridColumnStart: "1", gridColumnEnd: "3" }}>Entrar</Button></Header>
+    <Header> 
+      <Button 
+        component={Link} 
+        to="/cadastrocliente" 
+        color="secondary" 
+        variant="text" 
+        style={ButtonStyle}
+      >
+        Criar conta
+      </Button>
+    <Button component={Link} to="/login" color="secondary" variant="text" style={ButtonStyle}>Entrar</Button></Header>
     <div id="main">
       <Parallax url={p1}>
         <FirstParallax>

@@ -18,12 +18,12 @@ export const Parallax = styled.div<Props>`
 export const UpFirstContent = styled.div`
   width: 50%;
   font-size: 2em;
-  padding: 20px;
+  padding: 5%;
 `
 
 export const DownFirstContent = styled.div`
-  height: 270px;
+  height: 70vh;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: center;
 `

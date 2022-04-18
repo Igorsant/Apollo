@@ -14,10 +14,11 @@ import { Button } from '@mui/material';
 export const App = () => {
  return(      
     <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />]
-      <Route path="/cadastrocliente" element={<CadastroCliente />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
-  </BrowserRouter>)
+      <Routes>
+        <Route path="/" element={<Home />} />]
+        <Route path="/cadastrocliente" element={<CadastroCliente />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }

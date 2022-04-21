@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
@@ -60,5 +61,44 @@ export default class CustomerController {
           .json({ error: 'Erro ao inserir usuário no banco de dados' });
       }
     });
+  }
+
+  public static async login(req: Request, res: Response) {
+    const loginCredentials = req.body;
+
+    const [customer] = await databaseService.connection
+      .table('customer')
+      .where('email', loginCredentials.email);
+
+    if (!customer)
+      return res.status(400).json({ error: 'Credenciais inválidas' });
+
+    const passwordsMatch = await bcrypt.compare(
+      loginCredentials.password,
+      customer.password_hash
+    );
+
+    if (!passwordsMatch)
+      return res.status(400).json({ error: 'Credenciais inválidas' });
+
+    const [phone] = await databaseService.connection
+      .table('phone')
+      .where('id', customer.phone_id);
+
+    const accessToken = jwt.sign(
+      {
+        id: customer.id,
+        fullName: customer.full_name,
+        nickname: customer.nickname,
+        picturePath: customer.picture_path,
+        email: customer.email,
+        phone: phone.phone,
+        cpf: customer.cpf
+      },
+      process.env.JWT_LOGIN_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    return res.status(200).json({ jwt: accessToken });
   }
 }

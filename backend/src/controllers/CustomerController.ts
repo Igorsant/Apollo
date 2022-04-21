@@ -112,13 +112,13 @@ export default class CustomerController {
 
     const accessToken = jwt.sign(
       {
-        id: customer.id,
-        fullName: customer.full_name,
-        nickname: customer.nickname,
-        picturePath: picturePath,
+        cpf: customer.cpf,
         email: customer.email,
+        fullName: customer.full_name,
+        id: customer.id,
+        nickname: customer.nickname,
         phone: phone.phone,
-        cpf: customer.cpf
+        picturePath: picturePath
       },
       process.env.JWT_LOGIN_SECRET,
       { expiresIn: '2h' }

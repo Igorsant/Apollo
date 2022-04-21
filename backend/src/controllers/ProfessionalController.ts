@@ -66,11 +66,11 @@ export default class ProfessionalController {
 
         const [insertedWorkplace] = await trx('workplace')
           .insert({
-            street: workplace.street,
-            street_number: workplace.streetNumber,
             complement: workplace.complement,
             phone1_id: insertedPhone1.id,
-            phone2_id: insertedPhone2?.id
+            phone2_id: insertedPhone2?.id,
+            street_number: workplace.streetNumber,
+            street: workplace.street
           })
           .returning('id');
 
@@ -95,9 +95,9 @@ export default class ProfessionalController {
         await trx('service').insert(
           services.map((service: ServiceType) => {
             return {
+              estimated_duration: service.estimatedTime,
               name: service.name,
               price: service.startingPrice,
-              estimated_duration: service.estimatedTime,
               professional_id: insertedProfessional.id
             };
           })
@@ -106,11 +106,11 @@ export default class ProfessionalController {
         await trx('workday').insert(
           workHours.map((workHour: WorkHourType) => {
             return {
-              start_time: workHour.startTime,
-              end_time: workHour.endTime,
               break_time: false,
-              week_day: workHour.weekday,
-              professional_id: insertedProfessional.id
+              end_time: workHour.endTime,
+              professional_id: insertedProfessional.id,
+              start_time: workHour.startTime,
+              week_day: workHour.weekday
             };
           })
         );
@@ -205,17 +205,17 @@ export default class ProfessionalController {
 
     const accessToken = jwt.sign(
       {
-        id: professional.id,
-        fullName: professional.full_name,
-        nickname: professional.nickname,
         aboutMe: professional.about_me,
-        picturePath: picturePath,
-        email: professional.email,
-        phone: phone.phone,
         cpf: professional.cpf,
-        workplace,
+        email: professional.email,
+        fullName: professional.full_name,
+        id: professional.id,
+        nickname: professional.nickname,
+        phone: phone.phone,
+        picturePath: picturePath,
         services,
-        workHours
+        workHours,
+        workplace
       },
       process.env.JWT_LOGIN_SECRET,
       { expiresIn: '2h' }

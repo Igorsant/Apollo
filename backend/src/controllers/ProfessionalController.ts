@@ -1,7 +1,14 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
+import fs from 'fs';
 import jwt from 'jsonwebtoken';
+import path from 'path';
 
+import {
+  DEFAULT_USER_PICTURE,
+  PICTURES_FOLDER,
+  PICTURES_PATH
+} from '../helpers/consts.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
 import { saveImageFromBase64 } from '../helpers/image.helper';
@@ -9,24 +16,24 @@ import { insertPhone } from '../helpers/professional.helper';
 import { ServiceType } from '../types/service.type';
 import { WorkHourType } from '../types/workhour.type';
 
-const defaultPicturePath = '/pictures/default_user.jpg';
-
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
     const professional = req.body;
-    let picturePath = '';
 
     if (!cpfIsValid(professional.cpf))
       return res
         .status(400)
         .json({ error: `cpf ${professional.cpf} é inválido.` });
 
+    let pictureName = '';
+
     if (professional.pictureBase64) {
       try {
-        picturePath = await saveImageFromBase64(
+        pictureName = await saveImageFromBase64(
           professional.pictureBase64,
           'jpg'
         );
+        delete professional.pictureBase64;
       } catch (err) {
         console.error(err);
         return res
@@ -59,11 +66,11 @@ export default class ProfessionalController {
 
         const [insertedWorkplace] = await trx('workplace')
           .insert({
-            street: workplace.street,
-            street_number: workplace.streetNumber,
             complement: workplace.complement,
             phone1_id: insertedPhone1.id,
-            phone2_id: insertedPhone2?.id
+            phone2_id: insertedPhone2?.id,
+            street_number: workplace.streetNumber,
+            street: workplace.street
           })
           .returning('id');
 
@@ -80,7 +87,7 @@ export default class ProfessionalController {
             nickname: professional.nickname,
             password_hash: hashedPassword,
             phone_id: insertedPhone.id,
-            picture_path: picturePath,
+            picture_name: pictureName,
             workplace_id: insertedWorkplace.id
           })
           .returning('id');
@@ -88,9 +95,9 @@ export default class ProfessionalController {
         await trx('service').insert(
           services.map((service: ServiceType) => {
             return {
+              estimated_duration: service.estimatedTime,
               name: service.name,
               price: service.startingPrice,
-              estimated_duration: service.estimatedTime,
               professional_id: insertedProfessional.id
             };
           })
@@ -99,11 +106,11 @@ export default class ProfessionalController {
         await trx('workday').insert(
           workHours.map((workHour: WorkHourType) => {
             return {
-              start_time: workHour.startTime,
-              end_time: workHour.endTime,
               break_time: false,
-              week_day: workHour.weekday,
-              professional_id: insertedProfessional.id
+              end_time: workHour.endTime,
+              professional_id: insertedProfessional.id,
+              start_time: workHour.startTime,
+              week_day: workHour.weekday
             };
           })
         );
@@ -111,16 +118,29 @@ export default class ProfessionalController {
         await trx.commit();
       })
       .then((_) => {
-        professional.picturePath = picturePath || defaultPicturePath;
+        professional.picturePath = `${PICTURES_PATH}/${
+          pictureName || DEFAULT_USER_PICTURE
+        }`;
 
         return res.status(201).json(professional);
       })
       .catch((err) => {
+        if (pictureName) {
+          fs.unlink(path.join(PICTURES_FOLDER, pictureName), (err) => {});
+        }
+        if (err.routine?.includes('unique')) {
+          const [_, key] = err.constraint.split('_');
+
+          return res.status(409).json({
+            error: `Já existe um usuário registrado com ${key} ${professional[key]}`
+          });
+        }
+
         console.error(err);
 
         return res
           .status(500)
-          .json('Erro ao inserir usuário no banco de dados');
+          .json({ error: 'Erro ao inserir usuário no banco de dados' });
       });
   }
 
@@ -146,15 +166,56 @@ export default class ProfessionalController {
       .table('phone')
       .where('id', professional.phone_id);
 
+    const [workplace] = await databaseService.connection
+      .table('workplace')
+      .select('street', 'street_number', 'complement', 'phone1_id', 'phone2_id')
+      .where('id', professional.workplace_id);
+
+    const [[workplacePhone1], [workplacePhone2]] = await Promise.all([
+      databaseService.connection
+        .table('phone')
+        .select('phone', 'is_phone_whatsapp')
+        .where('id', workplace.phone1_id),
+      databaseService.connection
+        .table('phone')
+        .select('phone', 'is_phone_whatsapp')
+        .where('id', workplace.phone2_id)
+    ]);
+
+    delete workplace.phone1_id;
+    delete workplace.phone2_id;
+
+    workplace.phones = [];
+    workplace.phones.push(workplacePhone1);
+    if (workplacePhone2) workplace.phones.push(workplacePhone2);
+
+    const services = await databaseService.connection
+      .table('service')
+      .select('name', 'price', 'estimated_duration')
+      .where('professional_id', professional.id);
+
+    const workHours = await databaseService.connection
+      .table('workday')
+      .select('week_day', 'start_time', 'end_time', 'break_time')
+      .where('professional_id', professional.id);
+
+    const picturePath = `${PICTURES_PATH}/${
+      professional.picture_name || DEFAULT_USER_PICTURE
+    }`;
+
     const accessToken = jwt.sign(
       {
-        id: professional.id,
-        fullName: professional.full_name,
-        nickname: professional.nickname,
-        picturePath: professional.picture_path,
+        aboutMe: professional.about_me,
+        cpf: professional.cpf,
         email: professional.email,
+        fullName: professional.full_name,
+        id: professional.id,
+        nickname: professional.nickname,
         phone: phone.phone,
-        cpf: professional.cpf
+        picturePath: picturePath,
+        services,
+        workHours,
+        workplace
       },
       process.env.JWT_LOGIN_SECRET,
       { expiresIn: '2h' }

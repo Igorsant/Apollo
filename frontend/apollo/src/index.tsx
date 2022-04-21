@@ -26,7 +26,7 @@ const theme = createTheme(themeOptions);
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-    <App></App>
+      <App></App>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

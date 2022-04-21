@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
@@ -19,7 +20,6 @@ export default class ProfessionalController {
       return res
         .status(400)
         .json({ error: `cpf ${professional.cpf} é inválido.` });
-
 
     if (professional.pictureBase64) {
       try {
@@ -113,21 +113,53 @@ export default class ProfessionalController {
       .then((_) => {
         professional.picturePath = picturePath || defaultPicturePath;
 
-        console.log('nao parei!!');
         return res.status(201).json(professional);
       })
       .catch((err) => {
         console.error(err);
-        console.log('morri, devia parar!!');
 
         return res
           .status(500)
           .json('Erro ao inserir usuário no banco de dados');
       });
   }
-}
 
-/* 
-  TODO Remover atributo 'password-hash' antes de retornar como json
-  TODO Passar todas as inserções do 'phone' e 'workplace' em um Promise.all
-*/
+  public static async login(req: Request, res: Response) {
+    const loginCredentials = req.body;
+
+    const [professional] = await databaseService.connection
+      .table('professional')
+      .where('email', loginCredentials.email);
+
+    if (!professional)
+      return res.status(400).json({ error: 'Credenciais inválidas' });
+
+    const passwordsMatch = await bcrypt.compare(
+      loginCredentials.password,
+      professional.password_hash
+    );
+
+    if (!passwordsMatch)
+      return res.status(400).json({ error: 'Credenciais inválidas' });
+
+    const [phone] = await databaseService.connection
+      .table('phone')
+      .where('id', professional.phone_id);
+
+    const accessToken = jwt.sign(
+      {
+        id: professional.id,
+        fullName: professional.full_name,
+        nickname: professional.nickname,
+        picturePath: professional.picture_path,
+        email: professional.email,
+        phone: phone.phone,
+        cpf: professional.cpf
+      },
+      process.env.JWT_LOGIN_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    return res.status(200).json({ jwt: accessToken });
+  }
+}

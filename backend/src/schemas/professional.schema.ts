@@ -1,43 +1,30 @@
 import Joi from 'joi';
 
-import { baseCustomerSchema } from './customer.schema';
-
 const professionalSchema = Joi.object({
-  ...baseCustomerSchema,
-  aboutMe: Joi.string().max(500),
-  services: Joi.array().items(
-    Joi.object({
-      name: Joi.string().min(3).max(50).required(),
-      startingPrice: Joi.number().positive().required(),
-      estimatedTime: Joi.number().integer().positive().required()
-    })
-  ),
+  cpf: Joi.string()
+    .length(11)
+    .pattern(new RegExp(/^[0-9]{11}$/))
+    .required(),
+  email: Joi.string().email().required(),
+  fullName: Joi.string()
+    .min(2)
+    .max(128)
+    // \p{L}: caracteres unicode da categoria letra
+    // Essa expressão aceita nomes simples (john, josé, carlos...)
+    // e também nomes com espaços, apóstrofos ou hífens (João da silva, Daniel Day-Lewis, John's...)
+    .pattern(new RegExp(/^[\p{L}'-]+( [\p{L}'-]+)*$/u))
+    .required(),
 
-  workHours: Joi.array().items(
-    Joi.object({
-      weekday: Joi.number().integer().min(0).max(6).required(),
-      startTime: Joi.string()
-        .pattern(new RegExp(/^\d{1,2}:\d{2}$/))
-        .required(),
-
-      endTime: Joi.string()
-        .pattern(new RegExp(/^\d{1,2}:\d{2}$/))
-        .required()
-    })
-  ),
-
-  workplace: Joi.object({
-    street: Joi.string().max(200).required(),
-    streetNumber: Joi.number().integer().positive().required(),
-    complement: Joi.string().max(256),
-    phone1: Joi.string()
-      .pattern(new RegExp(/^[0-9]{10,11}$/))
-      .required(),
-
-    isPhone1Whatsapp: Joi.bool().required(),
-    phone2: Joi.string().pattern(new RegExp(/^[0-9]{10,11}$/)),
-    isPhone2Whatsapp: Joi.bool()
-  })
+  nickname: Joi.string().alphanum().min(2).max(64).required(),
+  password: Joi.string()
+    .min(8)
+    .max(72)
+    .pattern(new RegExp(/^[a-zA-Z0-9!@#$%¨&*(),.<>;:?\]}[{çÇ'"_=+-]{8,72}$/))
+    .required(),
+  phone: Joi.string()
+    .pattern(new RegExp(/^[0-9]{10,11}$/))
+    .required(),
+  pictureBase64: Joi.string().base64()
 });
 
 export default professionalSchema;

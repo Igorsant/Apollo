@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
 
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
@@ -8,25 +9,31 @@ import { saveImageFromBase64 } from '../helpers/image.helper';
 import { insertPhone } from '../helpers/professional.helper';
 import { ServiceType } from '../types/service.type';
 import { WorkHourType } from '../types/workhour.type';
-
-const defaultPicturePath = '/pictures/default_user.jpg';
+import {
+  DEFAULT_USER_PICTURE,
+  PICTURES_FOLDER,
+  PICTURES_PATH
+} from '../helpers/consts.helper';
+import path from 'path';
 
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
     const professional = req.body;
-    let picturePath = '';
 
     if (!cpfIsValid(professional.cpf))
       return res
         .status(400)
         .json({ error: `cpf ${professional.cpf} é inválido.` });
 
+    let pictureName = '';
+
     if (professional.pictureBase64) {
       try {
-        picturePath = await saveImageFromBase64(
+        pictureName = await saveImageFromBase64(
           professional.pictureBase64,
           'jpg'
         );
+        delete professional.pictureBase64;
       } catch (err) {
         console.error(err);
         return res
@@ -80,7 +87,7 @@ export default class ProfessionalController {
             nickname: professional.nickname,
             password_hash: hashedPassword,
             phone_id: insertedPhone.id,
-            picture_path: picturePath,
+            picture_name: pictureName,
             workplace_id: insertedWorkplace.id
           })
           .returning('id');
@@ -111,16 +118,29 @@ export default class ProfessionalController {
         await trx.commit();
       })
       .then((_) => {
-        professional.picturePath = picturePath || defaultPicturePath;
+        professional.picturePath = `${PICTURES_PATH}/${
+          pictureName || DEFAULT_USER_PICTURE
+        }`;
 
         return res.status(201).json(professional);
       })
       .catch((err) => {
+        if (pictureName) {
+          fs.unlink(path.join(PICTURES_FOLDER, pictureName), (err) => {});
+        }
+        if (err.routine?.includes('unique')) {
+          const [_, key] = err.constraint.split('_');
+
+          return res.status(409).json({
+            error: `Já existe um usuário registrado com ${key} ${professional[key]}`
+          });
+        }
+
         console.error(err);
 
         return res
           .status(500)
-          .json('Erro ao inserir usuário no banco de dados');
+          .json({ error: 'Erro ao inserir usuário no banco de dados' });
       });
   }
 

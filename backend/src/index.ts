@@ -1,8 +1,9 @@
 import express from 'express';
-import path from 'path';
 
-import professionalRouter from './routes/professional.routes';
+import { PICTURES_FOLDER } from './helpers/consts.helper';
+import customerRouter from './routes/customer.routes';
 import databaseService from './services/DatabaseService';
+import professionalRouter from './routes/professional.routes';
 
 databaseService
   .connect()
@@ -11,17 +12,12 @@ databaseService
 
     const app = express();
     const port = process.env.PORT || 3000;
-    const picturesDirPath = path.join(
-      __dirname,
-      '..',
-      'static',
-      'user_pictures'
-    );
 
     app.use(express.json({ limit: '20mb' }));
 
-    app.use('/pictures', express.static(picturesDirPath));
+    app.use('/pictures', express.static(PICTURES_FOLDER));
     app.use('/professionals', professionalRouter);
+    app.use('/customers', customerRouter);
 
     app.listen(port, () => {
       console.log(`Servidor disponível em http://localhost:${port}`);

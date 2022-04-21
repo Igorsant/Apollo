@@ -1,7 +1,14 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
+import fs from 'fs';
 import jwt from 'jsonwebtoken';
+import path from 'path';
 
+import {
+  DEFAULT_USER_PICTURE,
+  PICTURES_FOLDER,
+  PICTURES_PATH
+} from '../helpers/consts.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
 import { saveImageFromBase64 } from '../helpers/image.helper';
@@ -13,11 +20,12 @@ export default class CustomerController {
     if (!cpfIsValid(customer.cpf))
       return res.status(400).json({ error: `cpf ${customer.cpf} é inválido.` });
 
-    let picturePath = '/pictures/default_user.jpg';
+    let pictureName: string;
 
     if (customer.pictureBase64) {
       try {
-        picturePath = await saveImageFromBase64(customer.pictureBase64, 'jpg');
+        pictureName = await saveImageFromBase64(customer.pictureBase64, 'jpg');
+        delete customer.pictureBase64;
       } catch (err) {
         console.error(err);
         return res
@@ -30,7 +38,7 @@ export default class CustomerController {
     const hashedPassword = await bcrypt.hash(customer.password, salt);
     delete customer.password;
 
-    databaseService.connection.transaction(async (trx) => {
+    return databaseService.connection.transaction(async (trx) => {
       try {
         const [insertedPhone] = await trx('phone')
           .insert({
@@ -41,7 +49,7 @@ export default class CustomerController {
         await trx('customer').insert({
           full_name: customer.fullName,
           nickname: customer.nickname,
-          picture_path: picturePath,
+          picture_name: pictureName,
           email: customer.email,
           phone_id: insertedPhone.id,
           cpf: customer.cpf,
@@ -49,18 +57,31 @@ export default class CustomerController {
         });
 
         await trx.commit();
+
+        customer.picturePath = `${PICTURES_PATH}/${
+          pictureName || DEFAULT_USER_PICTURE
+        }`;
+
+        return res.status(201).json(customer);
       } catch (err) {
+        if (pictureName) {
+          fs.unlink(path.join(PICTURES_FOLDER, pictureName), (err) => {});
+        }
+        if (err.routine?.includes('unique')) {
+          const [_, key] = err.constraint.split('_');
+
+          return res.status(409).json({
+            error: `Já existe um usuário registrado com ${key} ${customer[key]}`
+          });
+        }
+
         console.error(err);
 
         return res
           .status(500)
-          .json('Erro ao inserir usuário no banco de dados');
+          .json({ error: 'Erro ao inserir usuário no banco de dados' });
       }
     });
-
-    customer.picturePath = picturePath;
-
-    return res.status(201).json(customer);
   }
 
   public static async login(req: Request, res: Response) {

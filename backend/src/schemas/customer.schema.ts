@@ -1,10 +1,11 @@
 import Joi from 'joi';
 
-const customerSchema = Joi.object({
+export const baseCustomerSchema = {
   cpf: Joi.string()
     .length(11)
     .pattern(new RegExp(/^[0-9]{11}$/))
     .required(),
+
   email: Joi.string().email().required(),
   fullName: Joi.string()
     .min(2)
@@ -21,10 +22,14 @@ const customerSchema = Joi.object({
     .max(72)
     .pattern(new RegExp(/^[a-zA-Z0-9!@#$%¨&*(),.<>;:?\]}[{çÇ'"_=+-]{8,72}$/))
     .required(),
+
   phone: Joi.string()
     .pattern(new RegExp(/^[0-9]{10,11}$/))
     .required(),
+
   pictureBase64: Joi.string().base64()
-});
+};
+
+const customerSchema = Joi.object(baseCustomerSchema);
 
 export default customerSchema;

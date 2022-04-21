@@ -166,15 +166,56 @@ export default class ProfessionalController {
       .table('phone')
       .where('id', professional.phone_id);
 
+    const [workplace] = await databaseService.connection
+      .table('workplace')
+      .select('street', 'street_number', 'complement', 'phone1_id', 'phone2_id')
+      .where('id', professional.workplace_id);
+
+    const [[workplacePhone1], [workplacePhone2]] = await Promise.all([
+      databaseService.connection
+        .table('phone')
+        .select('phone', 'is_phone_whatsapp')
+        .where('id', workplace.phone1_id),
+      databaseService.connection
+        .table('phone')
+        .select('phone', 'is_phone_whatsapp')
+        .where('id', workplace.phone2_id)
+    ]);
+
+    delete workplace.phone1_id;
+    delete workplace.phone2_id;
+
+    workplace.phones = [];
+    workplace.phones.push(workplacePhone1);
+    if (workplacePhone2) workplace.phones.push(workplacePhone2);
+
+    const services = await databaseService.connection
+      .table('service')
+      .select('name', 'price', 'estimated_duration')
+      .where('professional_id', professional.id);
+
+    const workHours = await databaseService.connection
+      .table('workday')
+      .select('week_day', 'start_time', 'end_time', 'break_time')
+      .where('professional_id', professional.id);
+
+    const picturePath = `${PICTURES_PATH}/${
+      professional.picture_name || DEFAULT_USER_PICTURE
+    }`;
+
     const accessToken = jwt.sign(
       {
         id: professional.id,
         fullName: professional.full_name,
         nickname: professional.nickname,
-        picturePath: professional.picture_path,
+        aboutMe: professional.about_me,
+        picturePath: picturePath,
         email: professional.email,
         phone: phone.phone,
-        cpf: professional.cpf
+        cpf: professional.cpf,
+        workplace,
+        services,
+        workHours
       },
       process.env.JWT_LOGIN_SECRET,
       { expiresIn: '2h' }

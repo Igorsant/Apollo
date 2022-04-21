@@ -26,7 +26,7 @@ CREATE TABLE Customer (
 	nickname VARCHAR(64) NOT NULL,
 	picture_name VARCHAR(128),
 	email VARCHAR(256) UNIQUE NOT NULL,
-	cpf CHAR(12) UNIQUE NOT NULL,
+	cpf CHAR(11) UNIQUE NOT NULL,
 	password_hash VARCHAR(256) NOT NULL,
 
 	PRIMARY KEY (id),
@@ -41,7 +41,7 @@ CREATE TABLE Professional (
 	nickname VARCHAR(64) NOT NULL,
 	picture_name VARCHAR(128),
 	email VARCHAR(256) UNIQUE NOT NULL,
-	cpf CHAR(12) UNIQUE NOT NULL,
+	cpf CHAR(11) UNIQUE NOT NULL,
 	password_hash VARCHAR(256) NOT NULL,
 	about_me TEXT,
 

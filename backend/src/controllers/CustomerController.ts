@@ -106,12 +106,16 @@ export default class CustomerController {
       .table('phone')
       .where('id', customer.phone_id);
 
+    const picturePath = `${PICTURES_PATH}/${
+      customer.picture_name || DEFAULT_USER_PICTURE
+    }`;
+
     const accessToken = jwt.sign(
       {
         id: customer.id,
         fullName: customer.full_name,
         nickname: customer.nickname,
-        picturePath: customer.picture_path,
+        picturePath: picturePath,
         email: customer.email,
         phone: phone.phone,
         cpf: customer.cpf

@@ -29,7 +29,7 @@ export default class CustomerController {
     const hashedPassword = await bcrypt.hash(customer.password, salt);
     delete customer.password;
 
-    databaseService.connection.transaction(async (trx) => {
+    return databaseService.connection.transaction(async (trx) => {
       try {
         const [insertedPhone] = await trx('phone')
           .insert({
@@ -48,17 +48,17 @@ export default class CustomerController {
         });
 
         await trx.commit();
+
+        customer.picturePath = picturePath;
+
+        return res.status(201).json(customer);
       } catch (err) {
         console.error(err);
 
         return res
           .status(500)
-          .json('Erro ao inserir usuário no banco de dados');
+          .json({ error: 'Erro ao inserir usuário no banco de dados' });
       }
     });
-
-    customer.picturePath = picturePath;
-
-    return res.status(201).json(customer);
   }
 }

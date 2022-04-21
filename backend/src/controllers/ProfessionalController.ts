@@ -1,20 +1,20 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import fs from 'fs';
+import jwt from 'jsonwebtoken';
+import path from 'path';
 
+import {
+  DEFAULT_USER_PICTURE,
+  PICTURES_FOLDER,
+  PICTURES_PATH
+} from '../helpers/consts.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
 import { saveImageFromBase64 } from '../helpers/image.helper';
 import { insertPhone } from '../helpers/professional.helper';
 import { ServiceType } from '../types/service.type';
 import { WorkHourType } from '../types/workhour.type';
-import {
-  DEFAULT_USER_PICTURE,
-  PICTURES_FOLDER,
-  PICTURES_PATH
-} from '../helpers/consts.helper';
-import path from 'path';
 
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {

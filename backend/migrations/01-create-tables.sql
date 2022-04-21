@@ -11,8 +11,8 @@ CREATE TABLE Workplace (
 	phone1_id INTEGER NOT NULL,
 	phone2_id INTEGER,
 	street VARCHAR(256) NOT NULL,
-	street_number INTEGER NOT NULL,
-	complement VARCHAR(256) NOT NULL,
+	street_number VARCHAR(16) NOT NULL,
+	complement VARCHAR(256),
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone1_id) REFERENCES Phone(id),
@@ -24,9 +24,9 @@ CREATE TABLE Customer (
 	phone_id INTEGER NOT NULL,
 	full_name VARCHAR(256) NOT NULL,
 	nickname VARCHAR(64) NOT NULL,
-	picture_path VARCHAR(128) NOT NULL,
-	email VARCHAR(256) NOT NULL,
-	cpf CHAR(12) NOT NULL,
+	picture_path VARCHAR(128),
+	email VARCHAR(256) UNIQUE NOT NULL,
+	cpf CHAR(12) UNIQUE NOT NULL,
 	password_hash VARCHAR(256) NOT NULL,
 
 	PRIMARY KEY (id),
@@ -39,15 +39,15 @@ CREATE TABLE Professional (
 	workplace_id INTEGER NOT NULL,
 	full_name VARCHAR(256) NOT NULL,
 	nickname VARCHAR(64) NOT NULL,
-	picture_path VARCHAR(128) NOT NULL,
-	email VARCHAR(256) NOT NULL,
-	cpf CHAR(12) NOT NULL,
+	picture_path VARCHAR(128),
+	email VARCHAR(256) UNIQUE NOT NULL,
+	cpf CHAR(12) UNIQUE NOT NULL,
 	password_hash VARCHAR(256) NOT NULL,
-	about_me TEXT NOT NULL,
+	about_me TEXT,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone_id) REFERENCES Phone(id),
-  	FOREIGN KEY (workplace_id) REFERENCES Workplace(id)
+  FOREIGN KEY (workplace_id) REFERENCES Workplace(id)
 );
 
 CREATE TABLE Workday (
@@ -56,7 +56,7 @@ CREATE TABLE Workday (
 	week_day SMALLINT NOT NULL,
 	start_time TIME NOT NULL,
 	end_time TIME NOT NULL,
-	break_time BOOLEAN NOT NULL,
+	break_time BOOLEAN NOT NULL DEFAULT FALSE,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (professional_id) REFERENCES Professional(id)
@@ -79,7 +79,7 @@ CREATE TABLE Schedulling (
 	professional_id INTEGER NOT NULL,
 	customer_id INTEGER NOT NULL,
 	schedulling_datetime TIMESTAMP NOT NULL,
-	confirmed BOOLEAN NOT NULL,
+	confirmed BOOLEAN NOT NULL DEFAULT FALSE,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (professional_id) REFERENCES Professional(id),
@@ -104,4 +104,13 @@ CREATE TABLE Schedulling_Service (
 	PRIMARY KEY (schedule_id, service_id),
 	FOREIGN KEY (schedule_id) REFERENCES Schedulling(id),
 	FOREIGN KEY (service_id) REFERENCES Service(id)
+);
+
+CREATE TABLE Favorite (
+	customer_id INTEGER NOT NULL,
+	professional_id INTEGER NOT NULL,
+
+	PRIMARY KEY (customer_id, professional_id),
+	FOREIGN KEY (customer_id) REFERENCES Customer(id),
+	FOREIGN KEY (professional_id) REFERENCES Professional(id)
 );

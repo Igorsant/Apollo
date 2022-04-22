@@ -1,15 +1,22 @@
 import express from 'express';
 
+import {
+  createReviewSchema,
+  searchReviewSchema
+} from '../schemas/review.schema';
 import ReviewController from '../controllers/ReviewController';
-import reviewSchema from '../schemas/review.schema';
 import validateReq from '../middlewares/validateRequest.middleware';
 
 const reviewRouter = express.Router();
 
-reviewRouter.get('/', validateReq(reviewSchema, 'body'), ReviewController.get);
+reviewRouter.get(
+  '/',
+  validateReq(searchReviewSchema, 'query'),
+  ReviewController.get
+);
 reviewRouter.post(
   '/',
-  validateReq(reviewSchema, 'body'),
+  validateReq(createReviewSchema, 'body'),
   ReviewController.create
 );
 

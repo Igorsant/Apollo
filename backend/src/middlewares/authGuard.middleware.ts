@@ -8,20 +8,19 @@ export default function authGuard(
   res: Response,
   next: NextFunction
 ) {
-  if (!req.headers.authorization)
-    return unauthorizedAccess(res)
+  if (!req.headers.authorization) return unauthorizedAccess(res);
 
   const [_, token] = req.headers.authorization.split(' ');
 
-  if (!token)
-    return unauthorizedAccess(res)
+  if (!token) return unauthorizedAccess(res);
   try {
     const user = jwt.verify(token, process.env.JWT_LOGIN_SECRET);
-    req.body.user = user;
+
+    res.locals.user = user;
 
     return next();
   } catch (err) {
     console.log(err);
-    return unauthorizedAccess(res)
+    return unauthorizedAccess(res);
   }
 }

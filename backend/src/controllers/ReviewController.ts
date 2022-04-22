@@ -28,16 +28,15 @@ export default class ReviewController {
 
       const response = res.status(200);
 
-      if (!rating) return response.json({ reviews });
+      if (!rating) return response.json(reviews);
 
-      return response.json({
-        reviews: reviews.filter((r) => r.rating >= rating)
-      });
+      return response.json(reviews.filter((r) => r.rating >= rating));
     });
   }
 
   public static async create(req: Request, res: Response) {
-    const { professionalId, rating, comment, user } = req.body;
+    const { professionalId, rating, comment } = req.body;
+    const user = res.locals.user;
 
     const { id } = Object(user);
 
@@ -68,7 +67,12 @@ export default class ReviewController {
       }
 
       await trx.commit();
-      return res.sendStatus(201);
+      return res.status(201).json({
+        rating,
+        comment,
+        customerName: user.fullName,
+        customerPicturePath: user.picturePath
+      });
     });
   }
 }

@@ -2,7 +2,11 @@ import { randomUUID } from 'crypto';
 import { promises } from 'fs';
 import path from 'path';
 
-import { PICTURES_FOLDER } from './consts.helper';
+import {
+  DEFAULT_USER_PICTURE,
+  PICTURES_FOLDER,
+  PICTURES_PATH
+} from './consts.helper';
 
 export function saveImageFromBase64(
   imageBase64: string,
@@ -18,4 +22,8 @@ export function saveImageFromBase64(
       .then(() => resolve(imageName))
       .catch((err) => reject(err));
   });
+}
+
+export function userPicture(imageName?: string): string {
+  return `${PICTURES_PATH}/${imageName || DEFAULT_USER_PICTURE}`;
 }

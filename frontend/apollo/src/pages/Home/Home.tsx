@@ -53,7 +53,8 @@ const Home = () => (
       >
         Criar conta
       </Button>
-    <Button component={Link} to="/login" color="secondary" variant="text" style={ButtonStyle}>Entrar</Button></Header>
+      <Button component={Link} to="/login" color="secondary" variant="text" style={ButtonStyle}>Entrar</Button>
+    </Header>
     <div id="main">
       <Parallax url={p1}>
         <FirstParallax>
@@ -65,9 +66,8 @@ const Home = () => (
               <TextInput hint="Cidade" />
               <TextInput hint="Busque algum profissional" />
               <Button
-              variant="contained"
-              onClick={()=>{console.log("Clicked")}}
-              style={{ gridColumnStart: "1", gridColumnEnd: "3" }}
+                variant="contained"
+                style={{ gridColumnStart: "1", gridColumnEnd: "3" }}
               >
                 Buscar
               </Button>
@@ -80,7 +80,7 @@ const Home = () => (
           <SecondParallaxSubTitle>
             Encontre barbearias próximas à você
           </SecondParallaxSubTitle>
-          <Button variant="contained" onClick={()=>{console.log("Clicked")}}>Sou profissional</Button>
+          <Link style={{ textDecoration: 'none' }} to="/cadastroprofissional" ><Button variant="contained">Sou profissional</Button></Link>
         </SecondParallax>
       </Parallax>
     </div>

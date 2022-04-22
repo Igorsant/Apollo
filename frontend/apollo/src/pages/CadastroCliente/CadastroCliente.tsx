@@ -8,6 +8,8 @@ import { Button } from "../../components/Button/ApolloButton";
 import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
 import { ImageInput } from "../../components/ImageInput/ImageInput";
 
+import api from "../../services/api";
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     [theme.breakpoints.down("sm")]: {
@@ -38,13 +40,13 @@ const Subtitle = styled.h3`
 const CadastroCliente = () => {
   const classes = useStyles();
   const [form, setForm] = useState({
-    fotoPerfil: "",
-    nome: "",
-    apelido: "",
-    email: "",
-    telefone: "",
     cpf: "",
-    senha: "",
+    email: "",
+    fullName: "",
+    nickname: "",
+    password: "",
+    phone: "",
+    pictureBase64: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +55,29 @@ const CadastroCliente = () => {
     setForm({ ...form, [name]: value });
   };
 
+  const handleChangeImage = (
+    name: string,
+    value: string | ArrayBuffer | null
+  ) => {
+    var valueBase64 = "";
+    if (typeof value === "string" || value instanceof String) {
+      valueBase64 = (value as String).split(",")[1];
+    }
+    setForm({ ...form, [name]: valueBase64 });
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(form);
+    api
+      .post("customers", form)
+      .then((res) => {
+        if (res.status === 201) {
+          console.log("Sucesso");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -88,25 +110,25 @@ const CadastroCliente = () => {
               </Grid>
               <Grid item xs={12} md={2}>
                 <ImageInput
-                  name="fotoperfil"
-                  value={form.fotoPerfil}
-                  onChange={handleChange}
+                  name="pictureBase64"
+                  value={form.pictureBase64}
+                  onChangeImage={handleChangeImage}
                   label="Foto de Perfil:"
                 ></ImageInput>
               </Grid>
               <Grid item xs={12} md={10}>
                 <Grid item xs={12} md={12}>
                   <TextInputLaranja
-                    name="nome"
-                    value={form.nome}
+                    name="fullName"
+                    value={form.fullName}
                     onChange={handleChange}
                     label="Nome:"
                   ></TextInputLaranja>
                 </Grid>
                 <Grid item xs={12} md={12}>
                   <TextInputLaranja
-                    name="apelido"
-                    value={form.apelido}
+                    name="nickname"
+                    value={form.nickname}
                     onChange={handleChange}
                     label="Apelido:"
                   ></TextInputLaranja>
@@ -135,8 +157,8 @@ const CadastroCliente = () => {
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
-                  name="telefone"
-                  value={form.telefone}
+                  name="phone"
+                  value={form.phone}
                   onChange={handleChange}
                   label="Telefone(apenas números):"
                 ></TextInputLaranja>
@@ -164,8 +186,8 @@ const CadastroCliente = () => {
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
-                  name="senha"
-                  value={form.senha}
+                  name="password"
+                  value={form.password}
                   onChange={handleChange}
                   label="Senha:"
                 ></TextInputLaranja>

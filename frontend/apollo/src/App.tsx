@@ -1,18 +1,11 @@
-import React from 'react'
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-  } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
-import Home from './pages/Home/Home'
-import CadastroCliente from './pages/CadastroCliente/CadastroCliente';
-import Login from './pages/Login/Login';
-import { Button } from '@mui/material';
+import Home from "./pages/Home/Home";
+import CadastroCliente from "./pages/CadastroCliente/CadastroCliente";
+import Login from "./pages/Login/Login";
 
 export const App = () => {
- return(      
+  return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />]
@@ -20,5 +13,5 @@ export const App = () => {
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};

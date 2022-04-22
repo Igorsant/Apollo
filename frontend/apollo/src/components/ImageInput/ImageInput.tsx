@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { InputHTMLAttributes } from "react";
+import { EventHandler, InputHTMLAttributes } from "react";
 import { ChangeEventHandler } from "react";
 import { useState } from "react";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -35,14 +35,14 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   value: string;
   name: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChangeImage: Function;
 }
 
 export const ImageInput: React.FC<ImageInputProps> = ({
   label,
   name,
   value,
-  onChange,
+  onChangeImage,
 }) => {
   const [image, setImage] = useState({ picture: {}, src: "" });
 
@@ -77,7 +77,19 @@ export const ImageInput: React.FC<ImageInputProps> = ({
   ) => {
     var file = event.target!.files![0];
     var src = URL.createObjectURL(file);
-    console.log(src);
+
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      function () {
+        onChangeImage(name, reader.result);
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
 
     setImage({ picture: file, src: src });
   };

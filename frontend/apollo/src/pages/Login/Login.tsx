@@ -8,6 +8,9 @@ import { Header } from "../../components/Header/Header";
 import { Button } from "../../components/Button/ApolloButton";
 import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
 
+import api from "../../services/api";
+import { setToken } from "../../services/auth";
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     [theme.breakpoints.down("sm")]: {
@@ -32,7 +35,7 @@ const Title = styled.h2`
 
 const Login = () => {
   const classes = useStyles();
-  const [form, setForm] = useState({ cpf: "", senha: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -42,7 +45,16 @@ const Login = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(form);
+    api
+      .post("customers/login", form)
+      .then((res) => {
+        if (res.status === 200) {
+          setToken(res.data.jwt);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -74,16 +86,17 @@ const Login = () => {
             </Grid>
             <Grid item xs={12} md={12}>
               <TextInputLaranja
-                name="cpf"
-                value={form.cpf}
+                type="email"
+                name="email"
+                value={form.email}
                 onChange={handleChange}
-                label="CPF(Apenas números):"
+                label="Email:"
               ></TextInputLaranja>
             </Grid>
             <Grid item xs={12} md={12}>
               <TextInputLaranja
-                name="senha"
-                value={form.senha}
+                name="password"
+                value={form.password}
                 onChange={handleChange}
                 label="Senha:"
               ></TextInputLaranja>

@@ -11,10 +11,13 @@ import {
 } from '../helpers/consts.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
-import { saveImageFromBase64 } from '../helpers/image.helper';
+import { saveImageFromBase64, userPicture } from '../helpers/image.helper';
 import { insertPhone } from '../helpers/professional.helper';
+import ServiceController from './ServicesController';
 import { ServiceType } from '../types/service.type';
 import { WorkHourType } from '../types/workhour.type';
+import WorkHoursController from './WorkHoursController';
+import WorkplaceController from './WorkplaceController';
 
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
@@ -66,6 +69,7 @@ export default class ProfessionalController {
 
         const [insertedWorkplace] = await trx('workplace')
           .insert({
+            city: workplace.city,
             complement: workplace.complement,
             phone1_id: insertedPhone1.id,
             phone2_id: insertedPhone2?.id,
@@ -168,7 +172,14 @@ export default class ProfessionalController {
 
     const [workplace] = await databaseService.connection
       .table('workplace')
-      .select('street', 'street_number', 'complement', 'phone1_id', 'phone2_id')
+      .select(
+        'city',
+        'street',
+        'street_number',
+        'complement',
+        'phone1_id',
+        'phone2_id'
+      )
       .where('id', professional.workplace_id);
 
     const [[workplacePhone1], [workplacePhone2]] = await Promise.all([
@@ -222,5 +233,73 @@ export default class ProfessionalController {
     );
 
     return res.status(200).json({ jwt: accessToken });
+  }
+
+  public static async search(
+    req: Request<{}, {}, {}, { city: string; query?: string }>,
+    res: Response
+  ) {
+    const search = req.query;
+
+    const ids = (
+      await databaseService.connection
+        .select('professional.id')
+        .from('professional')
+        .join('workplace', 'professional.workplace_id', 'workplace.id')
+        .where('workplace.city', search.city)
+        .modify((queryBuilder) => {
+          if (search.query)
+            queryBuilder.whereILike(
+              'professional.full_name',
+              `%${search.query}%`
+            );
+        })
+    ).map((p: { id: number }) => p.id);
+
+    const professionals = await ProfessionalController.getProfessionalsByIds(
+      ids
+    );
+
+    res.status(200).json(professionals);
+  }
+
+  private static async getProfessionalsByIds(ids: number[]) {
+    const professionals = await databaseService.connection
+      .table('professional')
+      .select(
+        'id',
+        'about_me',
+        'phone_id',
+        'workplace_id',
+        'full_name',
+        'nickname',
+        'picture_name'
+      )
+      .whereIn('id', ids);
+
+    for (const p of professionals) {
+      p.fullName = p.full_name;
+      p.aboutMe = p.about_me;
+
+      delete p.full_name;
+      delete p.about_me;
+
+      [{ phone: p.phone }] = await databaseService.connection
+        .table('phone')
+        .select('phone')
+        .where('id', p.phone_id);
+      delete p.phone_id;
+
+      p.picturePath = userPicture(p.picture_name);
+      delete p.picture_name;
+
+      p.workplace = await WorkplaceController.getWorkplaceById(p.workplace_id);
+      delete p.workplace_id;
+
+      p.services = await ServiceController.getServicesByProfessionalId(p.id);
+      p.workHours = await WorkHoursController.getProfessionalWorkHours(p.id);
+    }
+
+    return professionals;
   }
 }

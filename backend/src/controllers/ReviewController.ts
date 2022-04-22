@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import databaseService from '../services/DatabaseService';
+import { DEFAULT_USER_PICTURE, PICTURES_PATH } from '../helpers/consts.helper';
 
 export default class ReviewSchema {
   public static async get(req: Request, res: Response) {
@@ -10,8 +11,20 @@ export default class ReviewSchema {
     return databaseService.connection.transaction(async (trx) => {
       const reviews = await trx
         .table('review')
-        .select('rating', 'comment')
+        .select('rating', 'comment', 'customer_id')
         .where('professional_id', +professionalId);
+
+      for (const r of reviews) {
+        const [customer] = await trx
+          .table('customer')
+          .select('full_name', 'picture_name')
+          .where('id', r.customer_id);
+
+        r.customerName = customer.full_name;
+        r.customerPicturePath = `${PICTURES_PATH}/${
+          customer.picture_name || DEFAULT_USER_PICTURE
+        }`;
+      }
 
       const response = res.status(200);
 

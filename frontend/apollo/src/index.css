@@ -14,3 +14,22 @@ body {
   --title: #42332b;
   --background: #d7d7d7;
 }
+
+table{
+  border: 1px solid #dddddd; 
+  width: 100%;
+  color: black;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th{
+  background-color: var(--header);
+  color: white;
+}
+
+td, th{
+  border: 1px solid #dddddd;
+  font-weight: 400;
+  padding: 10px;
+}

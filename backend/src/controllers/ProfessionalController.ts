@@ -66,6 +66,7 @@ export default class ProfessionalController {
 
         const [insertedWorkplace] = await trx('workplace')
           .insert({
+            city: workplace.city,
             complement: workplace.complement,
             phone1_id: insertedPhone1.id,
             phone2_id: insertedPhone2?.id,
@@ -168,7 +169,14 @@ export default class ProfessionalController {
 
     const [workplace] = await databaseService.connection
       .table('workplace')
-      .select('street', 'street_number', 'complement', 'phone1_id', 'phone2_id')
+      .select(
+        'city',
+        'street',
+        'street_number',
+        'complement',
+        'phone1_id',
+        'phone2_id'
+      )
       .where('id', professional.workplace_id);
 
     const [[workplacePhone1], [workplacePhone2]] = await Promise.all([

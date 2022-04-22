@@ -13,6 +13,7 @@ CREATE TABLE Workplace (
 	street VARCHAR(256) NOT NULL,
 	street_number VARCHAR(16) NOT NULL,
 	complement VARCHAR(256),
+	city VARCHAR(128),
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone1_id) REFERENCES Phone(id),

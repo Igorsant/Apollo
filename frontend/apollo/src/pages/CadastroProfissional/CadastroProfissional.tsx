@@ -109,6 +109,38 @@ const CadastroProfissional = () => {
     }
     setForm({ ...form, [name]: valueBase64 });
   };
+  
+  const normalizeToBackend = () => {
+    const result = {
+      fullName: form.nome,
+      nickname: form.apelido,
+      pictureBase64: form.fotoPerfil,
+      aboutMe: "",
+      email: form.email,
+      phone: form.telefone,
+      cpf: form.cpf,
+      password: form.senha,
+      services: form.services,
+      workHours: [
+        {
+          weekday: 0,
+          startTime: "",
+          endTime: ""
+        }
+      ],
+      workplace: {
+        street: form.rua,
+        streetNumber: form.numero,
+        complement: form.complemento,
+        phone1: form.telefone1.number,
+        isPhone1Whatsapp: form.telefone1.isWpp,
+        phone2: form.telefone2.number,
+        isPhone2Whatsapp: form.telefone2.isWpp
+      }
+    }
+
+    return result
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;

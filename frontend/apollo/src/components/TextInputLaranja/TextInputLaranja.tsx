@@ -28,7 +28,7 @@ const Input = styled.input`
 `
 interface ApolloTextInputLaranjaProps extends InputHTMLAttributes<HTMLInputElement> {
   label:string,
-  value:string,
+  value:string | number,
   name:string,
   onChange: ChangeEventHandler<HTMLInputElement>
 }

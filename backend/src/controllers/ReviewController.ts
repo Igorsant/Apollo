@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import databaseService from '../services/DatabaseService';
 import { DEFAULT_USER_PICTURE, PICTURES_PATH } from '../helpers/consts.helper';
 
-export default class ReviewSchema {
+export default class ReviewController {
   public static async get(req: Request, res: Response) {
     const { professionalId, rating } = req.query;
 
@@ -37,16 +37,7 @@ export default class ReviewSchema {
   }
 
   public static async create(req: Request, res: Response) {
-    const { professionalId, rating, comment } = req.body;
-
-    const [_, token] = req.headers.authorization.split(' ');
-
-    if (!token) {
-      return res.status(400);
-    }
-
-    const user = jwt.verify(token, process.env.JWT_LOGIN_SECRET);
-    if (!user) return res.status(400);
+    const { professionalId, rating, comment, user } = req.body;
 
     const { id } = Object(user);
 

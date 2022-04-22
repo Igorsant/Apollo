@@ -6,6 +6,7 @@ import {
 } from '../schemas/review.schema';
 import ReviewController from '../controllers/ReviewController';
 import validateReq from '../middlewares/validateRequest.middleware';
+import authGuard from '../middlewares/authGuard.middleware';
 
 const reviewRouter = express.Router();
 
@@ -16,6 +17,7 @@ reviewRouter.get(
 );
 reviewRouter.post(
   '/',
+  authGuard,
   validateReq(createReviewSchema, 'body'),
   ReviewController.create
 );

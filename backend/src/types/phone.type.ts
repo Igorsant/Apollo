@@ -1,4 +1,6 @@
-export type PhoneType = {
+type PhoneType = {
   phone: string;
-  is_phone_whatsapp?: boolean;
+  isPhoneWhatsapp?: boolean;
 };
+
+export default PhoneType;

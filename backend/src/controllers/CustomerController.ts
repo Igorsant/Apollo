@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { toCamel, toSnake } from 'snake-camel';
 
 import { cpfIsValid } from '../helpers/cpf.helper';
+import CustomerType from '../types/customer.type';
 import databaseService from '../services/DatabaseService';
 import { badRequest, conflict, internalError } from '../helpers/http.helper';
 import {
@@ -32,52 +33,36 @@ export default class CustomerController {
     customer.passwordHash = await bcrypt.hash(customer.password, salt);
     delete customer.password;
 
-    return databaseService.connection.transaction(async (trx) => {
-      try {
-        customer.phoneId = await PhoneController.insertPhone(
-          trx,
-          customer.phone
-        );
+    try {
+      await CustomerController.insertCustomer(customer);
 
-        const phoneNumber = customer.phone;
-        delete customer.phone;
+      customer.picturePath = userPicture(customer.pictureName);
 
-        const customerSnake = toSnake(customer);
+      delete customer.passwordHash;
+      delete customer.pictureName;
 
-        await trx('customer').insert(customerSnake);
+      return res.status(201).json(customer);
+    } catch (err) {
+      if (customer.pictureName) deletePicture(customer.pictureName);
 
-        await trx.commit();
+      if (err.routine?.includes('unique')) {
+        const [_, key] = err.constraint.split('_');
 
-        customer.picturePath = userPicture(customer.pictureName);
-        customer.phone = phoneNumber;
-
-        delete customer.passwordHash;
-        delete customer.pictureName;
-        delete customer.phoneId;
-
-        return res.status(201).json(customer);
-      } catch (err) {
-        if (customer.pictureName) deletePicture(customer.pictureName);
-
-        if (err.routine?.includes('unique')) {
-          const [_, key] = err.constraint.split('_');
-
-          return conflict(res, key, customer[key]);
-        }
-
-        console.error(err);
-
-        return internalError(res, 'Erro ao inserir usuário no banco de dados');
+        return conflict(res, key, customer[key]);
       }
-    });
+
+      console.error(err);
+
+      return internalError(res, 'Erro ao inserir usuário no banco de dados');
+    }
   }
 
   public static async login(req: Request, res: Response) {
     const loginCredentials = req.body;
 
-    let [customer] = await databaseService.connection
-      .table('customer')
-      .where('email', loginCredentials.email);
+    let customer = await CustomerController.getCustomerByEmail(
+      loginCredentials.email
+    );
 
     if (!customer) return badRequest(res, 'Credenciais inválidas');
 
@@ -106,5 +91,28 @@ export default class CustomerController {
     });
 
     return res.status(200).json({ jwt: accessToken });
+  }
+
+  private static async getCustomerByEmail(email: string) {
+    return databaseService.connection
+      .table('customer')
+      .where('email', email)
+      .first();
+  }
+
+  private static async insertCustomer(customer: CustomerType) {
+    const localCustomer: CustomerType = JSON.parse(JSON.stringify(customer));
+
+    return databaseService.connection.transaction(async (trx) => {
+      localCustomer.phoneId = await PhoneController.insertPhone(trx, {
+        phone: localCustomer.phone
+      });
+
+      delete localCustomer.phone;
+
+      await trx('customer').insert(toSnake(localCustomer));
+
+      return trx.commit();
+    });
   }
 }

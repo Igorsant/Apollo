@@ -1,15 +1,16 @@
 import { Knex } from 'knex';
+import { toSnake } from 'snake-camel';
 
 import databaseService from '../services/DatabaseService';
+import PhoneType from '../types/phone.type';
 
 export default class PhoneController {
   public static async insertPhone(
     trx: Knex.Transaction,
-    phone: string,
-    isPhoneWhatsapp?: boolean
+    phone: PhoneType
   ): Promise<number> {
     return trx('phone')
-      .insert({ phone, is_phone_whatsapp: isPhoneWhatsapp })
+      .insert(toSnake(phone))
       .returning('id')
       .then((res) => res[0]?.id);
   }

@@ -27,8 +27,9 @@ const professionalSchema = Joi.object({
   ),
 
   workplace: Joi.object({
+    city: Joi.string().max(128).required(),
     street: Joi.string().max(200).required(),
-    streetNumber: Joi.number().integer().positive().required(),
+    streetNumber: Joi.string().max(16).required(),
     complement: Joi.string().max(256),
     phone1: Joi.string()
       .pattern(new RegExp(/^[0-9]{10,11}$/))

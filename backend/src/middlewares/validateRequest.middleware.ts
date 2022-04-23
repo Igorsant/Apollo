@@ -3,7 +3,7 @@ import Joi from 'joi';
 
 export default function validateReq(
   schema: Joi.Schema,
-  property: 'body' | 'params'
+  property: 'body' | 'params' | 'query'
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const { error } = schema.validate(req[property]);

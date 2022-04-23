@@ -4,6 +4,7 @@ import { PICTURES_FOLDER } from './helpers/consts.helper';
 import customerRouter from './routes/customer.routes';
 import databaseService from './services/DatabaseService';
 import professionalRouter from './routes/professional.routes';
+import reviewRouter from './routes/review.routes';
 
 databaseService
   .connect()
@@ -18,6 +19,7 @@ databaseService
     app.use('/pictures', express.static(PICTURES_FOLDER));
     app.use('/professionals', professionalRouter);
     app.use('/customers', customerRouter);
+    app.use('/reviews', reviewRouter);
 
     app.listen(port, () => {
       console.log(`Servidor disponível em http://localhost:${port}`);

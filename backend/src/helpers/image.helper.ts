@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { promises } from 'fs';
+import { unlink, promises } from 'fs';
 import path from 'path';
 
 import {
@@ -8,11 +8,13 @@ import {
   PICTURES_PATH
 } from './consts.helper';
 
-export function saveImageFromBase64(
-  imageBase64: string,
-  extension: 'jpg' | 'png'
-): Promise<string> {
+export function saveBase64Image(
+  imageBase64: string | null | undefined,
+  extension: 'jpg' | 'png' = 'jpg'
+): Promise<string | null> {
   return new Promise((resolve, reject) => {
+    if (!imageBase64) resolve(null);
+
     const imageBuffer = Buffer.from(imageBase64, 'base64');
     const imageName = randomUUID() + '.' + extension;
     const fileFullPath = path.join(PICTURES_FOLDER, imageName);
@@ -21,6 +23,12 @@ export function saveImageFromBase64(
       .writeFile(fileFullPath, imageBuffer)
       .then(() => resolve(imageName))
       .catch((err) => reject(err));
+  });
+}
+
+export function deletePicture(pictureName: string) {
+  unlink(path.join(PICTURES_FOLDER, pictureName), (err) => {
+    console.error(err);
   });
 }
 

@@ -11,7 +11,7 @@ import {
 } from '../helpers/consts.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
-import { saveImageFromBase64, userPicture } from '../helpers/image.helper';
+import { saveBase64Image, userPicture } from '../helpers/image.helper';
 import { insertPhone } from '../helpers/professional.helper';
 import ServiceController from './ServicesController';
 import { ServiceType } from '../types/service.type';
@@ -32,10 +32,7 @@ export default class ProfessionalController {
 
     if (professional.pictureBase64) {
       try {
-        pictureName = await saveImageFromBase64(
-          professional.pictureBase64,
-          'jpg'
-        );
+        pictureName = await saveBase64Image(professional.pictureBase64, 'jpg');
         delete professional.pictureBase64;
       } catch (err) {
         console.error(err);

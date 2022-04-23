@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Box, Theme, Grid, Container } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
-
+import { Link } from 'react-router-dom'
 import { Header } from "../../components/Header/Header";
 import { Button } from "../../components/Button/ApolloButton";
 import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
@@ -203,7 +203,7 @@ const CadastroCliente = () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={6} style={{ textAlign: "center" }}>
-              <Button variant="text" style={{ textTransform: "none" }}>
+              <Button component={Link} to="/cadastroprofissional" variant="text" style={{ textTransform: "none" }}>
                 Profissional? Clique aqui!
               </Button>
             </Grid>

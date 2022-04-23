@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { App } from './App';
+import { AppRouter } from './AppRouter';
 
 
 
@@ -26,7 +26,7 @@ const theme = createTheme(themeOptions);
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App></App>
+      <AppRouter></AppRouter>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

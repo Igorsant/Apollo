@@ -80,7 +80,7 @@ const Home = () => (
           <SecondParallaxSubTitle>
             Encontre barbearias próximas à você
           </SecondParallaxSubTitle>
-          <Link style={{ textDecoration: 'none' }} to="/cadastroprofissional" ><Button variant="contained">Sou profissional</Button></Link>
+          <Button component={Link} to="/loginprofissional" variant="contained">Sou profissional</Button>
         </SecondParallax>
       </Parallax>
     </div>

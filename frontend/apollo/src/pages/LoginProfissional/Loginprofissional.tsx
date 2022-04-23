@@ -33,7 +33,7 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const Login = () => {
+const LoginProfissional = () => {
   const classes = useStyles();
   const [form, setForm] = useState({ email: "", password: "" });
 
@@ -46,7 +46,7 @@ const Login = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     api
-      .post("customers/login", form)
+      .post("professionals/login", form)
       .then((res) => {
         if (res.status === 200) {
           setToken(res.data.jwt);
@@ -82,7 +82,7 @@ const Login = () => {
             container
           >
             <Grid item xs={12} md={12}>
-              <Title>Login</Title>
+              <Title>Login Profissional</Title>
             </Grid>
             <Grid item xs={12} md={12}>
               <TextInputLaranja
@@ -110,9 +110,9 @@ const Login = () => {
                 Entrar
               </Button>
             </Grid>
-            <Grid item xs={12} md={6} style={{ textAlign: "center" }}>
-              <Button component={Link} to="/loginprofissional" variant="text" style={{ textTransform: "none" }}>
-                Profissional? Clique aqui!
+            <Grid item xs={12} md={12} style={{ textAlign: "center" }}>
+              <Button component={Link} to="/cadastroprofissional" variant="text" style={{ textTransform: "none" }}>
+                Não possui conta? Clique aqui!
               </Button>
             </Grid>
           </Grid>
@@ -122,4 +122,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginProfissional;

@@ -6,7 +6,7 @@ interface HeaderProps {
  
 }
 
-export const Header:FC<HeaderProps> = ({children, ...props}) => (
+export const Header: FC<HeaderProps> = ({children, ...props}) => (
   <HeadContainer>
     <Logo to="/" >
       <img 

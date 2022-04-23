@@ -4,14 +4,16 @@ import Home from "./pages/Home/Home";
 import CadastroCliente from "./pages/CadastroCliente/CadastroCliente";
 import CadastroProfissional from "./pages/CadastroProfissional/CadastroProfissional";
 import Login from "./pages/Login/Login";
+import LoginProfissional from "./pages/LoginProfissional/Loginprofissional";
 
-export const App = () => {
+export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cadastrocliente" element={<CadastroCliente />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/loginprofissional" element={<LoginProfissional />} ></Route>
         <Route
           path="/cadastroprofissional"
           element={<CadastroProfissional />}

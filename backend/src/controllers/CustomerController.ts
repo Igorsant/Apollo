@@ -1,85 +1,73 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import fs from 'fs';
 import jwt from 'jsonwebtoken';
-import path from 'path';
+import { toCamel, toSnake } from 'snake-camel';
 
-import {
-  DEFAULT_USER_PICTURE,
-  PICTURES_FOLDER,
-  PICTURES_PATH
-} from '../helpers/consts.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import databaseService from '../services/DatabaseService';
-import { saveImageFromBase64 } from '../helpers/image.helper';
+import { badRequest, conflict, internalError } from '../helpers/http.helper';
+import {
+  deletePicture,
+  saveBase64Image,
+  userPicture
+} from '../helpers/image.helper';
+import PhoneController from './PhoneController';
 
 export default class CustomerController {
   public static async register(req: Request, res: Response) {
     const customer = req.body;
 
     if (!cpfIsValid(customer.cpf))
-      return res.status(400).json({ error: `cpf ${customer.cpf} é inválido.` });
+      return badRequest(res, `cpf ${customer.cpf} é inválido.`);
 
-    let pictureName: string;
-
-    if (customer.pictureBase64) {
-      try {
-        pictureName = await saveImageFromBase64(customer.pictureBase64, 'jpg');
-        delete customer.pictureBase64;
-      } catch (err) {
-        console.error(err);
-        return res
-          .status(500)
-          .json({ error: 'Erro interno ao salvar imagem.' });
-      }
+    try {
+      customer.pictureName = await saveBase64Image(customer.pictureBase64);
+      delete customer.pictureBase64;
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Erro interno ao salvar imagem.');
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(customer.password, salt);
+    customer.passwordHash = await bcrypt.hash(customer.password, salt);
     delete customer.password;
 
     return databaseService.connection.transaction(async (trx) => {
       try {
-        const [insertedPhone] = await trx('phone')
-          .insert({
-            phone: customer.phone
-          })
-          .returning('id');
+        customer.phoneId = await PhoneController.insertPhone(
+          trx,
+          customer.phone
+        );
 
-        await trx('customer').insert({
-          full_name: customer.fullName,
-          nickname: customer.nickname,
-          picture_name: pictureName,
-          email: customer.email,
-          phone_id: insertedPhone.id,
-          cpf: customer.cpf,
-          password_hash: hashedPassword
-        });
+        const phoneNumber = customer.phone;
+        delete customer.phone;
+
+        const customerSnake = toSnake(customer);
+
+        await trx('customer').insert(customerSnake);
 
         await trx.commit();
 
-        customer.picturePath = `${PICTURES_PATH}/${
-          pictureName || DEFAULT_USER_PICTURE
-        }`;
+        customer.picturePath = userPicture(customer.pictureName);
+        customer.phone = phoneNumber;
+
+        delete customer.passwordHash;
+        delete customer.pictureName;
+        delete customer.phoneId;
 
         return res.status(201).json(customer);
       } catch (err) {
-        if (pictureName) {
-          fs.unlink(path.join(PICTURES_FOLDER, pictureName), (err) => {});
-        }
+        if (customer.pictureName) deletePicture(customer.pictureName);
+
         if (err.routine?.includes('unique')) {
           const [_, key] = err.constraint.split('_');
 
-          return res.status(409).json({
-            error: `Já existe um usuário registrado com ${key} ${customer[key]}`
-          });
+          return conflict(res, key, customer[key]);
         }
 
         console.error(err);
 
-        return res
-          .status(500)
-          .json({ error: 'Erro ao inserir usuário no banco de dados' });
+        return internalError(res, 'Erro ao inserir usuário no banco de dados');
       }
     });
   }
@@ -87,42 +75,35 @@ export default class CustomerController {
   public static async login(req: Request, res: Response) {
     const loginCredentials = req.body;
 
-    const [customer] = await databaseService.connection
+    let [customer] = await databaseService.connection
       .table('customer')
       .where('email', loginCredentials.email);
 
-    if (!customer)
-      return res.status(400).json({ error: 'Credenciais inválidas' });
+    if (!customer) return badRequest(res, 'Credenciais inválidas');
+
+    customer = toCamel(customer);
 
     const passwordsMatch = await bcrypt.compare(
       loginCredentials.password,
-      customer.password_hash
+      customer.passwordHash
     );
 
-    if (!passwordsMatch)
-      return res.status(400).json({ error: 'Credenciais inválidas' });
+    if (!passwordsMatch) return badRequest(res, 'Credenciais inválidas');
 
-    const [phone] = await databaseService.connection
-      .table('phone')
-      .where('id', customer.phone_id);
+    const { phone } = await PhoneController.getPhoneById(customer.phoneId);
 
-    const picturePath = `${PICTURES_PATH}/${
-      customer.picture_name || DEFAULT_USER_PICTURE
-    }`;
+    customer.phone = phone;
+    customer.picturePath = userPicture(customer.pictureName);
 
-    const accessToken = jwt.sign(
-      {
-        cpf: customer.cpf,
-        email: customer.email,
-        fullName: customer.full_name,
-        id: customer.id,
-        nickname: customer.nickname,
-        phone: phone.phone,
-        picturePath: picturePath
-      },
-      process.env.JWT_LOGIN_SECRET,
-      { expiresIn: '2h' }
-    );
+    delete customer.passwordHash;
+    delete customer.phoneId;
+    delete customer.pictureName;
+
+    customer.type = 'CUSTOMER';
+
+    const accessToken = jwt.sign(customer, process.env.JWT_LOGIN_SECRET, {
+      expiresIn: '2h'
+    });
 
     return res.status(200).json({ jwt: accessToken });
   }

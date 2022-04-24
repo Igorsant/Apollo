@@ -12,12 +12,12 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTable('time_range')
+    .dropTable('favorite')
     .dropTable('schedulling_service')
     .dropTable('service')
     .dropTable('schedulling')
     .dropTable('review')
-    .dropTable('workday')
+    .dropTable('workhour')
     .dropTable('professional')
     .dropTable('customer')
     .dropTable('workplace')

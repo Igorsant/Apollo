@@ -17,7 +17,7 @@ reviewRouter.get(
 );
 reviewRouter.post(
   '/',
-  authGuard,
+  authGuard('CUSTOMER'),
   validateReq(createReviewSchema, 'body'),
   ReviewController.create
 );

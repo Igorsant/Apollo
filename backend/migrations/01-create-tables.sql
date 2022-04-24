@@ -13,7 +13,7 @@ CREATE TABLE Workplace (
 	street VARCHAR(256) NOT NULL,
 	street_number VARCHAR(16) NOT NULL,
 	complement VARCHAR(256),
-	city VARCHAR(128),
+	city VARCHAR(128) NOT NULL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone1_id) REFERENCES Phone(id),
@@ -51,10 +51,10 @@ CREATE TABLE Professional (
   FOREIGN KEY (workplace_id) REFERENCES Workplace(id)
 );
 
-CREATE TABLE Workday (
+CREATE TABLE WorkHour (
 	id SERIAL NOT NULL,
 	professional_id INTEGER NOT NULL,
-	week_day SMALLINT NOT NULL,
+	weekday SMALLINT NOT NULL,
 	start_time TIME NOT NULL,
 	end_time TIME NOT NULL,
 	break_time BOOLEAN NOT NULL DEFAULT FALSE,
@@ -91,8 +91,8 @@ CREATE TABLE Service (
 	id SERIAL NOT NULL,
 	professional_id INTEGER NOT NULL,
 	name VARCHAR(128) NOT NULL,
-	price NUMERIC NOT NULL,
-	estimated_duration VARCHAR(16) NOT NULL,
+	starting_price NUMERIC NOT NULL,
+	estimated_time VARCHAR(16) NOT NULL,
 
 	PRIMARY KEY (id) ,
 	FOREIGN KEY (professional_id) REFERENCES Professional(id)

@@ -1,78 +1,92 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import { toCamel, toSnake } from 'snake-camel';
 
+import CustomerController from './CustomerController';
 import databaseService from '../services/DatabaseService';
-import { DEFAULT_USER_PICTURE, PICTURES_PATH } from '../helpers/consts.helper';
+import { badRequest, internalError } from '../helpers/http.helper';
+import { userPicture } from '../helpers/image.helper';
+import ProfessionalController from './ProfessionalController';
+import ReviewType from '../types/review.type';
 
 export default class ReviewController {
   public static async get(req: Request, res: Response) {
     const { professionalId, rating } = req.query;
 
-    return databaseService.connection.transaction(async (trx) => {
-      const reviews = await trx
-        .table('review')
-        .select('rating', 'comment', 'customer_id')
-        .where('professional_id', +professionalId);
+    const reviews = await ReviewController.getReviewsByProfessionalId(
+      +professionalId,
+      +rating
+    );
 
-      for (const r of reviews) {
-        const [customer] = await trx
-          .table('customer')
-          .select('full_name', 'picture_name')
-          .where('id', r.customer_id);
+    if (res.locals.user && res.locals.user.type === 'CUSTOMER')
+      reviews.sort((a, _) => (a.customerId === res.locals.user.id ? -1 : 0));
 
-        r.customerName = customer.full_name;
-        r.customerPicturePath = `${PICTURES_PATH}/${
-          customer.picture_name || DEFAULT_USER_PICTURE
-        }`;
-      }
-
-      const response = res.status(200);
-
-      if (!rating) return response.json(reviews);
-
-      return response.json(reviews.filter((r) => r.rating >= rating));
-    });
+    return res.status(200).json(reviews);
   }
 
   public static async create(req: Request, res: Response) {
-    const { professionalId, rating, comment } = req.body;
-    const user = res.locals.user;
+    const review = req.body;
+    const customer = res.locals.user;
+    review.customerId = customer.id;
 
-    const { id } = Object(user);
+    const professionalExists = await ProfessionalController.professionalExists(
+      review.professionalId
+    );
+    if (!professionalExists) return badRequest(res, 'professionalId inválido');
 
-    return databaseService.connection.transaction(async (trx) => {
-      const customer = await trx('customer').where('id', id);
-      if (!customer) return res.status(400);
+    if (await ReviewController.reviewExists(review.professionalId, customer.id))
+      return badRequest(res, 'Você já avaliou este profissional.');
 
-      const professional = await trx('professional')
-        .where('id', professionalId)
-        .returning('id');
-      if (!professional) return res.status(400);
+    try {
+      await ReviewController.insertReview(review);
 
-      const review = {
-        customer_id: id,
-        professional_id: professionalId,
-        rating,
-        comment
-      };
+      review.customerName = customer.name;
+      review.customerPicturePath = customer.picturePath;
+      delete review.customerId;
 
-      try {
-        await trx('review').insert(review);
-      } catch (err) {
-        console.error(err);
+      return res.status(201).json(review);
+    } catch (err) {
+      console.error(err);
 
-        return res
-          .status(400)
-          .json({ error: 'Erro ao criar avaliação de profissional' });
-      }
+      return internalError(res, 'Erro ao criar avaliação de profissional');
+    }
+  }
 
-      await trx.commit();
-      return res.status(201).json({
-        rating,
-        comment,
-        customerName: user.fullName,
-        customerPicturePath: user.picturePath
-      });
-    });
+  private static async insertReview(review: ReviewType) {
+    return databaseService.connection.table('review').insert(toSnake(review));
+  }
+
+  private static async getReviewsByProfessionalId(
+    professionalId: number,
+    rating?: number
+  ) {
+    const reviews = await databaseService.connection
+      .table('review')
+      .select('rating', 'comment', 'customer_id')
+      .where('professional_id', professionalId)
+      .modify((queryBuilder) => {
+        if (rating) queryBuilder.andWhere('rating', '=', rating);
+      })
+      .then((rows) => rows.map(toCamel) as any[]);
+
+    for (const r of reviews) {
+      const { fullName, pictureName } =
+        await CustomerController.getCustomerById(r.customerId);
+
+      r.customerName = fullName;
+      r.customerPicturePath = userPicture(pictureName);
+    }
+
+    return reviews;
+  }
+
+  private static async reviewExists(
+    professionalId: number,
+    customerId: number
+  ): Promise<boolean> {
+    return databaseService.connection
+      .table('review')
+      .where('professional_id', professionalId)
+      .andWhere('customer_id', customerId)
+      .then((rows) => rows.length > 0);
   }
 }

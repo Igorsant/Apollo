@@ -91,6 +91,15 @@ export default class CustomerController {
     return res.status(200).json({ jwt: accessToken });
   }
 
+  public static async getCustomerById(id: number): Promise<any> {
+    return databaseService.connection
+      .table('customer')
+      .select('full_name', 'picture_name')
+      .where('id', id)
+      .first()
+      .then(toCamel);
+  }
+
   private static async getCustomerByEmail(email: string): Promise<any> {
     return databaseService.connection
       .table('customer')

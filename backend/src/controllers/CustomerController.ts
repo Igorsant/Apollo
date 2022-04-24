@@ -66,8 +66,6 @@ export default class CustomerController {
 
     if (!customer) return badRequest(res, 'Credenciais inválidas');
 
-    customer = toCamel(customer);
-
     const passwordsMatch = await bcrypt.compare(
       loginCredentials.password,
       customer.passwordHash
@@ -93,11 +91,12 @@ export default class CustomerController {
     return res.status(200).json({ jwt: accessToken });
   }
 
-  private static async getCustomerByEmail(email: string) {
+  private static async getCustomerByEmail(email: string): Promise<any> {
     return databaseService.connection
       .table('customer')
       .where('email', email)
-      .first();
+      .first()
+      .then(toCamel);
   }
 
   private static async insertCustomer(customer: CustomerType) {

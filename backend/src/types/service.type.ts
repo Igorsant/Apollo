@@ -1,5 +1,8 @@
-export type ServiceType = {
-  name: string,
-  startingPrice: number
-  estimatedTime: number
-}
+type ServiceType = {
+  estimatedDuration: number;
+  name: string;
+  professionalId?: number;
+  startingPrice: number;
+};
+
+export default ServiceType;

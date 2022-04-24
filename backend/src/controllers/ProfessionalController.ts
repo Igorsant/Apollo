@@ -235,4 +235,11 @@ export default class ProfessionalController {
       await trx.commit();
     });
   }
+
+  public static async professionalExists(id: number): Promise<boolean> {
+    return await databaseService.connection
+      .table('professional')
+      .where('id', id)
+      .then((rows) => rows.length > 0);
+  }
 }

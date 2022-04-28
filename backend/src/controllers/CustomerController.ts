@@ -1,18 +1,16 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { toCamel, toSnake } from 'snake-camel';
 
 import { cpfIsValid } from '../helpers/cpf.helper';
-import CustomerType from '../types/customer.type';
-import databaseService from '../services/DatabaseService';
+import customerRepository from '../repositories/customer.repository';
 import { badRequest, conflict, internalError } from '../helpers/http.helper';
 import {
   deletePicture,
   saveBase64Image,
   userPicture
 } from '../helpers/image.helper';
-import PhoneController from './PhoneController';
+import phoneRepository from '../repositories/phone.repository';
 
 export default class CustomerController {
   public static async register(req: Request, res: Response) {
@@ -34,7 +32,7 @@ export default class CustomerController {
     delete customer.password;
 
     try {
-      await CustomerController.insertCustomer(customer);
+      await customerRepository.insert(customer);
 
       customer.picturePath = userPicture(customer.pictureName);
 
@@ -60,9 +58,7 @@ export default class CustomerController {
   public static async login(req: Request, res: Response) {
     const loginCredentials = req.body;
 
-    let customer = await CustomerController.getCustomerByEmail(
-      loginCredentials.email
-    );
+    let customer = await customerRepository.findByEmail(loginCredentials.email);
 
     if (!customer) return badRequest(res, 'Credenciais inválidas');
 
@@ -73,7 +69,7 @@ export default class CustomerController {
 
     if (!passwordsMatch) return badRequest(res, 'Credenciais inválidas');
 
-    const { phone } = await PhoneController.getPhoneById(customer.phoneId);
+    const { phone } = await phoneRepository.findById(customer.phoneId);
 
     customer.phone = phone;
     customer.picturePath = userPicture(customer.pictureName);
@@ -89,38 +85,5 @@ export default class CustomerController {
     });
 
     return res.status(200).json({ jwt: accessToken });
-  }
-
-  public static async getCustomerById(id: number): Promise<any> {
-    return databaseService.connection
-      .table('customer')
-      .select('full_name', 'picture_name')
-      .where('id', id)
-      .first()
-      .then(toCamel);
-  }
-
-  private static async getCustomerByEmail(email: string): Promise<any> {
-    return databaseService.connection
-      .table('customer')
-      .where('email', email)
-      .first()
-      .then(toCamel);
-  }
-
-  private static async insertCustomer(customer: CustomerType) {
-    const localCustomer: CustomerType = JSON.parse(JSON.stringify(customer));
-
-    return databaseService.connection.transaction(async (trx) => {
-      localCustomer.phoneId = await PhoneController.insertPhone(trx, {
-        phone: localCustomer.phone
-      });
-
-      delete localCustomer.phone;
-
-      await trx('customer').insert(toSnake(localCustomer));
-
-      return trx.commit();
-    });
   }
 }

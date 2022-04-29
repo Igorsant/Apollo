@@ -62,7 +62,7 @@ export default class ReviewController {
       return badRequest(res, 'reviewId inválido');
 
     try {
-      await reviewRepository.update(review);
+      await reviewRepository.update(+reviewId, review);
 
       const customer = res.locals.user;
       review.customerName = customer.name;

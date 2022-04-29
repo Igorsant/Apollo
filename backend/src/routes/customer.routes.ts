@@ -17,5 +17,9 @@ customerRouter.post(
   validateReq(loginSchema, 'body'),
   CustomerController.login
 );
+customerRouter.get(
+  '/:customerId',
+  CustomerController.search
+);
 
 export default customerRouter;

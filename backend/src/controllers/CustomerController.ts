@@ -95,7 +95,7 @@ export default class CustomerController {
 
   public static async update(req: Request, res: Response) {
     const user = res.locals.user;
-    const id = +req.params.id;
+    const id = +req.params.customerId;
 
     if (user.id !== id) return forbidden(res);
 

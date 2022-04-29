@@ -41,4 +41,8 @@ export const customerUpdateSchema = Joi.object({
     .pattern(new RegExp(/^[a-zA-Z0-9!@#$%¨&*(),.<>;:?\]}[{çÇ'"_=+-]{8,72}$/))
 });
 
+export const customerIdSchema = Joi.object({
+  customerId: Joi.number().positive().required()
+});
+
 export const customerSchema = Joi.object(baseCustomerSchema);

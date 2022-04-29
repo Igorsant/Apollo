@@ -1,7 +1,11 @@
 import express from 'express';
 
+import authGuard from '../middlewares/authGuard.middleware';
 import CustomerController from '../controllers/CustomerController';
-import customerSchema from '../schemas/customer.schema';
+import {
+  customerSchema,
+  customerUpdateSchema
+} from '../schemas/customer.schema';
 import loginSchema from '../schemas/login.schema';
 import validateReq from '../middlewares/validateRequest.middleware';
 
@@ -16,6 +20,12 @@ customerRouter.post(
   '/login',
   validateReq(loginSchema, 'body'),
   CustomerController.login
+);
+customerRouter.put(
+  '/:id',
+  authGuard('CUSTOMER'),
+  validateReq(customerUpdateSchema, 'body'),
+  CustomerController.update
 );
 
 export default customerRouter;

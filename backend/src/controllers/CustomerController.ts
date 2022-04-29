@@ -4,7 +4,13 @@ import jwt from 'jsonwebtoken';
 
 import { cpfIsValid } from '../helpers/cpf.helper';
 import customerRepository from '../repositories/customer.repository';
-import { badRequest, conflict, internalError } from '../helpers/http.helper';
+import {
+  badRequest,
+  conflict,
+  forbidden,
+  internalError,
+  notFound
+} from '../helpers/http.helper';
 import {
   deletePicture,
   saveBase64Image,
@@ -85,5 +91,86 @@ export default class CustomerController {
     });
 
     return res.status(200).json({ jwt: accessToken });
+  }
+
+  public static async update(req: Request, res: Response) {
+    const user = res.locals.user;
+    const id = +req.params.id;
+
+    if (user.id !== id) return forbidden(res);
+
+    const updatedCustomer = req.body;
+    const customer = await customerRepository.findById(id);
+
+    if (!customer) return notFound(res, `Cliente com id ${id} não encontrado`);
+
+    const passwordsMatch = await bcrypt.compare(
+      updatedCustomer.password,
+      customer.passwordHash
+    );
+    delete updatedCustomer.password;
+
+    if (!passwordsMatch) return badRequest(res, 'Senha incorreta');
+
+    for (const field of ['fullName', 'cpf']) {
+      if (updatedCustomer[field] !== customer[field])
+        return badRequest(res, `Campo ${field} não pode ser alterado`);
+    }
+
+    let newPictureName;
+
+    try {
+      newPictureName = await saveBase64Image(updatedCustomer.pictureBase64);
+      delete updatedCustomer.pictureBase64;
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Erro interno ao salvar imagem.');
+    }
+
+    updatedCustomer.pictureName = newPictureName ?? customer.pictureName;
+
+    if (updatedCustomer.updatedPassword) {
+      const salt = await bcrypt.genSalt(10);
+      updatedCustomer.passwordHash = await bcrypt.hash(
+        updatedCustomer.updatedPassword,
+        salt
+      );
+      delete updatedCustomer.updatedPassword;
+    }
+
+    try {
+      updatedCustomer.phoneId = customer.phoneId;
+      await customerRepository.update(id, updatedCustomer);
+
+      updatedCustomer.picturePath = userPicture(updatedCustomer.pictureName);
+
+      delete updatedCustomer.passwordHash;
+      delete updatedCustomer.phoneId;
+      delete updatedCustomer.pictureName;
+
+      const accessToken = jwt.sign(
+        updatedCustomer,
+        process.env.JWT_LOGIN_SECRET,
+        {
+          expiresIn: '2h'
+        }
+      );
+
+      return res.status(200).json({ jwt: accessToken });
+    } catch (err) {
+      if (newPictureName) deletePicture(newPictureName);
+
+      if (err.routine?.includes('unique')) {
+        const [_, key] = err.constraint.split('_');
+
+        return conflict(res, key, updatedCustomer[key]);
+      }
+
+      console.error(err);
+      return internalError(
+        res,
+        'Erro interno ao atualizar informações do usuário'
+      );
+    }
   }
 }

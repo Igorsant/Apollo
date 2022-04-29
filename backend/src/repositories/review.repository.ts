@@ -14,10 +14,10 @@ class ReviewRepository {
       .insert(toSnake(review));
   }
 
-  public async update(review: ReviewType) {
+  public async update(id: number, review: ReviewType) {
     return databaseService.connection
       .table(this.tableName)
-      .where('professional_id', review.professionalId)
+      .where('id', id)
       .update({
         comment: review.comment,
         rating: review.rating

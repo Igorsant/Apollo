@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { badRequest, conflict, internalError } from '../helpers/http.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import customerRepository from '../repositories/customer.repository';
 import {

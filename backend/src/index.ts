@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 
 import { PICTURES_FOLDER } from './helpers/consts.helper';
@@ -14,6 +15,7 @@ databaseService
     const app = express();
     const port = process.env.PORT || 3000;
 
+    app.use(cors())
     app.use(express.json({ limit: '20mb' }));
 
     app.use('/pictures', express.static(PICTURES_FOLDER));

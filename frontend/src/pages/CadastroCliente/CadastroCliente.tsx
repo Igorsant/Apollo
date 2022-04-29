@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Box, Theme, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header/Header";
 import { Button } from "../../components/Button/ApolloButton";
 import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
@@ -40,6 +40,7 @@ const Subtitle = styled.h3`
 `;
 
 const CadastroCliente = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
 
   const formik = useFormik({
@@ -62,6 +63,7 @@ const CadastroCliente = () => {
         pictureBase64: formatBase64Image(cliente.pictureBase64),
       });
       formik.resetForm();
+      navigate("/login", { replace: true });
     },
     validateOnChange: false,
     validateOnBlur: false,

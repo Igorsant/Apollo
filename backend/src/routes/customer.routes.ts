@@ -1,7 +1,12 @@
 import express from 'express';
 
+import authGuard from '../middlewares/authGuard.middleware';
 import CustomerController from '../controllers/CustomerController';
-import customerSchema from '../schemas/customer.schema';
+import {
+  customerIdSchema,
+  customerSchema,
+  customerUpdateSchema
+} from '../schemas/customer.schema';
 import loginSchema from '../schemas/login.schema';
 import validateReq from '../middlewares/validateRequest.middleware';
 
@@ -19,7 +24,15 @@ customerRouter.post(
 );
 customerRouter.get(
   '/:customerId',
+  validateReq(customerIdSchema, 'params'),
   CustomerController.search
+);
+customerRouter.put(
+  '/:customerId',
+  authGuard('CUSTOMER'),
+  validateReq(customerIdSchema, 'params'),
+  validateReq(customerUpdateSchema, 'body'),
+  CustomerController.update
 );
 
 export default customerRouter;

@@ -30,6 +30,19 @@ export const baseCustomerSchema = {
   pictureBase64: Joi.string().base64()
 };
 
-const customerSchema = Joi.object(baseCustomerSchema);
+export const customerUpdateSchema = Joi.object({
+  ...baseCustomerSchema,
+  // Caso usuário queira atualizar a senha, a nova senha vem em updatedPassword
+  // no campo password vem a senha atual do usuário que deve ser checada antes
+  // de realizar o update
+  updatedPassword: Joi.string()
+    .min(8)
+    .max(72)
+    .pattern(new RegExp(/^[a-zA-Z0-9!@#$%¨&*(),.<>;:?\]}[{çÇ'"_=+-]{8,72}$/))
+});
 
-export default customerSchema;
+export const customerIdSchema = Joi.object({
+  customerId: Joi.number().positive().required()
+});
+
+export const customerSchema = Joi.object(baseCustomerSchema);

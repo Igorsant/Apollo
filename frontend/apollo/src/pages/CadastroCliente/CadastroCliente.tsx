@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { Box, Theme, Grid, Container } from "@mui/material";
+import { Box, Theme, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { Header } from "../../components/Header/Header";
 import { Button } from "../../components/Button/ApolloButton";
 import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
 import { ImageInput } from "../../components/ImageInput/ImageInput";
+import { useFormik } from "formik";
+import { clienteSchema } from "../../schemas/clienteSchema";
 
 import api from "../../services/api";
+import ICliente from "../../types/ICliente";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -39,37 +41,48 @@ const Subtitle = styled.h3`
 
 const CadastroCliente = () => {
   const classes = useStyles();
-  const [form, setForm] = useState({
-    cpf: "",
-    email: "",
-    fullName: "",
-    nickname: "",
-    password: "",
-    phone: "",
-    pictureBase64: "",
+
+  const formik = useFormik({
+    initialValues: {
+      cpf: "",
+      email: "",
+      fullName: "",
+      nickname: "",
+      password: "",
+      phone: "",
+      pictureBase64: "",
+      confirmPassword: "",
+    },
+    validationSchema: clienteSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      const { confirmPassword, ...cliente } = values;
+      handleSubmit({
+        ...cliente,
+        pictureBase64: formatBase64Image(cliente.pictureBase64),
+      });
+      formik.resetForm();
+    },
+    validateOnChange: false,
+    validateOnBlur: false,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setForm({ ...form, [name]: value });
+  const handleChangeImage = (value: string | ArrayBuffer | null) => {
+    formik.setFieldValue("pictureBase64", value);
   };
 
-  const handleChangeImage = (
-    name: string,
-    value: string | ArrayBuffer | null
-  ) => {
+  const formatBase64Image = (value: string | ArrayBuffer | null) => {
     var valueBase64 = "";
     if (typeof value === "string" || value instanceof String) {
       valueBase64 = (value as String).split(",")[1];
     }
-    setForm({ ...form, [name]: valueBase64 });
+    return valueBase64;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = (values: ICliente) => {
+    console.log(values);
     api
-      .post("customers", form)
+      .post("customers", values)
       .then((res) => {
         if (res.status === 201) {
           console.log("Sucesso");
@@ -83,7 +96,7 @@ const CadastroCliente = () => {
   return (
     <div>
       <Header></Header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <Box className={classes.root}>
           <Grid
             sx={{ flexGrow: 1 }}
@@ -111,7 +124,7 @@ const CadastroCliente = () => {
               <Grid item xs={12} md={2}>
                 <ImageInput
                   name="pictureBase64"
-                  value={form.pictureBase64}
+                  value={formik.values.pictureBase64}
                   onChangeImage={handleChangeImage}
                   label="Foto de Perfil:"
                 ></ImageInput>
@@ -120,16 +133,18 @@ const CadastroCliente = () => {
                 <Grid item xs={12} md={12}>
                   <TextInputLaranja
                     name="fullName"
-                    value={form.fullName}
-                    onChange={handleChange}
+                    value={formik.values.fullName}
+                    onChange={formik.handleChange}
+                    errorMessage={formik.errors.fullName}
                     label="Nome:"
                   ></TextInputLaranja>
                 </Grid>
                 <Grid item xs={12} md={12}>
                   <TextInputLaranja
                     name="nickname"
-                    value={form.nickname}
-                    onChange={handleChange}
+                    value={formik.values.nickname}
+                    onChange={formik.handleChange}
+                    errorMessage={formik.errors.nickname}
                     label="Apelido:"
                   ></TextInputLaranja>
                 </Grid>
@@ -150,16 +165,19 @@ const CadastroCliente = () => {
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="email"
-                  value={form.email}
-                  onChange={handleChange}
+                  type="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  errorMessage={formik.errors.email}
                   label="Email:"
                 ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  errorMessage={formik.errors.phone}
                   label="Telefone(apenas números):"
                 ></TextInputLaranja>
               </Grid>
@@ -179,17 +197,30 @@ const CadastroCliente = () => {
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="cpf"
-                  value={form.cpf}
-                  onChange={handleChange}
+                  value={formik.values.cpf}
+                  onChange={formik.handleChange}
                   label="CPF(Apenas números):"
+                  errorMessage={formik.errors.cpf}
                 ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="password"
-                  value={form.password}
-                  onChange={handleChange}
+                  type="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  errorMessage={formik.errors.password}
                   label="Senha:"
+                ></TextInputLaranja>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <TextInputLaranja
+                  name="confirmPassword"
+                  type="password"
+                  value={formik.values.confirmPassword}
+                  onChange={formik.handleChange}
+                  errorMessage={formik.errors.confirmPassword}
+                  label="Confirmar senha:"
                 ></TextInputLaranja>
               </Grid>
             </Grid>
@@ -203,7 +234,12 @@ const CadastroCliente = () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={6} style={{ textAlign: "center" }}>
-              <Button component={Link} to="/cadastroprofissional" variant="text" style={{ textTransform: "none" }}>
+              <Button
+                component={Link}
+                to="/cadastroprofissional"
+                variant="text"
+                style={{ textTransform: "none" }}
+              >
                 Profissional? Clique aqui!
               </Button>
             </Grid>

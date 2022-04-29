@@ -36,6 +36,14 @@ class PhoneRepository {
       .whereIn('id', ids)
       .then((rows) => rows.map(toCamel));
   }
+
+  public async update(
+    id: number,
+    phone: PhoneType,
+    trx: Knex = databaseService.connection
+  ) {
+    return trx(this.tableName).update(toSnake(phone)).where('id', id);
+  }
 }
 
 const phoneRepository = new PhoneRepository();

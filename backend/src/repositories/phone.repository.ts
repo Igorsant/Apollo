@@ -19,14 +19,14 @@ class PhoneRepository {
 
   public async findById(id: number): Promise<{
     phone: string;
-    isPhoneWhatasapp: boolean;
+    isPhoneWhatsapp: boolean;
   }> {
     const [{ phone, is_phone_whatsapp }] = await databaseService.connection
       .table(this.tableName)
       .select('phone', 'is_phone_whatsapp')
       .where('id', id);
 
-    return { phone, isPhoneWhatasapp: is_phone_whatsapp };
+    return { phone, isPhoneWhatsapp: is_phone_whatsapp };
   }
 
   public async findByIds(ids: number[]) {

@@ -10,7 +10,7 @@ class CustomerRepository {
   public async findById(id: number): Promise<any> {
     return databaseService.connection
       .table(this.tableName)
-      .select('full_name', 'picture_name')
+      .select('*')
       .where('id', id)
       .first()
       .then(toCamel);

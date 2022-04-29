@@ -30,7 +30,7 @@ reviewRouter.put(
   ReviewController.update
 )
 reviewRouter.delete(
-  '/',
+  '/:reviewId',
   authGuard('CUSTOMER'),
   ReviewController.delete
 )

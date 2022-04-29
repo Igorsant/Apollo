@@ -63,6 +63,13 @@ class ReviewRepository {
       .where('id', reviewId)
       .then((rows) => rows.length > 0);
   }
+
+  public async delete(reviewId: number) {
+    return databaseService.connection
+      .table(this.tableName)
+      .where('id', reviewId)
+      .delete();
+  }
 }
 
 const reviewRepository = new ReviewRepository();

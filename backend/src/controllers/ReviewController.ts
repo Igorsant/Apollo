@@ -65,10 +65,8 @@ export default class ReviewController {
       await reviewRepository.update(review);
 
       const customer = res.locals.user;
-      review.customerId = customer.id;
       review.customerName = customer.name;
       review.customerPicturePath = customer.picturePath;
-      delete review.customerId;
 
       return res.status(201).json(review);
     } catch (err) {
@@ -78,5 +76,20 @@ export default class ReviewController {
     }
   }
 
-  public static async delete(req: Request, res: Response) {}
+  public static async delete(req: Request, res: Response) {
+    const { reviewId } = req.params;
+
+    if (!(await reviewRepository.reviewExists(+reviewId)))
+      return badRequest(res, 'reviewId inválido');
+
+    try {
+      await reviewRepository.delete(+reviewId);
+
+      return res.sendStatus(204);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro ao remover avaliação de profissional');
+    }
+  }
 }

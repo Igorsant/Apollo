@@ -10,7 +10,15 @@ class CustomerRepository {
   public async findById(id: number): Promise<any> {
     return databaseService.connection
       .table(this.tableName)
-      .select('full_name', 'picture_name')
+      .select(
+        'full_name',
+        'nickname',
+        'phone_id',
+        'picture_name',
+        'email',
+        'cpf',
+        'password_hash'
+      )
       .where('id', id)
       .first()
       .then(toCamel);
@@ -38,6 +46,24 @@ class CustomerRepository {
       delete localCustomer.phone;
 
       await trx(this.tableName).insert(toSnake(localCustomer));
+
+      return trx.commit();
+    });
+  }
+
+  public async update(id: number, customer: CustomerType) {
+    const localCustomer: CustomerType = JSON.parse(JSON.stringify(customer));
+
+    return databaseService.connection.transaction(async (trx) => {
+      await phoneRepository.update(
+        localCustomer.phoneId,
+        { phone: localCustomer.phone },
+        trx
+      );
+
+      delete localCustomer.phone;
+
+      await trx(this.tableName).update(toSnake(localCustomer)).where('id', id);
 
       return trx.commit();
     });

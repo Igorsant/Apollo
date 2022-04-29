@@ -23,5 +23,16 @@ reviewRouter.post(
   validateReq(createReviewSchema, 'body'),
   ReviewController.create
 );
+reviewRouter.put(
+  '/:reviewId',
+  authGuard('CUSTOMER'),
+  validateReq(createReviewSchema, 'body'),
+  ReviewController.update
+)
+reviewRouter.delete(
+  '/:reviewId',
+  authGuard('CUSTOMER'),
+  ReviewController.delete
+)
 
 export default reviewRouter;

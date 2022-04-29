@@ -22,6 +22,11 @@ customerRouter.post(
   validateReq(loginSchema, 'body'),
   CustomerController.login
 );
+customerRouter.get(
+  '/:customerId',
+  validateReq(customerIdSchema, 'params'),
+  CustomerController.search
+);
 customerRouter.put(
   '/:customerId',
   authGuard('CUSTOMER'),

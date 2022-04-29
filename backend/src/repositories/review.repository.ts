@@ -14,6 +14,16 @@ class ReviewRepository {
       .insert(toSnake(review));
   }
 
+  public async update(review: ReviewType) {
+    return databaseService.connection
+      .table(this.tableName)
+      .where('professional_id', review.professionalId)
+      .update({
+        comment: review.comment,
+        rating: review.rating
+      });
+  }
+
   public async findByProfessionalId(professionalId: number, rating?: number) {
     const reviews = await databaseService.connection
       .table(this.tableName)
@@ -45,6 +55,20 @@ class ReviewRepository {
       .where('professional_id', professionalId)
       .andWhere('customer_id', customerId)
       .then((rows) => rows.length > 0);
+  }
+
+  public async reviewExists(reviewId: number): Promise<Boolean> {
+    return databaseService.connection
+      .table(this.tableName)
+      .where('id', reviewId)
+      .then((rows) => rows.length > 0);
+  }
+
+  public async delete(reviewId: number) {
+    return databaseService.connection
+      .table(this.tableName)
+      .where('id', reviewId)
+      .delete();
   }
 }
 

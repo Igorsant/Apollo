@@ -48,4 +48,12 @@ export default class ReviewController {
       return internalError(res, 'Erro ao criar avaliação de profissional');
     }
   }
+
+  public static async update(req: Request, res: Response) {
+
+  }
+
+  public static async delete(req: Request, res: Response) {
+
+  }
 }

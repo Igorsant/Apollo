@@ -48,4 +48,48 @@ export default class ReviewController {
       return internalError(res, 'Erro ao criar avaliação de profissional');
     }
   }
+
+  public static async update(req: Request, res: Response) {
+    const { reviewId } = req.params;
+    const review = req.body;
+
+    const professionalExists = await professionalRepository.exists(
+      review.professionalId
+    );
+    if (!professionalExists) return badRequest(res, 'professionalId inválido');
+
+    if (!(await reviewRepository.reviewExists(+reviewId)))
+      return badRequest(res, 'reviewId inválido');
+
+    try {
+      await reviewRepository.update(review);
+
+      const customer = res.locals.user;
+      review.customerName = customer.name;
+      review.customerPicturePath = customer.picturePath;
+
+      return res.status(201).json(review);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro ao alterar avaliação de profissional');
+    }
+  }
+
+  public static async delete(req: Request, res: Response) {
+    const { reviewId } = req.params;
+
+    if (!(await reviewRepository.reviewExists(+reviewId)))
+      return badRequest(res, 'reviewId inválido');
+
+    try {
+      await reviewRepository.delete(+reviewId);
+
+      return res.sendStatus(204);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro ao remover avaliação de profissional');
+    }
+  }
 }

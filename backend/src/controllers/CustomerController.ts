@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
+import { badRequest, conflict, internalError } from '../helpers/http.helper';
 import { cpfIsValid } from '../helpers/cpf.helper';
 import customerRepository from '../repositories/customer.repository';
 import {
@@ -91,6 +92,32 @@ export default class CustomerController {
     });
 
     return res.status(200).json({ jwt: accessToken });
+  }
+
+  public static async search(req: Request, res: Response) {
+    const { customerId } = req.params;
+
+    try {
+      const customer = await customerRepository.findById(+customerId);
+
+      if (!customer) return badRequest(res, 'Usuário não existente');
+
+      const { phone } = await phoneRepository.findById(customer.phoneId);
+
+      customer.phone = phone;
+      customer.picturePath = userPicture(customer.pictureName);
+
+      delete customer.id;
+      delete customer.phoneId;
+      delete customer.passwordHash;
+      delete customer.pictureName;
+
+      return res.status(200).json(customer);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro interno ao buscar usuário');
+    }
   }
 
   public static async update(req: Request, res: Response) {

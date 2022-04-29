@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { EventHandler, InputHTMLAttributes } from "react";
+import { EventHandler, InputHTMLAttributes, useEffect } from "react";
 import { ChangeEventHandler } from "react";
 import { useState } from "react";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -44,11 +44,13 @@ export const ImageInput: React.FC<ImageInputProps> = ({
   value,
   onChangeImage,
 }) => {
-  const [image, setImage] = useState({ picture: {}, src: "" });
-
   const ImagePreview = () => {
-    if (image.src) {
-      return <Image src={image.src} />;
+    useEffect(() => {
+      console.log(value);
+    }, [value]);
+
+    if (value) {
+      return <Image src={value} />;
     } else {
       return (
         <Box
@@ -76,13 +78,11 @@ export const ImageInput: React.FC<ImageInputProps> = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     var file = event.target!.files![0];
-    var src = URL.createObjectURL(file);
-
     const reader = new FileReader();
     reader.addEventListener(
       "load",
       function () {
-        onChangeImage(name, reader.result);
+        onChangeImage(reader.result);
       },
       false
     );
@@ -90,8 +90,6 @@ export const ImageInput: React.FC<ImageInputProps> = ({
     if (file) {
       reader.readAsDataURL(file);
     }
-
-    setImage({ picture: file, src: src });
   };
 
   return (

@@ -11,3 +11,7 @@ export const searchReviewSchema = Joi.object({
   rating: Joi.number().integer().min(1).max(5),
   comment: Joi.string()
 });
+
+export const findReviewSchema = Joi.object({
+  reviewId: Joi.number().positive().required()
+});

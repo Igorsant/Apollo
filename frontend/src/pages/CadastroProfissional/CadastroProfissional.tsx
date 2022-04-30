@@ -1,35 +1,27 @@
-import styled from "styled-components";
-import {
-  Box,
-  Theme,
-  Grid,
-  Container,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
-
-import { Header } from "../../components/Header/Header";
-import { Button } from "../../components/Button/ApolloButton";
-import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
-import { ImageInput } from "../../components/ImageInput/ImageInput";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Box, Theme, Grid, Checkbox, FormControlLabel } from '@mui/material';
+import { makeStyles } from '@material-ui/core/styles';
+import { Header } from '../../components/Header/Header';
+import { Button } from '../../components/Button/ApolloButton';
+import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
+import { ImageInput } from '../../components/ImageInput/ImageInput';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     },
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: "80%",
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '80%'
     },
-    height: "100%",
-    backgroundColor: "#FFFFFF",
-    margin: "60px auto auto auto",
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
-  },
+    height: '100%',
+    backgroundColor: '#FFFFFF',
+    margin: '60px auto auto auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center'
+  }
 }));
 
 const Title = styled.h2`
@@ -60,6 +52,11 @@ type ServicesType = {
   time: number;
 };
 
+type Phone = {
+  number: string;
+  isWpp: boolean;
+};
+
 type FormType = {
   fotoPerfil: string;
   nome: string;
@@ -76,71 +73,63 @@ type FormType = {
   telefone2: Phone;
 };
 
-type Phone = {
-  number: string;
-  isWpp: boolean;
-};
-
 const CadastroProfissional = () => {
   const classes = useStyles();
   const [form, setForm] = useState<FormType>({
-    fotoPerfil: "",
-    nome: "",
-    apelido: "",
-    email: "",
-    telefone: "",
-    cpf: "",
-    senha: "",
-    services: [{ name: "", price: 0, time: 0 }],
-    rua: "",
+    fotoPerfil: '',
+    nome: '',
+    apelido: '',
+    email: '',
+    telefone: '',
+    cpf: '',
+    senha: '',
+    services: [{ name: '', price: 0, time: 0 }],
+    rua: '',
     numero: 0,
-    complemento: "",
-    telefone1: { number: "", isWpp: false },
-    telefone2: { number: "", isWpp: false },
+    complemento: '',
+    telefone1: { number: '', isWpp: false },
+    telefone2: { number: '', isWpp: false }
   });
 
-  const handleChangeImage = (
-    name: string,
-    value: string | ArrayBuffer | null
-  ) => {
-    var valueBase64 = "";
-    if (typeof value === "string" || value instanceof String) {
-      valueBase64 = (value as String).split(",")[1];
+  const handleChangeImage = (name: string, value: string | ArrayBuffer | null) => {
+    let valueBase64 = '';
+    if (typeof value === 'string' || value instanceof String) {
+      valueBase64 = (value as String).split(',')[1];
     }
     setForm({ ...form, [name]: valueBase64 });
   };
-  
-  const normalizeToBackend = () => {
-    const result = {
-      fullName: form.nome,
-      nickname: form.apelido,
-      pictureBase64: form.fotoPerfil,
-      aboutMe: "",
-      email: form.email,
-      phone: form.telefone,
-      cpf: form.cpf,
-      password: form.senha,
-      services: form.services,
-      workHours: [
-        {
-          weekday: 0,
-          startTime: "",
-          endTime: ""
-        }
-      ],
-      workplace: {
-        street: form.rua,
-        streetNumber: form.numero,
-        complement: form.complemento,
-        phone1: form.telefone1.number,
-        isPhone1Whatsapp: form.telefone1.isWpp,
-        phone2: form.telefone2.number,
-        isPhone2Whatsapp: form.telefone2.isWpp
-      }
-    }
 
-    return result
-  }
+  // const normalizeToBackend = () => {
+  //   const result = {
+  //     fullName: form.nome,
+  //     nickname: form.apelido,
+  //     pictureBase64: form.fotoPerfil,
+  //     aboutMe: '',
+  //     email: form.email,
+  //     phone: form.telefone,
+  //     cpf: form.cpf,
+  //     password: form.senha,
+  //     services: form.services,
+  //     workHours: [
+  //       {
+  //         weekday: 0,
+  //         startTime: '',
+  //         endTime: ''
+  //       }
+  //     ],
+  //     workplace: {
+  //       street: form.rua,
+  //       streetNumber: form.numero,
+  //       complement: form.complemento,
+  //       phone1: form.telefone1.number,
+  //       isPhone1Whatsapp: form.telefone1.isWpp,
+  //       phone2: form.telefone2.number,
+  //       isPhone2Whatsapp: form.telefone2.isWpp
+  //     }
+  //   };
+
+  //   return result;
+  // };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -153,10 +142,7 @@ const CadastroProfissional = () => {
     console.log(form);
   };
 
-  const handleServicesChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const handleServicesChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const name = event.target.name;
     const value = event.target.value;
 
@@ -165,26 +151,23 @@ const CadastroProfissional = () => {
       auxArray[index] = { ...auxArray[index], [name]: value };
       return {
         ...current,
-        services: auxArray,
+        services: auxArray
       };
     });
   };
 
-  const handlePhoneChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    value: Phone
-  ) => {
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>, value: Phone) => {
     const name = event.target.name;
     setForm((current) => ({
       ...current,
-      [name]: { ...value },
+      [name]: { ...value }
     }));
   };
 
   const handlePushService = () => {
     setForm((current) => ({
       ...current,
-      services: [...current.services, { name: "", price: 0, time: 0 }],
+      services: [...current.services, { name: '', price: 0, time: 0 }]
     }));
   };
 
@@ -192,7 +175,7 @@ const CadastroProfissional = () => {
     form.services.length > 1 &&
       setForm((current) => ({
         ...current,
-        services: current.services.filter((_, i) => index != i),
+        services: current.services.filter((_, i) => index !== i)
       }));
   };
 
@@ -207,8 +190,7 @@ const CadastroProfissional = () => {
             spacing={4}
             justifyContent="center"
             alignContent="center"
-            container
-          >
+            container>
             <Grid item xs={12} md={12}>
               <Title>Cadastro Profissional</Title>
             </Grid>
@@ -219,8 +201,7 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container
-            >
+              container>
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações do Perfil</Subtitle>
               </Grid>
@@ -229,8 +210,7 @@ const CadastroProfissional = () => {
                   name="fotoperfil"
                   value={form.fotoPerfil}
                   onChangeImage={handleChangeImage}
-                  label="Foto de Perfil:"
-                ></ImageInput>
+                  label="Foto de Perfil:"></ImageInput>
               </Grid>
               <Grid item xs={12} md={10}>
                 <Grid item xs={12} md={12}>
@@ -238,16 +218,15 @@ const CadastroProfissional = () => {
                     name="nome"
                     value={form.nome}
                     onChange={handleChange}
-                    label="Nome:"
-                  ></TextInputLaranja>
+                    label="Nome:"></TextInputLaranja>
                 </Grid>
                 <Grid item xs={12} md={12}>
                   <TextInputLaranja
+                    style={{ marginTop: '15px' }}
                     name="apelido"
                     value={form.apelido}
                     onChange={handleChange}
-                    label="Apelido:"
-                  ></TextInputLaranja>
+                    label="Apelido:"></TextInputLaranja>
                 </Grid>
               </Grid>
             </Grid>
@@ -258,8 +237,7 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container
-            >
+              container>
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações de Contato</Subtitle>
               </Grid>
@@ -268,18 +246,16 @@ const CadastroProfissional = () => {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  label="Email:"
-                ></TextInputLaranja>
+                  label="Email:"></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="telefone"
                   value={form.telefone}
                   onChange={handleChange}
-                  label="Telefone(apenas números):"
-                ></TextInputLaranja>
+                  label="Telefone(apenas números):"></TextInputLaranja>
               </Grid>
-            </Grid>{" "}
+            </Grid>{' '}
             <Grid
               item
               xs={12}
@@ -287,8 +263,7 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container
-            >
+              container>
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações pessoais:</Subtitle>
               </Grid>
@@ -297,16 +272,14 @@ const CadastroProfissional = () => {
                   name="cpf"
                   value={form.cpf}
                   onChange={handleChange}
-                  label="CPF(Apenas números):"
-                ></TextInputLaranja>
+                  label="CPF(Apenas números):"></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="senha"
                   value={form.senha}
                   onChange={handleChange}
-                  label="Senha:"
-                ></TextInputLaranja>
+                  label="Senha:"></TextInputLaranja>
               </Grid>
             </Grid>
             <Grid item xs={12} md={12} container rowGap={3}>
@@ -314,13 +287,13 @@ const CadastroProfissional = () => {
                 <Subtitle>Serviços:</Subtitle>
               </Grid>
               {form.services.map((service, index) => (
-                <Grid item container xs={12} md={12} spacing={2} rowGap={3}>
+                <Grid item container xs={12} md={12} spacing={2} rowGap={3} key={index}>
                   <Grid item xs={12} md={4}>
                     <TextInputLaranja
                       name="name"
                       value={service.name}
                       onChange={(e) => handleServicesChange(e, index)}
-                      label={"Nome do serviço:"}
+                      label={'Nome do serviço:'}
                     />
                   </Grid>
                   <Grid item xs={3} md={3}>
@@ -328,7 +301,7 @@ const CadastroProfissional = () => {
                       name="price"
                       value={service.price}
                       onChange={(e) => handleServicesChange(e, index)}
-                      label={"Valor do serviço:"}
+                      label={'Valor do serviço:'}
                     />
                   </Grid>
                   <Grid item xs={3} md={2}>
@@ -336,7 +309,7 @@ const CadastroProfissional = () => {
                       name="time"
                       value={service.time}
                       onChange={(e) => handleServicesChange(e, index)}
-                      label={"Tempo estimado:"}
+                      label={'Tempo estimado:'}
                     />
                   </Grid>
                   <Grid item xs={1} md={1}>
@@ -360,15 +333,13 @@ const CadastroProfissional = () => {
                   </tr>
 
                   {form.services.map((service, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{service.name}</td>
                       <td>{service.price}</td>
                       <td>{service.time}</td>
                       <td>
-                        <Button onClick={() => handleRemoveService(index)}>
-                          remove
-                        </Button>
+                        <Button onClick={() => handleRemoveService(index)}>remove</Button>
                       </td>
                     </tr>
                   ))}
@@ -382,8 +353,7 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container
-            >
+              container>
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações do local de trabalho:</Subtitle>
               </Grid>
@@ -394,16 +364,16 @@ const CadastroProfissional = () => {
                     name="rua"
                     value={form.rua}
                     onChange={handleChange}
-                    label={"Rua"}
+                    label={'Rua'}
                   />
                 </Grid>
-                <Grid item xs={12} md={4} marginLeft={"auto"}>
+                <Grid item xs={12} md={4} marginLeft={'auto'}>
                   <TextInputLaranja
                     name="numero"
                     value={form.numero}
                     onChange={handleChange}
-                    label={"Número"}
-                    style={{ width: "100%" }}
+                    label={'Número'}
+                    style={{ width: '100%' }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -411,7 +381,7 @@ const CadastroProfissional = () => {
                     name="complemento"
                     value={form.complemento}
                     onChange={handleChange}
-                    label={"Complemento"}
+                    label={'Complemento'}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -421,10 +391,10 @@ const CadastroProfissional = () => {
                     onChange={(e) =>
                       handlePhoneChange(e, {
                         number: e.target.value,
-                        isWpp: form.telefone1.isWpp,
+                        isWpp: form.telefone1.isWpp
                       })
                     }
-                    label={"Telefone 1"}
+                    label={'Telefone 1'}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -434,15 +404,15 @@ const CadastroProfissional = () => {
                     onChange={(e) =>
                       handlePhoneChange(e, {
                         number: e.target.value,
-                        isWpp: form.telefone2.isWpp,
+                        isWpp: form.telefone2.isWpp
                       })
                     }
-                    label={"Telefone 2"}
+                    label={'Telefone 2'}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormControlLabel
-                    style={{ color: "black" }}
+                    style={{ color: 'black' }}
                     label="É whatsapp?"
                     control={
                       <Checkbox
@@ -451,7 +421,7 @@ const CadastroProfissional = () => {
                         onChange={(e) =>
                           handlePhoneChange(e, {
                             number: form.telefone1.number,
-                            isWpp: e.target.checked,
+                            isWpp: e.target.checked
                           })
                         }
                       />
@@ -460,7 +430,7 @@ const CadastroProfissional = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <FormControlLabel
-                    style={{ color: "black" }}
+                    style={{ color: 'black' }}
                     label="É whatsapp?"
                     control={
                       <Checkbox
@@ -469,7 +439,7 @@ const CadastroProfissional = () => {
                         onChange={(e) =>
                           handlePhoneChange(e, {
                             number: form.telefone2.number,
-                            isWpp: e.target.checked,
+                            isWpp: e.target.checked
                           })
                         }
                       />
@@ -478,12 +448,8 @@ const CadastroProfissional = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} md={12} style={{ textAlign: "center" }}>
-              <Button
-                type="submit"
-                variant="contained"
-                style={{ width: "40%" }}
-              >
+            <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
+              <Button type="submit" variant="contained" style={{ width: '40%' }}>
                 Criar conta
               </Button>
             </Grid>

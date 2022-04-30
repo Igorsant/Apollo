@@ -1,6 +1,5 @@
-import styled from "styled-components";
-import { InputHTMLAttributes } from "react";
-import { ChangeEventHandler } from "react";
+import React, { InputHTMLAttributes, ChangeEventHandler } from 'react';
+import styled from 'styled-components';
 
 const Div = styled.div`
   display: flex;
@@ -30,8 +29,7 @@ const ErrorMessage = styled.span`
   color: red;
   font-size: 0.7em;
 `;
-interface ApolloTextInputLaranjaProps
-  extends InputHTMLAttributes<HTMLInputElement> {
+interface ApolloTextInputLaranjaProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   value: string | number;
   name: string;
@@ -46,9 +44,10 @@ export const TextInputLaranja: React.FC<ApolloTextInputLaranjaProps> = ({
   onChange,
   errorMessage,
   type,
+  ...props
 }) => {
   return (
-    <Div>
+    <Div {...props}>
       <Label>{label}</Label>
       <Input type={type} value={value} name={name} onChange={onChange} />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Input = styled.input`
   background-color: var(--input);
@@ -8,8 +9,6 @@ const Input = styled.input`
   ::placeholder {
     color: var(--header);
   }
-`
+`;
 
-export const TextInput = ({ hint }: { hint: string }) => (
-  <Input type="text" placeholder={hint} />
-)
+export const TextInput = ({ hint }: { hint: string }) => <Input type="text" placeholder={hint} />;

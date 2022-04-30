@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: 'http://localhost:3001/'
 });
 // api.interceptors.request.use(async (config) => {
 // //   config.headers["Content-Type"] = "application/json;charset=utf-8";
@@ -21,7 +21,7 @@ api.interceptors.response.use(
     console.log(error.message);
     if (error.response.status === 403) {
       setTimeout(() => {
-        window.location.pathname = "";
+        window.location.pathname = '';
       }, 2000);
     }
     console.log(error.response);

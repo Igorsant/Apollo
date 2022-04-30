@@ -1,31 +1,31 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { Box, Theme, Grid, Container } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { Box, Theme, Grid } from '@mui/material';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { Header } from "../../components/Header/Header";
-import { Button } from "../../components/Button/ApolloButton";
-import { TextInputLaranja } from "../../components/TextInputLaranja/TextInputLaranja";
+import { Header } from '../../components/Header/Header';
+import { Button } from '../../components/Button/ApolloButton';
+import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
 
-import api from "../../services/api";
-import { setToken } from "../../services/auth";
+import api from '../../services/api';
+import { setToken } from '../../services/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     },
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: "40%",
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '40%'
     },
     height: 450,
-    backgroundColor: "#FFFFFF",
-    margin: "60px auto auto auto",
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
-  },
+    backgroundColor: '#FFFFFF',
+    margin: '60px auto auto auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center'
+  }
 }));
 
 const Title = styled.h2`
@@ -35,7 +35,7 @@ const Title = styled.h2`
 
 const LoginProfissional = () => {
   const classes = useStyles();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: '', password: '' });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -46,7 +46,7 @@ const LoginProfissional = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     api
-      .post("professionals/login", form)
+      .post('professionals/login', form)
       .then((res) => {
         if (res.status === 200) {
           setToken(res.data.jwt);
@@ -60,14 +60,13 @@ const LoginProfissional = () => {
   return (
     <div>
       <Header>
-        {" "}
+        {' '}
         <Button
           component={Link}
           to="/cadastrocliente"
           color="secondary"
           variant="text"
-          style={{ gridColumnStart: "1", gridColumnEnd: "3" }}
-        >
+          style={{ gridColumnStart: '1', gridColumnEnd: '3' }}>
           Criar Conta
         </Button>
       </Header>
@@ -79,8 +78,7 @@ const LoginProfissional = () => {
             spacing={4}
             justifyContent="center"
             alignContent="center"
-            container
-          >
+            container>
             <Grid item xs={12} md={12}>
               <Title>Login Profissional</Title>
             </Grid>
@@ -90,28 +88,26 @@ const LoginProfissional = () => {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                label="Email:"
-              ></TextInputLaranja>
+                label="Email:"></TextInputLaranja>
             </Grid>
             <Grid item xs={12} md={12}>
               <TextInputLaranja
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                label="Senha:"
-              ></TextInputLaranja>
+                label="Senha:"></TextInputLaranja>
             </Grid>
             <Grid item xs={12} md={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                style={{ width: "100%" }}
-              >
+              <Button type="submit" variant="contained" style={{ width: '100%' }}>
                 Entrar
               </Button>
             </Grid>
-            <Grid item xs={12} md={12} style={{ textAlign: "center" }}>
-              <Button component={Link} to="/cadastroprofissional" variant="text" style={{ textTransform: "none" }}>
+            <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
+              <Button
+                component={Link}
+                to="/cadastroprofissional"
+                variant="text"
+                style={{ textTransform: 'none' }}>
                 Não possui conta? Clique aqui!
               </Button>
             </Grid>

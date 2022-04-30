@@ -1,16 +1,5 @@
-import React from "react";
-import styled from "styled-components";
-import MuiButton, { ButtonProps } from "@mui/material/Button";
-
-// export const ApolloButton = styled.button`
-//   padding: 7px 60px;
-//   border-radius: 3px;
-//   background-color: var(--header);
-//   color: white;
-//   border: none;
-//   font-size: 0.7em;
-//   font-weight: 500;
-// `
+import React from 'react';
+import MuiButton, { ButtonProps } from '@mui/material/Button';
 
 interface ApolloButtonProps extends ButtonProps {
   onClick?: () => void;
@@ -35,8 +24,7 @@ export const Button: React.FC<ApolloButtonProps> = ({
       variant={variant}
       onClick={onClick}
       style={style}
-      {...props}
-    >
+      {...props}>
       {children}
     </MuiButton>
   );

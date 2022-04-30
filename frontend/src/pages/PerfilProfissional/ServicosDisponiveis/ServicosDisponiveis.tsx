@@ -1,7 +1,8 @@
-import { Grid } from "@material-ui/core";
-import IServico from "../../../types/IServico";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import React from 'react';
+import { Grid } from '@material-ui/core';
+import IServico from '../../../types/IServico';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 interface ServicosProps {
   servicos: IServico[] | undefined;

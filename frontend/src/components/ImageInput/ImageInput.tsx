@@ -1,9 +1,7 @@
-import styled from "styled-components";
-import { EventHandler, InputHTMLAttributes, useEffect } from "react";
-import { ChangeEventHandler } from "react";
-import { useState } from "react";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { Box } from "@mui/material";
+import React, { InputHTMLAttributes, useEffect } from 'react';
+import styled from 'styled-components';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { Box } from '@mui/material';
 
 const Div = styled.div`
   display: flex;
@@ -38,12 +36,7 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   onChangeImage: Function;
 }
 
-export const ImageInput: React.FC<ImageInputProps> = ({
-  label,
-  name,
-  value,
-  onChangeImage,
-}) => {
+export const ImageInput: React.FC<ImageInputProps> = ({ label, name, value, onChangeImage }) => {
   const ImagePreview = () => {
     useEffect(() => {
       console.log(value);
@@ -57,30 +50,24 @@ export const ImageInput: React.FC<ImageInputProps> = ({
           sx={{
             width: 120,
             height: 120,
-            backgroundColor: "#D7D7D7",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <FileUploadIcon
-            color="primary"
-            sx={{ fontSize: 50 }}
-          ></FileUploadIcon>
+            backgroundColor: '#D7D7D7',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column'
+          }}>
+          <FileUploadIcon color="primary" sx={{ fontSize: 50 }}></FileUploadIcon>
           <ClickToEdit>Clique para Editar</ClickToEdit>
         </Box>
       );
     }
   };
 
-  const handlePictureSelected = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    var file = event.target!.files![0];
+  const handlePictureSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target!.files![0];
     const reader = new FileReader();
     reader.addEventListener(
-      "load",
+      'load',
       function () {
         onChangeImage(reader.result);
       },

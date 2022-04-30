@@ -5,23 +5,20 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { AppRouter } from './AppRouter';
 
-
-
 const themeOptions = {
   palette: {
     primary: {
       main: '#CD6538',
-      dark: '#CD6538',
+      dark: '#CD6538'
     },
     secondary: {
       main: '#EDF2F4',
-      dark: '#EDF2F4',
-    },
-  },
+      dark: '#EDF2F4'
+    }
+  }
 };
 
 const theme = createTheme(themeOptions);
-
 
 ReactDOM.render(
   <React.StrictMode>

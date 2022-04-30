@@ -1,11 +1,10 @@
-import { ChangeEvent, useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
-import { NumberLocale } from "yup/lib/locale";
+import React, { ChangeEvent } from 'react';
+import { Box, Tabs, Tab } from '@material-ui/core';
 
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
   };
 }
 
@@ -26,8 +25,8 @@ export default function ApolloTab({ value, setValue, opcoes }: TabProps) {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="tabs">
           {opcoes.map((opcao, index) => (
             <Tab key={index} label={opcao.label} {...a11yProps(opcao.value)} />

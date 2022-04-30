@@ -5,3 +5,5 @@ build/
 db-data/
 
 static/*
+.env
+.db.env

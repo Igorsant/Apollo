@@ -2,6 +2,10 @@
 
 Nesta pasta ficam os arquivos referentes ao backend da aplicação Apollo, mais especificamente a API REST e o Banco de dados.
 
+## Setando variaveis de ambiente
+
+Renomeie os arquivos .env-example e .db.env-example para .env e .db.env respectivamente e adicione as informações necessárias
+
 ## Iniciar banco de dados
 
 1. Editar arquivo [.db.env](./.db.env) com as variáveis de ambiente  

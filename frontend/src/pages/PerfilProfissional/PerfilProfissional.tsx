@@ -108,7 +108,8 @@ export default function PerfilProfissional() {
               direction="row"
               justifyContent="flex-end"
               alignItems="flex-start"
-              xs={2}>
+              xs={2}
+            >
               <FavoriteIcon></FavoriteIcon>Salvar
             </Grid>
           </Grid>
@@ -119,7 +120,8 @@ export default function PerfilProfissional() {
               { value: 0, label: 'Sobre Mim' },
               { value: 1, label: 'Serviços Disponíveis' },
               { value: 2, label: 'Avaliações' }
-            ]}></ApolloTab>
+            ]}
+          ></ApolloTab>
           <TabPanel value={tabValue} index={0}>
             {profissional?.aboutMe}
           </TabPanel>

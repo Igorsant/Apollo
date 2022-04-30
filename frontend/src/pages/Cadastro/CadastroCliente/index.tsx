@@ -1,17 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/Button/ApolloButton';
-import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
-import { ImageInput } from '../../components/ImageInput/ImageInput';
+import { Header } from '../../../components/Header/Header';
+import { Button } from '../../../components/Button/ApolloButton';
+import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
 import { useFormik } from 'formik';
-import { clienteSchema } from '../../schemas/clienteSchema';
+import { clienteSchema } from '../../../schemas/clienteSchema';
+import { ProfileInfo } from '../components/ProfileInfo';
 
-import api from '../../services/api';
-import ICliente from '../../types/ICliente';
+import api from '../../../services/api';
+import ICliente from '../../../types/ICliente';
+import { Subtitle, Title } from '../components/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -29,16 +29,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignContent: 'center'
   }
 }));
-
-const Title = styled.h2`
-  color: var(--title);
-  text-align: center;
-`;
-
-const Subtitle = styled.h3`
-  color: var(--title);
-  text-align: left;
-`;
 
 const CadastroCliente = () => {
   const navigate = useNavigate();
@@ -107,10 +97,12 @@ const CadastroCliente = () => {
             spacing={4}
             justifyContent="center"
             alignContent="center"
-            container>
+            container
+          >
             <Grid item xs={12} md={12}>
               <Title>Cadastro</Title>
             </Grid>
+            <ProfileInfo handleChangeImage={handleChangeImage} formik={formik} />
             <Grid
               item
               xs={12}
@@ -118,45 +110,8 @@ const CadastroCliente = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container>
-              <Grid item xs={12} md={12}>
-                <Subtitle>Informações do Perfil</Subtitle>
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <ImageInput
-                  name="pictureBase64"
-                  value={formik.values.pictureBase64}
-                  onChangeImage={handleChangeImage}
-                  label="Foto de Perfil:"></ImageInput>
-              </Grid>
-              <Grid item xs={12} md={10}>
-                <Grid item xs={12} md={12}>
-                  <TextInputLaranja
-                    name="fullName"
-                    value={formik.values.fullName}
-                    onChange={formik.handleChange}
-                    errorMessage={formik.errors.fullName}
-                    label="Nome:"></TextInputLaranja>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <TextInputLaranja
-                    style={{ marginTop: '15px' }}
-                    name="nickname"
-                    value={formik.values.nickname}
-                    onChange={formik.handleChange}
-                    errorMessage={formik.errors.nickname}
-                    label="Apelido:"></TextInputLaranja>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={12}
-              sx={{ flexGrow: 1 }}
-              spacing={2}
-              alignContent="center"
-              container>
+              container
+            >
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações de Contato</Subtitle>
               </Grid>
@@ -167,7 +122,8 @@ const CadastroCliente = () => {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   errorMessage={formik.errors.email}
-                  label="Email:"></TextInputLaranja>
+                  label="Email:"
+                ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
@@ -175,9 +131,10 @@ const CadastroCliente = () => {
                   value={formik.values.phone}
                   onChange={formik.handleChange}
                   errorMessage={formik.errors.phone}
-                  label="Telefone(apenas números):"></TextInputLaranja>
+                  label="Telefone(apenas números):"
+                ></TextInputLaranja>
               </Grid>
-            </Grid>{' '}
+            </Grid>
             <Grid
               item
               xs={12}
@@ -185,7 +142,8 @@ const CadastroCliente = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container>
+              container
+            >
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações pessoais:</Subtitle>
               </Grid>
@@ -195,7 +153,8 @@ const CadastroCliente = () => {
                   value={formik.values.cpf}
                   onChange={formik.handleChange}
                   label="CPF(Apenas números):"
-                  errorMessage={formik.errors.cpf}></TextInputLaranja>
+                  errorMessage={formik.errors.cpf}
+                ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
@@ -204,7 +163,8 @@ const CadastroCliente = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   errorMessage={formik.errors.password}
-                  label="Senha:"></TextInputLaranja>
+                  label="Senha:"
+                ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
@@ -213,7 +173,8 @@ const CadastroCliente = () => {
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   errorMessage={formik.errors.confirmPassword}
-                  label="Confirmar senha:"></TextInputLaranja>
+                  label="Confirmar senha:"
+                ></TextInputLaranja>
               </Grid>
             </Grid>
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
@@ -226,7 +187,8 @@ const CadastroCliente = () => {
                 component={Link}
                 to="/cadastroprofissional"
                 variant="text"
-                style={{ textTransform: 'none' }}>
+                style={{ textTransform: 'none' }}
+              >
                 Profissional? Clique aqui!
               </Button>
             </Grid>

@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/Button/ApolloButton';
-import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
+import { Header } from '../../../components/Header/Header';
+import { Button } from '../../../components/Button/ApolloButton';
+import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
 
-import api from '../../services/api';
-import { setToken } from '../../services/auth';
+import api from '../../../services/api';
+import { setToken } from '../../../services/auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -65,7 +65,8 @@ const Login = () => {
           to="/cadastrocliente"
           color="secondary"
           variant="text"
-          style={{ gridColumnStart: '1', gridColumnEnd: '3' }}>
+          style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
+        >
           Criar Conta
         </Button>
       </Header>
@@ -77,7 +78,8 @@ const Login = () => {
             spacing={4}
             justifyContent="center"
             alignContent="center"
-            container>
+            container
+          >
             <Grid item xs={12} md={12}>
               <Title>Login</Title>
             </Grid>
@@ -87,14 +89,16 @@ const Login = () => {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                label="Email:"></TextInputLaranja>
+                label="Email:"
+              ></TextInputLaranja>
             </Grid>
             <Grid item xs={12} md={12}>
               <TextInputLaranja
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                label="Senha:"></TextInputLaranja>
+                label="Senha:"
+              ></TextInputLaranja>
             </Grid>
             <Grid item xs={12} md={12}>
               <Button type="submit" variant="contained" style={{ width: '100%' }}>
@@ -106,7 +110,8 @@ const Login = () => {
                 component={Link}
                 to="/loginprofissional"
                 variant="text"
-                style={{ textTransform: 'none' }}>
+                style={{ textTransform: 'none' }}
+              >
                 Profissional? Clique aqui!
               </Button>
             </Grid>

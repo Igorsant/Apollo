@@ -55,7 +55,8 @@ export const ImageInput: React.FC<ImageInputProps> = ({ label, name, value, onCh
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column'
-          }}>
+          }}
+        >
           <FileUploadIcon color="primary" sx={{ fontSize: 50 }}></FileUploadIcon>
           <ClickToEdit>Clique para Editar</ClickToEdit>
         </Box>

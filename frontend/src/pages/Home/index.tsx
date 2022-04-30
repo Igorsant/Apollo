@@ -49,7 +49,8 @@ const Home = () => (
         to="/cadastrocliente"
         color="secondary"
         variant="text"
-        style={ButtonStyle}>
+        style={ButtonStyle}
+      >
         Criar conta
       </Button>
       <Button component={Link} to="/login" color="secondary" variant="text" style={ButtonStyle}>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home/Home';
-import CadastroCliente from './pages/CadastroCliente/CadastroCliente';
-import CadastroProfissional from './pages/CadastroProfissional/CadastroProfissional';
+import Home from './pages/Home';
+import CadastroCliente from './pages/Cadastro/CadastroCliente';
+import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
 import PerfilProfissional from './pages/PerfilProfissional/PerfilProfissional';
-import Login from './pages/Login/Login';
-import LoginProfissional from './pages/LoginProfissional/Loginprofissional';
+import Login from './pages/Login/LoginClient';
+import LoginProfissional from './pages/Login/LoginProfissional';
 
 export const AppRouter = () => {
   return (

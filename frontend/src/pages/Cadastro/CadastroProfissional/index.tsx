@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Box, Theme, Grid, Checkbox, FormControlLabel } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
-import { Header } from '../../components/Header/Header';
-import { Button } from '../../components/Button/ApolloButton';
-import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
-import { ImageInput } from '../../components/ImageInput/ImageInput';
+import { Header } from '../../../components/Header/Header';
+import { Button } from '../../../components/Button/ApolloButton';
+import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
+import { ImageInput } from '../../../components/ImageInput/ImageInput';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -190,7 +190,8 @@ const CadastroProfissional = () => {
             spacing={4}
             justifyContent="center"
             alignContent="center"
-            container>
+            container
+          >
             <Grid item xs={12} md={12}>
               <Title>Cadastro Profissional</Title>
             </Grid>
@@ -201,7 +202,8 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container>
+              container
+            >
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações do Perfil</Subtitle>
               </Grid>
@@ -210,7 +212,8 @@ const CadastroProfissional = () => {
                   name="fotoperfil"
                   value={form.fotoPerfil}
                   onChangeImage={handleChangeImage}
-                  label="Foto de Perfil:"></ImageInput>
+                  label="Foto de Perfil:"
+                ></ImageInput>
               </Grid>
               <Grid item xs={12} md={10}>
                 <Grid item xs={12} md={12}>
@@ -218,7 +221,8 @@ const CadastroProfissional = () => {
                     name="nome"
                     value={form.nome}
                     onChange={handleChange}
-                    label="Nome:"></TextInputLaranja>
+                    label="Nome:"
+                  ></TextInputLaranja>
                 </Grid>
                 <Grid item xs={12} md={12}>
                   <TextInputLaranja
@@ -226,7 +230,8 @@ const CadastroProfissional = () => {
                     name="apelido"
                     value={form.apelido}
                     onChange={handleChange}
-                    label="Apelido:"></TextInputLaranja>
+                    label="Apelido:"
+                  ></TextInputLaranja>
                 </Grid>
               </Grid>
             </Grid>
@@ -237,7 +242,8 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container>
+              container
+            >
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações de Contato</Subtitle>
               </Grid>
@@ -246,14 +252,16 @@ const CadastroProfissional = () => {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  label="Email:"></TextInputLaranja>
+                  label="Email:"
+                ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="telefone"
                   value={form.telefone}
                   onChange={handleChange}
-                  label="Telefone(apenas números):"></TextInputLaranja>
+                  label="Telefone(apenas números):"
+                ></TextInputLaranja>
               </Grid>
             </Grid>{' '}
             <Grid
@@ -263,7 +271,8 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container>
+              container
+            >
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações pessoais:</Subtitle>
               </Grid>
@@ -272,14 +281,16 @@ const CadastroProfissional = () => {
                   name="cpf"
                   value={form.cpf}
                   onChange={handleChange}
-                  label="CPF(Apenas números):"></TextInputLaranja>
+                  label="CPF(Apenas números):"
+                ></TextInputLaranja>
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextInputLaranja
                   name="senha"
                   value={form.senha}
                   onChange={handleChange}
-                  label="Senha:"></TextInputLaranja>
+                  label="Senha:"
+                ></TextInputLaranja>
               </Grid>
             </Grid>
             <Grid item xs={12} md={12} container rowGap={3}>
@@ -353,7 +364,8 @@ const CadastroProfissional = () => {
               sx={{ flexGrow: 1 }}
               spacing={2}
               alignContent="center"
-              container>
+              container
+            >
               <Grid item xs={12} md={12}>
                 <Subtitle>Informações do local de trabalho:</Subtitle>
               </Grid>

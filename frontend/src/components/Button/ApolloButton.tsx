@@ -24,7 +24,8 @@ export const Button: React.FC<ApolloButtonProps> = ({
       variant={variant}
       onClick={onClick}
       style={style}
-      {...props}>
+      {...props}
+    >
       {children}
     </MuiButton>
   );

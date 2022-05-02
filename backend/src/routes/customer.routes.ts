@@ -25,7 +25,7 @@ customerRouter.post(
 customerRouter.get(
   '/:customerId',
   validateReq(customerIdSchema, 'params'),
-  CustomerController.search
+  CustomerController.getById
 );
 customerRouter.put(
   '/:customerId',

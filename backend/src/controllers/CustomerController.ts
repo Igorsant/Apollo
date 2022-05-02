@@ -93,7 +93,7 @@ export default class CustomerController {
     return res.status(200).json({ jwt: accessToken });
   }
 
-  public static async search(req: Request, res: Response) {
+  public static async getById(req: Request, res: Response) {
     const { customerId } = req.params;
 
     try {

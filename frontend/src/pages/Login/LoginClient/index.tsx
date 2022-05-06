@@ -95,6 +95,7 @@ const Login = () => {
             <Grid item xs={12} md={12}>
               <TextInputLaranja
                 name="password"
+                type="password"
                 value={form.password}
                 onChange={handleChange}
                 label="Senha:"

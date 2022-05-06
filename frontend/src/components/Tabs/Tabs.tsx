@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { Box, Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab } from '@material-ui/core';
+import Box from '@mui/material/Box';
 
 function a11yProps(index: number) {
   return {

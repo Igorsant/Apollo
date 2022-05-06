@@ -1,13 +1,13 @@
-import { promises } from 'fs';
 import { Knex } from 'knex';
 import path from 'path';
 
-export async function up(knex: Knex): Promise<void> {
-  const filePath = path.join(__dirname, '01-create-tables.sql');
-  const fileBuffer = await promises.readFile(filePath);
-  const sql = fileBuffer.toString();
+import { getSqlFromFile } from '../src/helpers/knex.helper';
 
-  return knex.raw(sql);
+export async function up(knex: Knex): Promise<void> {
+  const createTablesFile = path.join(__dirname, '01-create-tables.sql');
+  const createTablesSQL = await getSqlFromFile(createTablesFile);
+
+  return knex.raw(createTablesSQL);
 }
 
 export async function down(knex: Knex): Promise<void> {

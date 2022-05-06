@@ -29,6 +29,19 @@ const ClickToEdit = styled.p`
   font-size: 0.6em; ;
 `;
 
+const HoverBox = styled(Box)`
+  &:hover {
+    cursor: pointer;
+  }
+  width: 120px;
+  min-height: 120px;
+  background-color: #d7d7d7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
 interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   value: string;
@@ -42,20 +55,10 @@ export const ImageInput: React.FC<ImageInputProps> = ({ label, name, value, onCh
       return <Image src={value} />;
     } else {
       return (
-        <Box
-          sx={{
-            width: 120,
-            height: 120,
-            backgroundColor: '#D7D7D7',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column'
-          }}
-        >
+        <HoverBox>
           <FileUploadIcon color="primary" sx={{ fontSize: 50 }}></FileUploadIcon>
           <ClickToEdit>Clique para Editar</ClickToEdit>
-        </Box>
+        </HoverBox>
       );
     }
   };

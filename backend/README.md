@@ -4,15 +4,14 @@ Nesta pasta ficam os arquivos referentes ao backend da aplicação Apollo, mais 
 
 ## Setando variaveis de ambiente
 
-Copie os arquivos .env-example e .db.env-example para .env e .db.env respectivamente e adicione as informações necessárias. Estando no diretorio /backend:
+Copie o arquivo .env.example para .env e adicione as informações necessárias. Estando no diretorio /backend:
 ```bash
-cp .db.env-example .db.env
-cp .env-example .env
+cp .env.example .env
 ```
 
 ## Iniciar banco de dados
 
-1. Editar arquivo [.db.env](./.db.env) com as variáveis de ambiente  
+1. Definir as variáveis de ambiente ([windows](https://www.shellhacks.com/windows-set-environment-variable-cmd-powershell/), [linux](https://phoenixnap.com/kb/linux-set-environment-variable#ftoc-heading-8))
     * POSTGRES_USER: Usuário postgres que será usado para conectar ao banco
     * POSTGRES_PASSWORD: Senha do usuário que será usado para conectar ao banco
     * POSTGRES_DB: Nome do banco de dados utilizado para a aplicação
@@ -25,6 +24,7 @@ cp .env-example .env
 4. Para parar o banco de dados executar o comando  
     `$ docker-compose down`
 
+5. Para deletar todo o conteúdo do banco de dados, basta deletar a pasta backend/db-data/
 
 ## Iniciar a API REST em modo de desenvolvimento
 

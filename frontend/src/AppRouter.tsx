@@ -14,9 +14,9 @@ export const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/cadastro/cliente" element={<CadastroCliente />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/login/profissional" element={<LoginProfissional />}></Route>
+        <Route path="/login/profissional" element={<LoginProfissional />} />
         <Route path="/cadastro/profissional" element={<CadastroProfissional />} />
-        <Route path="/perfil/Profissional/:id" element={<PerfilProfissional />} />
+        <Route path="/perfil/profissional/:id" element={<PerfilProfissional />} />
       </Routes>
     </BrowserRouter>
   );

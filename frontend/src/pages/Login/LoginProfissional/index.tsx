@@ -63,7 +63,7 @@ const LoginProfissional = () => {
         {' '}
         <Button
           component={Link}
-          to="/cadastrocliente"
+          to="/cadastro/profissional"
           color="secondary"
           variant="text"
           style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
@@ -109,7 +109,7 @@ const LoginProfissional = () => {
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
               <Button
                 component={Link}
-                to="/cadastroprofissional"
+                to="/cadastro/profissional"
                 variant="text"
                 style={{ textTransform: 'none' }}
               >

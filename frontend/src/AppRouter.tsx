@@ -12,11 +12,11 @@ export const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cadastrocliente" element={<CadastroCliente />} />
+        <Route path="/cadastro/cliente" element={<CadastroCliente />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/loginprofissional" element={<LoginProfissional />}></Route>
-        <Route path="/cadastroprofissional" element={<CadastroProfissional />} />
-        <Route path="/perfilProfissional/:id" element={<PerfilProfissional />} />
+        <Route path="/login/profissional" element={<LoginProfissional />}></Route>
+        <Route path="/cadastro/profissional" element={<CadastroProfissional />} />
+        <Route path="/perfil/Profissional/:id" element={<PerfilProfissional />} />
       </Routes>
     </BrowserRouter>
   );

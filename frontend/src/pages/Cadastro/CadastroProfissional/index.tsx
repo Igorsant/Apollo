@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Box, Theme, Grid, Checkbox, FormControlLabel } from '@mui/material';
+import React from 'react';
+import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
-import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
-import { ImageInput } from '../../../components/ImageInput/ImageInput';
+import { useFormik } from 'formik';
+import { ContactInfo, PersonalInfo, ProfileInfo, Subtitle, Title } from '../components';
+import { Services } from './components/Services';
+// import ICliente from '../../../types/ICliente';
+// import api from '../../../services/api';
+// import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -24,165 +27,90 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const Title = styled.h2`
-  color: var(--title);
-  text-align: center;
-`;
-
-const Subtitle = styled.h3`
-  color: var(--title);
-  text-align: left;
-`;
-
-const TimeLabel = styled.h2`
-  color: var(--title);
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const PlusButton = styled(Button)`
-  border-radius: 40px;
-  height: 100%;
-`;
-
-type ServicesType = {
-  name: string;
-  price: number;
-  time: number;
-};
-
-type Phone = {
-  number: string;
-  isWpp: boolean;
-};
-
-type FormType = {
-  fotoPerfil: string;
-  nome: string;
-  apelido: string;
-  email: string;
-  telefone: string;
-  cpf: string;
-  senha: string;
-  services: Array<ServicesType>;
-  rua: string;
-  numero: number;
-  complemento: string;
-  telefone1: Phone;
-  telefone2: Phone;
-};
-
 const CadastroProfissional = () => {
   const classes = useStyles();
-  const [form, setForm] = useState<FormType>({
-    fotoPerfil: '',
-    nome: '',
-    apelido: '',
-    email: '',
-    telefone: '',
-    cpf: '',
-    senha: '',
-    services: [{ name: '', price: 0, time: 0 }],
-    rua: '',
-    numero: 0,
-    complemento: '',
-    telefone1: { number: '', isWpp: false },
-    telefone2: { number: '', isWpp: false }
+  // const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: {
+      cpf: '',
+      email: '',
+      fullName: '',
+      nickname: '',
+      aboutMe: '',
+      password: '',
+      phone: '',
+      pictureBase64: '',
+      confirmPassword: '',
+      services: [
+        {
+          name: 'string',
+          startingPrice: 0,
+          estimatedTime: 0
+        }
+      ],
+      workHours: [
+        {
+          weekday: 0,
+          startTime: 'string',
+          endTime: 'string'
+        }
+      ],
+      workplace: {
+        street: 'string',
+        streetNumber: 0,
+        complement: 'string',
+        phone1: 'string',
+        isPhone1Whatsapp: true,
+        phone2: 'string',
+        isPhone2Whatsapp: true
+      }
+    },
+    validationSchema: null,
+    onSubmit: (values) => {
+      console.log(values);
+      // const { confirmPassword, ...profissional } = values;
+      // handleSubmit({
+      //   ...profissional,
+      //   pictureBase64: formatBase64Image(profissional.pictureBase64)
+      // });
+      // formik.resetForm();
+      // navigate('/login/profissional', { replace: true });
+    },
+    validateOnChange: false,
+    validateOnBlur: false
   });
 
-  const handleChangeImage = (name: string, value: string | ArrayBuffer | null) => {
-    let valueBase64 = '';
-    if (typeof value === 'string' || value instanceof String) {
-      valueBase64 = (value as String).split(',')[1];
-    }
-    setForm({ ...form, [name]: valueBase64 });
-  };
-
-  // const normalizeToBackend = () => {
-  //   const result = {
-  //     fullName: form.nome,
-  //     nickname: form.apelido,
-  //     pictureBase64: form.fotoPerfil,
-  //     aboutMe: '',
-  //     email: form.email,
-  //     phone: form.telefone,
-  //     cpf: form.cpf,
-  //     password: form.senha,
-  //     services: form.services,
-  //     workHours: [
-  //       {
-  //         weekday: 0,
-  //         startTime: '',
-  //         endTime: ''
-  //       }
-  //     ],
-  //     workplace: {
-  //       street: form.rua,
-  //       streetNumber: form.numero,
-  //       complement: form.complemento,
-  //       phone1: form.telefone1.number,
-  //       isPhone1Whatsapp: form.telefone1.isWpp,
-  //       phone2: form.telefone2.number,
-  //       isPhone2Whatsapp: form.telefone2.isWpp
-  //     }
-  //   };
-
-  //   return result;
+  // const formatBase64Image = (value: string | ArrayBuffer | null) => {
+  //   let valueBase64 = '';
+  //   if (typeof value === 'string' || value instanceof String) {
+  //     valueBase64 = (value as String).split(',')[1];
+  //   }
+  //   return valueBase64;
   // };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setForm({ ...form, [name]: value });
+  const handleChangeImage = (value: string | ArrayBuffer | null) => {
+    formik.setFieldValue('pictureBase64', value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(form);
-  };
-
-  const handleServicesChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setForm((current) => {
-      const auxArray = current.services.slice();
-      auxArray[index] = { ...auxArray[index], [name]: value };
-      return {
-        ...current,
-        services: auxArray
-      };
-    });
-  };
-
-  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>, value: Phone) => {
-    const name = event.target.name;
-    setForm((current) => ({
-      ...current,
-      [name]: { ...value }
-    }));
-  };
-
-  const handlePushService = () => {
-    setForm((current) => ({
-      ...current,
-      services: [...current.services, { name: '', price: 0, time: 0 }]
-    }));
-  };
-
-  const handleRemoveService = (index: number) => {
-    form.services.length > 1 &&
-      setForm((current) => ({
-        ...current,
-        services: current.services.filter((_, i) => index !== i)
-      }));
-  };
+  // const handleSubmit = (values: ICliente) => {
+  //   console.log(values);
+  //   api
+  //     .post('professionals', values)
+  //     .then((res) => {
+  //       if (res.status === 201) {
+  //         console.log('Sucesso');
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <div>
       <Header></Header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <Box className={classes.root}>
           <Grid
             sx={{ flexGrow: 1 }}
@@ -195,168 +123,10 @@ const CadastroProfissional = () => {
             <Grid item xs={12} md={12}>
               <Title>Cadastro Profissional</Title>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              md={12}
-              sx={{ flexGrow: 1 }}
-              spacing={2}
-              alignContent="center"
-              container
-            >
-              <Grid item xs={12} md={12}>
-                <Subtitle>Informações do Perfil</Subtitle>
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <ImageInput
-                  name="fotoperfil"
-                  value={form.fotoPerfil}
-                  onChangeImage={handleChangeImage}
-                  label="Foto de Perfil:"
-                ></ImageInput>
-              </Grid>
-              <Grid item xs={12} md={10}>
-                <Grid item xs={12} md={12}>
-                  <TextInputLaranja
-                    name="nome"
-                    value={form.nome}
-                    onChange={handleChange}
-                    label="Nome:"
-                  ></TextInputLaranja>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <TextInputLaranja
-                    style={{ marginTop: '15px' }}
-                    name="apelido"
-                    value={form.apelido}
-                    onChange={handleChange}
-                    label="Apelido:"
-                  ></TextInputLaranja>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={12}
-              sx={{ flexGrow: 1 }}
-              spacing={2}
-              alignContent="center"
-              container
-            >
-              <Grid item xs={12} md={12}>
-                <Subtitle>Informações de Contato</Subtitle>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <TextInputLaranja
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  label="Email:"
-                ></TextInputLaranja>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <TextInputLaranja
-                  name="telefone"
-                  value={form.telefone}
-                  onChange={handleChange}
-                  label="Telefone(apenas números):"
-                ></TextInputLaranja>
-              </Grid>
-            </Grid>{' '}
-            <Grid
-              item
-              xs={12}
-              md={12}
-              sx={{ flexGrow: 1 }}
-              spacing={2}
-              alignContent="center"
-              container
-            >
-              <Grid item xs={12} md={12}>
-                <Subtitle>Informações pessoais:</Subtitle>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <TextInputLaranja
-                  name="cpf"
-                  value={form.cpf}
-                  onChange={handleChange}
-                  label="CPF(Apenas números):"
-                ></TextInputLaranja>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <TextInputLaranja
-                  name="senha"
-                  value={form.senha}
-                  onChange={handleChange}
-                  label="Senha:"
-                ></TextInputLaranja>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={12} container rowGap={3}>
-              <Grid item xs={12} md={12}>
-                <Subtitle>Serviços:</Subtitle>
-              </Grid>
-              {form.services.map((service, index) => (
-                <Grid item container xs={12} md={12} spacing={2} rowGap={3} key={index}>
-                  <Grid item xs={12} md={4}>
-                    <TextInputLaranja
-                      name="name"
-                      value={service.name}
-                      onChange={(e) => handleServicesChange(e, index)}
-                      label={'Nome do serviço:'}
-                    />
-                  </Grid>
-                  <Grid item xs={3} md={3}>
-                    <TextInputLaranja
-                      name="price"
-                      value={service.price}
-                      onChange={(e) => handleServicesChange(e, index)}
-                      label={'Valor do serviço:'}
-                    />
-                  </Grid>
-                  <Grid item xs={3} md={2}>
-                    <TextInputLaranja
-                      name="time"
-                      value={service.time}
-                      onChange={(e) => handleServicesChange(e, index)}
-                      label={'Tempo estimado:'}
-                    />
-                  </Grid>
-                  <Grid item xs={1} md={1}>
-                    <TimeLabel>min</TimeLabel>
-                  </Grid>
-                  <Grid item xs={1} md={1}>
-                    <PlusButton variant="contained" onClick={handlePushService}>
-                      +
-                    </PlusButton>
-                  </Grid>
-                </Grid>
-              ))}
-              <Grid item xs={12} md={12}>
-                <table>
-                  <tr>
-                    <th>#</th>
-                    <th>Nome do serviço</th>
-                    <th>Preço inicial</th>
-                    <th>Tempo estimado</th>
-                    <th>Ações</th>
-                  </tr>
-
-                  {form.services.map((service, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{service.name}</td>
-                      <td>{service.price}</td>
-                      <td>{service.time}</td>
-                      <td>
-                        <Button onClick={() => handleRemoveService(index)}>remove</Button>
-                      </td>
-                    </tr>
-                  ))}
-                </table>
-              </Grid>
-            </Grid>
+            <ProfileInfo formik={formik} handleChangeImage={handleChangeImage} />
+            <ContactInfo formik={formik} />
+            <PersonalInfo formik={formik} />
+            <Services formik={formik} />
             <Grid
               item
               xs={12}
@@ -370,7 +140,7 @@ const CadastroProfissional = () => {
                 <Subtitle>Informações do local de trabalho:</Subtitle>
               </Grid>
 
-              <Grid item xs={12} md={12} container spacing={2} rowGap={2}>
+              {/* <Grid item xs={12} md={12} container spacing={2} rowGap={2}>//
                 <Grid item xs={12} md={8}>
                   <TextInputLaranja
                     name="rua"
@@ -458,7 +228,7 @@ const CadastroProfissional = () => {
                     }
                   />
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
               <Button type="submit" variant="contained" style={{ width: '40%' }}>

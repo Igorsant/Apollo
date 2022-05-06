@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useEffect } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Box } from '@mui/material';
@@ -38,10 +38,6 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const ImageInput: React.FC<ImageInputProps> = ({ label, name, value, onChangeImage }) => {
   const ImagePreview = () => {
-    useEffect(() => {
-      console.log(value);
-    }, [value]);
-
     if (value) {
       return <Image src={value} />;
     } else {

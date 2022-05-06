@@ -4,9 +4,9 @@ Nesta pasta ficam os arquivos referentes ao backend da aplicação Apollo, mais 
 
 ## Setando variaveis de ambiente
 
-Copie o arquivo .env.example para .env respectivamente e adicione as informações necessárias. Estando no diretorio /backend:
+Copie o arquivo .env.example para .env e adicione as informações necessárias. Estando no diretorio /backend:
 ```bash
-cp .env-example .env
+cp .env.example .env
 ```
 
 ## Iniciar banco de dados

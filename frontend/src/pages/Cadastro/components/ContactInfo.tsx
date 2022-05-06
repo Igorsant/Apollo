@@ -21,6 +21,7 @@ export const ContactInfo = ({ formik }: Props) => {
           onChange={formik.handleChange}
           errorMessage={formik.errors.email}
           label="Email:"
+          placeholder="Ex.: exemplo@email.com"
         ></TextInputLaranja>
       </Grid>
       <Grid item xs={12} md={12}>
@@ -30,6 +31,7 @@ export const ContactInfo = ({ formik }: Props) => {
           onChange={formik.handleChange}
           errorMessage={formik.errors.phone}
           label="Telefone(apenas números):"
+          placeholder="Ex.: 85999999999"
         ></TextInputLaranja>
       </Grid>
     </Grid>

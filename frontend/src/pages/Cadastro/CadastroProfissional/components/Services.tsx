@@ -40,6 +40,7 @@ export const Services = ({ formik }: any) => {
             value={formik.values.services[index].name}
             onChange={formik.handleChange}
             label={'Nome do serviço:'}
+            placeholder="Ex.: Corte de cabelo"
           />
         </Grid>
         <Grid item xs={3} md={3}>

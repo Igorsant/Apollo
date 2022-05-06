@@ -6,7 +6,9 @@ services:
     image: 'postgres:12.10'
     ports: 
       - 5432:5432
-    env_file:
-      - .db.env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
     volumes:
       - ./db-data/:/var/lib/postgresql/data/

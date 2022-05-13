@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { Header } from '../../components/Header/Header';
-import { Container, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@mui/material';
 import api from '../../services/api';
 import IProfissional from '../../types/IProfissional';
-
-import LogoImage from '../../images/Logo_apollo.png';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Button } from '../../components/Button/ApolloButton';
-import ApolloTab from '../../components/Tabs/Tabs';
-
-import TabPanel from '../../components/TabPanel/TabPanel';
-import ServicosDisponiveis from './ServicosDisponiveis/ServicosDisponiveis';
+import { ApolloContainer } from '../../components/Container';
+import IAlert from '../../types/IAlert';
+import { ApolloAlert } from '../../components/Alert/Alert';
+import { TabsInformacoes } from './TabsInformacoes';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -68,30 +65,38 @@ export default function PerfilProfissional() {
   const classes = useStyles();
   const { id } = useParams();
   const [profissional, setProfissional] = useState<IProfissional | undefined>(undefined);
-  const [tabValue, setTabValue] = useState<number>(0);
+  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
 
   useEffect(() => {
     if (id !== undefined) {
       api
-        .post(`professionals/${id}`)
+        .get(`professionals/${id}`)
         .then((res) => {
           setProfissional(res.data);
         })
         .catch((err) => {
           setProfissional(mockProfessional);
-          console.log(err);
+          setAlert({ open: true, message: err.message, severity: 'error' });
         });
     }
   }, [id]);
 
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, open: false });
+  };
+
+  const favoritarProfissional = () => {
+    console.log('Profissional Favorito');
+  };
+
   return (
-    <Container disableGutters={true} maxWidth={false}>
-      <Header></Header>
+    <ApolloContainer>
+      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <Box className={classes.root}>
         <Grid container>
           <Grid container item alignItems="flex-start" xs={12} md={12}>
             <Grid item xs={2} container justify="center" alignItems="center">
-              <Image src={LogoImage}></Image>
+              <Image src={profissional?.pictureBase64}></Image>
             </Grid>
             <Grid item direction="column" container xs={8} spacing={2}>
               <Grid item> {profissional?.fullName}</Grid>
@@ -113,26 +118,19 @@ export default function PerfilProfissional() {
               alignItems="flex-start"
               xs={2}
             >
-              <FavoriteIcon></FavoriteIcon>Salvar
+              <Button onClick={favoritarProfissional} variant="outlined" style={{ width: '120px' }}>
+                <FavoriteIcon />
+                Salvar
+              </Button>
             </Grid>
           </Grid>
-          <ApolloTab
-            value={tabValue}
-            setValue={setTabValue}
-            opcoes={[
-              { value: 0, label: 'Sobre Mim' },
-              { value: 1, label: 'Serviços Disponíveis' },
-              { value: 2, label: 'Avaliações' }
-            ]}
-          ></ApolloTab>
-          <TabPanel value={tabValue} index={0}>
-            {profissional?.aboutMe}
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            <ServicosDisponiveis servicos={profissional?.services}></ServicosDisponiveis>
-          </TabPanel>
+          <TabsInformacoes
+            setAlert={setAlert}
+            id={id}
+            profissional={profissional}
+          ></TabsInformacoes>
         </Grid>
       </Box>
-    </Container>
+    </ApolloContainer>
   );
 }

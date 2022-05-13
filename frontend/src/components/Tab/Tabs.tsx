@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab } from '@mui/material';
 import Box from '@mui/material/Box';
 
 function a11yProps(index: number) {
@@ -28,7 +28,7 @@ export default function ApolloTab({ value, setValue, opcoes }: TabProps) {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="tabs">
+        <Tabs value={value} onChange={handleChange} aria-label="tabs" indicatorColor="primary">
           {opcoes.map((opcao, index) => (
             <Tab key={index} label={opcao.label} {...a11yProps(opcao.value)} />
           ))}

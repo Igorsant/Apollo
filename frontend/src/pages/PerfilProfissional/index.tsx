@@ -51,10 +51,10 @@ const mockProfessional = {
   pictureBase64: '',
   aboutMe: 'AboutMe Test',
   phone: '85999084524',
-  services: [{ name: 'corte de cabelo', startingPrice: 80, estimatedTime: 40 }],
+  services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],
   workplace: {
     street: 'Rua das Flores',
-    streetNumber: 985,
+    streetNumber: '985',
     complement: 'Sala 12',
     phone1: { phone: '8536566555', isPhoneWhatsapp: false },
 

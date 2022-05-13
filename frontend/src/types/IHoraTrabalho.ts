@@ -1,5 +1,5 @@
 export default interface IHoraTrabalho {
-  weekday: number;
+  weekday: string;
   startTime: string;
   endTime: string;
 }

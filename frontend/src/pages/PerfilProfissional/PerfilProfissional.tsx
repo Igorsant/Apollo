@@ -46,6 +46,24 @@ const Image = styled.img`
   width: 120px;
 `;
 
+const mockProfessional = {
+  fullName: 'Felipe Gonçalves',
+  nickname: 'felipe',
+  pictureBase64: '',
+  aboutMe: 'AboutMe Test',
+  phone: '85999084524',
+  services: [{ name: 'corte de cabelo', startingPrice: 80, estimatedTime: 40 }],
+  workplace: {
+    street: 'Rua das Flores',
+    streetNumber: 985,
+    complement: 'Sala 12',
+    phone1: '8536566555',
+    isPhone1Whatsapp: false,
+    phone2: '8596555521',
+    isPhone2Whatsapp: true
+  }
+};
+
 export default function PerfilProfissional() {
   const classes = useStyles();
   const { id } = useParams();
@@ -60,23 +78,7 @@ export default function PerfilProfissional() {
           setProfissional(res.data);
         })
         .catch((err) => {
-          setProfissional({
-            fullName: 'Felipe Gonçalves',
-            nickname: 'felipe',
-            pictureBase64: '',
-            aboutMe: 'AboutMe Test',
-            phone: '85999084524',
-            services: [{ name: 'corte de cabelo', startingPrice: 80, estimatedTime: 40 }],
-            workplace: {
-              street: 'Rua das Flores',
-              streetNumber: 985,
-              complement: 'Sala 12',
-              phone1: '8536566555',
-              isPhone1Whatsapp: false,
-              phone2: '8596555521',
-              isPhone2Whatsapp: true
-            }
-          });
+          setProfissional(mockProfessional);
           console.log(err);
         });
     }

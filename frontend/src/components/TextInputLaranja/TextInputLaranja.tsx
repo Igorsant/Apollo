@@ -22,6 +22,7 @@ const Input = styled.input`
   box-sizing: border-box;
   ::placeholder {
     color: var(--header);
+    font-weight: 500;
   }
 `;
 
@@ -44,12 +45,13 @@ export const TextInputLaranja: React.FC<ApolloTextInputLaranjaProps> = ({
   onChange,
   errorMessage,
   type,
+  placeholder,
   ...props
 }) => {
   return (
     <Div {...props}>
       <Label>{label}</Label>
-      <Input type={type} value={value} name={name} onChange={onChange} />
+      <Input type={type} value={value} name={name} onChange={onChange} placeholder={placeholder} />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Div>
   );

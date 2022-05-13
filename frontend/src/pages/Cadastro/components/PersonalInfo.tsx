@@ -16,6 +16,7 @@ export const PersonalInfo = ({ formik }: any) => {
           onChange={formik.handleChange}
           label="CPF(Apenas números):"
           errorMessage={formik.errors.cpf}
+          placeholder="Ex.: 012345678910"
         ></TextInputLaranja>
       </Grid>
       <Grid item xs={12} md={12}>
@@ -26,6 +27,7 @@ export const PersonalInfo = ({ formik }: any) => {
           onChange={formik.handleChange}
           errorMessage={formik.errors.password}
           label="Senha:"
+          placeholder="Ex.: ********"
         ></TextInputLaranja>
       </Grid>
       <Grid item xs={12} md={12}>
@@ -36,6 +38,7 @@ export const PersonalInfo = ({ formik }: any) => {
           onChange={formik.handleChange}
           errorMessage={formik.errors.confirmPassword}
           label="Confirmar senha:"
+          placeholder="Ex.: ********"
         ></TextInputLaranja>
       </Grid>
     </Grid>

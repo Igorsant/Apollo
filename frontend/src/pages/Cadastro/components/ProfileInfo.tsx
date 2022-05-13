@@ -11,7 +11,7 @@ interface ProfileInfoProps {
 }
 
 export const ProfileInfo = ({ handleChangeImage, formik }: ProfileInfoProps) => (
-  <Grid item xs={12} md={12} sx={{ flexGrow: 1 }} spacing={2} alignContent="center" container>
+  <Grid item xs={12} md={12} sx={{ flexGrow: 1 }} spacing={1} alignContent="center" container>
     <Grid item xs={12} md={12}>
       <Subtitle>Informações do Perfil</Subtitle>
     </Grid>
@@ -31,6 +31,7 @@ export const ProfileInfo = ({ handleChangeImage, formik }: ProfileInfoProps) => 
           onChange={formik.handleChange}
           errorMessage={formik.errors.fullName as string}
           label="Nome:"
+          placeholder="Ex.: Felipe Gonçalves"
         ></TextInputLaranja>
       </Grid>
       <Grid item xs={12} md={12}>
@@ -41,6 +42,7 @@ export const ProfileInfo = ({ handleChangeImage, formik }: ProfileInfoProps) => 
           onChange={formik.handleChange}
           errorMessage={formik.errors.nickname as string}
           label="Apelido:"
+          placeholder="Ex.: Felipe312"
         ></TextInputLaranja>
       </Grid>
     </Grid>

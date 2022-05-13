@@ -14,17 +14,17 @@ const api = axios.create({
 // // });
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    console.log(error.message);
+    console.error(error.message);
+
     if (error.response.status === 403) {
       setTimeout(() => {
         window.location.pathname = '';
       }, 2000);
     }
-    console.log(error.response);
+
+    console.error(error.response);
 
     return Promise.reject(error);
   }

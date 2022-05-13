@@ -6,9 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
 import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
+import { ApolloAlert } from '../../../components/Alert/Alert';
 
 import api from '../../../services/api';
 import { setToken } from '../../../services/auth';
+import IAlert from '../../../types/IAlert';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -36,11 +38,16 @@ const Login = () => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [form, setForm] = useState({ email: '', password: '' });
+  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
     setForm({ ...form, [name]: value });
+  };
+
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, open: false });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,7 +61,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setAlert({ open: true, message: err.message, severity: 'error' });
       });
   };
 
@@ -72,6 +79,7 @@ const Login = () => {
           Criar Conta
         </Button>
       </Header>
+      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <form onSubmit={handleSubmit}>
         <Box className={classes.root}>
           <Grid

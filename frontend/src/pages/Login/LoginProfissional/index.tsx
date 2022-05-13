@@ -10,6 +10,8 @@ import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInput
 
 import api from '../../../services/api';
 import { setToken } from '../../../services/auth';
+import { ApolloAlert } from '../../../components/Alert/Alert';
+import IAlert from '../../../types/IAlert';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -36,11 +38,16 @@ const Title = styled.h2`
 const LoginProfissional = () => {
   const classes = useStyles();
   const [form, setForm] = useState({ email: '', password: '' });
+  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
     setForm({ ...form, [name]: value });
+  };
+
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, open: false });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +60,7 @@ const LoginProfissional = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setAlert({ open: true, message: err.message, severity: 'error' });
       });
   };
 
@@ -71,6 +78,7 @@ const LoginProfissional = () => {
           Criar Conta
         </Button>
       </Header>
+      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <form onSubmit={handleSubmit}>
         <Box className={classes.root}>
           <Grid

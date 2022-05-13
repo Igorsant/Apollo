@@ -2,6 +2,7 @@ import IServico from './IServico';
 // import IHoraTrabalho from './IHoraTrabalho';
 import ILocalTrabalho from './ILocalTrabalho';
 export default interface IProfissional {
+  id: number;
   fullName: string;
   nickname: string;
   pictureBase64: string;

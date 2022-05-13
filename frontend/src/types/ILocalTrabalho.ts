@@ -1,9 +1,9 @@
+import ITelefone from './ITelefone';
+
 export default interface ILocalTrabalho {
   street: string;
   streetNumber: number;
   complement: string;
-  phone1: string;
-  isPhone1Whatsapp: boolean;
-  phone2: string;
-  isPhone2Whatsapp: boolean;
+  phone1: ITelefone;
+  phone2: ITelefone;
 }

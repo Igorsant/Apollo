@@ -6,6 +6,7 @@ import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
 import PerfilProfissional from './pages/PerfilProfissional';
 import Login from './pages/Login/LoginClient';
 import LoginProfissional from './pages/Login/LoginProfissional';
+import BuscarProfissionais from './pages/BuscaProfissionais';
 
 export const AppRouter = () => {
   return (
@@ -17,6 +18,7 @@ export const AppRouter = () => {
         <Route path="/login/profissional" element={<LoginProfissional />} />
         <Route path="/cadastro/profissional" element={<CadastroProfissional />} />
         <Route path="/perfil/profissional/:id" element={<PerfilProfissional />} />
+        <Route path="/buscar/profissional" element={<BuscarProfissionais />} />
       </Routes>
     </BrowserRouter>
   );

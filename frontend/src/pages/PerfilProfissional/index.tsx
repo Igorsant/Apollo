@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+
 import { Grid } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,6 +45,7 @@ const Image = styled.img`
 `;
 
 const mockProfessional = {
+  id: 1,
   fullName: 'Felipe Gonçalves',
   nickname: 'felipe',
   pictureBase64: '',
@@ -54,10 +56,9 @@ const mockProfessional = {
     street: 'Rua das Flores',
     streetNumber: 985,
     complement: 'Sala 12',
-    phone1: '8536566555',
-    isPhone1Whatsapp: false,
-    phone2: '8596555521',
-    isPhone2Whatsapp: true
+    phone1: { phone: '8536566555', isPhoneWhatsapp: false },
+
+    phone2: { phone: '8536566555', isPhoneWhatsapp: true }
   }
 };
 
@@ -103,7 +104,7 @@ export default function PerfilProfissional() {
               <Grid item>
                 {`${profissional?.workplace.street}, ${profissional?.workplace.streetNumber}`}
               </Grid>
-              <Grid item>{`${profissional?.workplace.phone1}`}</Grid>
+              <Grid item>{`${profissional?.workplace.phone1.phone}`}</Grid>
               <Grid item>
                 <Button variant="contained" style={{ width: '120px' }}>
                   Agendar

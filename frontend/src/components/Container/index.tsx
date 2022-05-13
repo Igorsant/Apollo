@@ -29,7 +29,7 @@ export const ApolloContainer: FC<ContainerProps> = ({
           Criar Conta
         </Button>
       )}
-      {!ehLogin && !usuarioLogado && (
+      {!ehCadastro && !usuarioLogado && (
         <Button
           component={Link}
           to="/login"

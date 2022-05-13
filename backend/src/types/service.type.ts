@@ -1,4 +1,5 @@
 type ServiceType = {
+  id?: number;
   estimatedDuration: number;
   name: string;
   professionalId?: number;

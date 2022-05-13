@@ -2,6 +2,7 @@ import { toCamel, toSnake } from 'snake-camel';
 
 import databaseService from '../services/DatabaseService';
 import { userPicture } from '../helpers/image.helper';
+import { Knex } from 'knex';
 import phoneRepository from './phone.repository';
 import serviceRepository from './service.repository';
 import ServiceType from '../types/service.type';
@@ -32,9 +33,37 @@ class ProfessionalRepository {
   }
 
   public async findByEmail(email: string): Promise<any> {
-    return databaseService.connection
+    const professional: any = await databaseService.connection
       .table(this.tableName)
       .where('email', email)
+      .first()
+      .then(toCamel);
+
+    const { phone } = await phoneRepository.findById(professional.phoneId);
+
+    professional.phone = phone;
+    professional.picturePath = userPicture(professional.pictureName);
+    professional.workplace = await workplaceRepository.findById(
+      professional.workplaceId
+    );
+    professional.services = await serviceRepository.findByProfessionalId(
+      professional.id
+    );
+    professional.workHours = await workHourRepository.findByProfessionalId(
+      professional.id
+    );
+
+    delete professional.phoneId;
+    delete professional.workplaceId;
+
+    return professional;
+  }
+
+  public async findById(id: number): Promise<any> {
+    return databaseService.connection
+      .table(this.tableName)
+      .select('*')
+      .where('id', id)
       .first()
       .then(toCamel);
   }
@@ -79,29 +108,26 @@ class ProfessionalRepository {
 
     return databaseService.connection.transaction(async (trx) => {
       const { workplace, services, workHours } = localProfessional;
+      const [workplacePhone1, workplacePhone2] = workplace.phones;
 
       workplace.phone1Id = await phoneRepository.insert(
         {
-          phone: workplace.phone1,
-          isPhoneWhatsapp: workplace.isPhone1Whatsapp
+          phone: workplacePhone1.phone,
+          isPhoneWhatsapp: workplacePhone1.isPhoneWhatsapp
         },
         trx
       );
 
-      delete workplace.phone1;
-      delete workplace.isPhone1Whatsapp;
-
-      if (workplace.phone2)
+      if (workplacePhone2)
         workplace.phone2Id = await phoneRepository.insert(
           {
-            phone: workplace.phone2,
-            isPhoneWhatsapp: workplace.isPhone2Whatsapp
+            phone: workplacePhone2.phone,
+            isPhoneWhatsapp: workplacePhone2.isPhoneWhatsapp
           },
           trx
         );
 
-      delete workplace.phone2;
-      delete workplace.isPhone2Whatsapp;
+      delete workplace.phones;
 
       localProfessional.workplaceId = await workplaceRepository.insert(
         workplace,
@@ -139,6 +165,18 @@ class ProfessionalRepository {
       .table(this.tableName)
       .where('id', id)
       .then((rows) => rows.length > 0);
+  }
+
+  public async update(
+    id: number,
+    professional: any,
+    trx: Knex = databaseService.connection
+  ) {
+    const localProfessional = JSON.parse(JSON.stringify(professional));
+
+    return trx(this.tableName)
+      .update(toSnake(localProfessional))
+      .where('id', id);
   }
 }
 

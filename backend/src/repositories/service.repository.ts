@@ -11,15 +11,40 @@ class ServiceRepository {
     services: ServiceType[],
     trx: Knex = databaseService.connection
   ) {
+    if (services.length === 0) return;
     return trx(this.tableName).insert(services.map(toSnake));
   }
 
   public async findByProfessionalId(professionalId: number) {
     return databaseService.connection
       .table(this.tableName)
-      .select('name', 'starting_price', 'estimated_time')
+      .select('id', 'name', 'starting_price', 'estimated_time')
       .where('professional_id', professionalId)
       .then((rows) => rows.map(toCamel));
+  }
+
+  public async deleteAll(
+    serviceIds: number[],
+    trx: Knex = databaseService.connection
+  ) {
+    return trx(this.tableName).delete().whereIn('id', serviceIds);
+  }
+
+  public async updateAll(
+    services: ServiceType[],
+    trx: Knex = databaseService.connection
+  ) {
+    const toUpdate = services.filter((s) => s.id);
+    const toCreate = services.filter((s) => !s.id);
+
+    if (toCreate.length > 0) await this.insertAll(toCreate, trx);
+
+    const promises = [];
+    for (const s of toUpdate) {
+      promises.push(trx(this.tableName).update(toSnake(s)).where('id', s.id));
+    }
+
+    return Promise.all(promises);
   }
 }
 

@@ -44,6 +44,10 @@ class PhoneRepository {
   ) {
     return trx(this.tableName).update(toSnake(phone)).where('id', id);
   }
+
+  public async delete(id: number, trx: Knex = databaseService.connection) {
+    return trx(this.tableName).delete().where('id', id);
+  }
 }
 
 const phoneRepository = new PhoneRepository();

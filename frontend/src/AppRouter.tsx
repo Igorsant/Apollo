@@ -6,6 +6,7 @@ import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
 import PerfilProfissional from './pages/PerfilProfissional';
 import Login from './pages/Login/LoginClient';
 import LoginProfissional from './pages/Login/LoginProfissional';
+import { Dashboard } from './pages/Dashboard/Dashboard';
 
 export const AppRouter = () => {
   return (
@@ -16,7 +17,8 @@ export const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/login/profissional" element={<LoginProfissional />} />
         <Route path="/cadastro/profissional" element={<CadastroProfissional />} />
-        <Route path="/perfil/profissional/:id" element={<PerfilProfissional />} />
+        <Route path="/perfil/Profissional/:id" element={<PerfilProfissional />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

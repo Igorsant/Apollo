@@ -1,16 +1,16 @@
 import IServico from './IServico';
-// import IHoraTrabalho from './IHoraTrabalho';
+import IHoraTrabalho from './IHoraTrabalho';
 import ILocalTrabalho from './ILocalTrabalho';
 export default interface IProfissional {
   fullName: string;
   nickname: string;
   pictureBase64: string;
   aboutMe: string;
-  // email: string;
+  email?: string;
   phone: string;
-  // cpf: string;
-  // password: string;
+  cpf?: string;
+  password?: string;
   services: IServico[];
-  // workHours: IHoraTrabalho[];
+  workHours?: IHoraTrabalho[];
   workplace: ILocalTrabalho;
 }

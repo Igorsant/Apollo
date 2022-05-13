@@ -53,7 +53,6 @@ const CadastroCliente = () => {
         pictureBase64: formatBase64Image(cliente.pictureBase64)
       });
       formik.resetForm();
-      navigate('/login', { replace: true });
     },
     validateOnChange: false,
     validateOnBlur: false
@@ -78,6 +77,7 @@ const CadastroCliente = () => {
       .then((res) => {
         if (res.status === 201) {
           console.log('Sucesso');
+          navigate('/login', { replace: true });
         }
       })
       .catch((err) => {

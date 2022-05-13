@@ -22,7 +22,9 @@ import serviceRepository from '../repositories/service.repository';
 import ServiceType from '../types/service.type';
 import workHourRepository from '../repositories/workHour.repository';
 import workplaceRepository from '../repositories/workplace.repository';
+
 import WorkHourType from '../types/workHour.type';
+import favoriteRepository from '../repositories/favorite.repository';
 
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
@@ -250,5 +252,63 @@ export default class ProfessionalController {
         );
       }
     });
+  }
+
+  public static async addFavorite(req: Request, res: Response) {
+    const professionalId = +req.params.professionalId;
+    const { id: userId } = res.locals.user;
+
+    try {
+      if (!(await professionalRepository.exists(professionalId)))
+        return notFound(
+          res,
+          `Profissional com id ${professionalId} não encontrado`
+        );
+      if (await favoriteRepository.exists(userId, professionalId))
+        return badRequest(res, 'Profissional já está favoritado');
+
+      await favoriteRepository.insert(userId, professionalId);
+
+      return res.status(204).json();
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro ao inserir favoritos no banco de dados');
+    }
+  }
+
+  public static async removeFavorite(req: Request, res: Response) {
+    const professionalId = +req.params.professionalId;
+    const { id: userId } = res.locals.user;
+
+    try {
+      await favoriteRepository.delete(userId, professionalId);
+
+      return res.status(204).json();
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro ao remover favoritos do banco de dados');
+    }
+  }
+
+  public static async getFavorites(req: Request, res: Response) {
+    const { id: userId } = res.locals.user;
+
+    try {
+      const professionalIds = await favoriteRepository.getProfessionalIds(
+        userId
+      );
+
+      const professionals = await professionalRepository.findByIds(
+        professionalIds
+      );
+
+      return res.status(200).json(professionals);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro ao retornar profissionais favoritados.');
+    }
   }
 }

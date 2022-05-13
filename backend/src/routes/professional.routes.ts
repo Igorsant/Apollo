@@ -35,5 +35,22 @@ professionalRouter.put(
   validateReq(professionalUpdateSchema, 'body'),
   ProfessionalController.update
 );
+professionalRouter.post(
+  '/:professionalId/favorite',
+  authGuard('CUSTOMER'),
+  validateReq(professionalIdSchema, 'params'),
+  ProfessionalController.addFavorite
+);
+professionalRouter.delete(
+  '/:professionalId/favorite',
+  authGuard('CUSTOMER'),
+  validateReq(professionalIdSchema, 'params'),
+  ProfessionalController.removeFavorite
+);
+professionalRouter.get(
+  '/favorites',
+  authGuard('CUSTOMER'),
+  ProfessionalController.getFavorites
+);
 
 export default professionalRouter;

@@ -1,4 +1,5 @@
 type WorkHourType = {
+  id?: number;
   breakTime?: boolean;
   endTime: string;
   professionalId?: number;

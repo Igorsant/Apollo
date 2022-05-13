@@ -1,8 +1,13 @@
 import express from 'express';
 
+import authGuard from '../middlewares/authGuard.middleware';
 import loginSchema from '../schemas/login.schema';
 import ProfessionalController from '../controllers/ProfessionalController';
-import professionalSchema from '../schemas/professional.schema';
+import {
+  professionalIdSchema,
+  professionalSchema,
+  professionalUpdateSchema
+} from '../schemas/professional.schema';
 import searchSchema from '../schemas/search.schema';
 import validateReq from '../middlewares/validateRequest.middleware';
 
@@ -22,6 +27,13 @@ professionalRouter.get(
   '/search',
   validateReq(searchSchema, 'query'),
   ProfessionalController.search
+);
+professionalRouter.put(
+  '/:professionalId',
+  authGuard('PROFESSIONAL'),
+  validateReq(professionalIdSchema, 'params'),
+  validateReq(professionalUpdateSchema, 'body'),
+  ProfessionalController.update
 );
 
 export default professionalRouter;

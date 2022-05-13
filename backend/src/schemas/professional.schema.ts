@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 import { baseCustomerSchema } from './customer.schema';
 
-const professionalSchema = Joi.object({
+const professionalBaseSchema = {
   ...baseCustomerSchema,
   aboutMe: Joi.string().max(500),
   services: Joi.array().items(
@@ -31,14 +31,50 @@ const professionalSchema = Joi.object({
     street: Joi.string().max(200).required(),
     streetNumber: Joi.string().max(16).required(),
     complement: Joi.string().max(256),
-    phone1: Joi.string()
-      .pattern(new RegExp(/^[0-9]{10,11}$/))
-      .required(),
+    phones: Joi.array()
+      .min(1)
+      .max(2)
+      .items(
+        Joi.object({
+          phone: Joi.string()
+            .pattern(new RegExp(/^[0-9]{10,11}$/))
+            .required(),
 
-    isPhone1Whatsapp: Joi.bool().required(),
-    phone2: Joi.string().pattern(new RegExp(/^[0-9]{10,11}$/)),
-    isPhone2Whatsapp: Joi.bool()
+          isPhoneWhatsapp: Joi.bool().required()
+        })
+      )
+      .required()
   })
+};
+
+export const professionalSchema = Joi.object(professionalBaseSchema);
+
+export const professionalUpdateSchema = Joi.object({
+  ...professionalBaseSchema,
+  services: Joi.array().items(
+    Joi.object({
+      id: Joi.number().positive(),
+      name: Joi.string().min(3).max(50).required(),
+      startingPrice: Joi.number().positive().required(),
+      estimatedTime: Joi.number().integer().positive().required()
+    })
+  ),
+
+  workHours: Joi.array().items(
+    Joi.object({
+      id: Joi.number().positive(),
+      weekday: Joi.number().integer().min(0).max(6).required(),
+      startTime: Joi.string()
+        .pattern(new RegExp(/^\d{1,2}:\d{2}$/))
+        .required(),
+
+      endTime: Joi.string()
+        .pattern(new RegExp(/^\d{1,2}:\d{2}$/))
+        .required()
+    })
+  )
 });
 
-export default professionalSchema;
+export const professionalIdSchema = Joi.object({
+  professionalId: Joi.number().positive().required()
+});

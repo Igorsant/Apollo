@@ -17,7 +17,7 @@ CREATE TABLE Workplace (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone1_id) REFERENCES Phone(id),
-	FOREIGN KEY (phone2_id) REFERENCES Phone(id)
+	FOREIGN KEY (phone2_id) REFERENCES Phone(id) ON DELETE SET NULL
 );
 
 CREATE TABLE Customer (

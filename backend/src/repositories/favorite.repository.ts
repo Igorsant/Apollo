@@ -1,8 +1,6 @@
-import { Knex } from 'knex';
-import { toCamel, toSnake } from 'snake-camel';
+import { toSnake } from 'snake-camel';
 
 import databaseService from '../services/DatabaseService';
-import ServiceType from '../types/service.type';
 
 class FavoriteRepository {
   private tableName = 'favorite';

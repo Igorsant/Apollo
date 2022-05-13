@@ -4,7 +4,7 @@ import { baseCustomerSchema } from './customer.schema';
 
 const professionalBaseSchema = {
   ...baseCustomerSchema,
-  aboutMe: Joi.string().max(500),
+  aboutMe: Joi.string().min(0).max(500),
   services: Joi.array().items(
     Joi.object({
       name: Joi.string().min(3).max(50).required(),

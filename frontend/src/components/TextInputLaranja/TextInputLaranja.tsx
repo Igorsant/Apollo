@@ -14,6 +14,10 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
+  &:focus {
+    outline: none;
+  }
+  color: var(--header);
   background-color: var(--input);
   padding: 10px;
   border: none;

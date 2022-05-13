@@ -8,8 +8,37 @@ import { ContactInfo, PersonalInfo, ProfileInfo, Title } from '../components';
 import { Services } from './components/Services';
 import { WorkInfo } from './components/WorkInfo';
 import api from '../../../services/api';
-import IProfessional from '../../../types/IProfissional';
 import { useNavigate } from 'react-router-dom';
+
+interface SubmitProfessional {
+  cpf: string;
+  email: string;
+  fullName: string;
+  nickname: string;
+  aboutMe: string;
+  password: string;
+  phone: string;
+  pictureBase64: string;
+  services: {
+    name: string;
+    startingPrice: string;
+    estimatedTime: string;
+  }[];
+  workHours: {
+    weekday: string;
+    startTime: string;
+    endTime: string;
+  }[];
+  workplace: {
+    street: string;
+    streetNumber: string;
+    complement: string;
+    phone1: string;
+    isPhone1Whatsapp: boolean;
+    phone2: string;
+    isPhone2Whatsapp: boolean;
+  };
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -93,7 +122,7 @@ const CadastroProfissional = () => {
     formik.setFieldValue('pictureBase64', value);
   };
 
-  const handleSubmit = (values: IProfessional) => {
+  const handleSubmit = (values: SubmitProfessional) => {
     console.log(values);
     api
       .post('professionals', values)

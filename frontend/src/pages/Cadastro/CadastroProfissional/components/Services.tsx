@@ -15,13 +15,13 @@ export const Services = ({ formik }: any) => {
   };
 
   const handleRemove = (index: number) => {
-    const aux = formik.values.services.filter((_: any, i: any) => index !== i);
-    console.log(aux);
+    const aux = formik.values.services.filter((_: any, i: number) => index !== i);
     formik.values.services.length > 1 &&
       formik.setValues({
         ...formik.values,
         services: aux
       });
+    setIndex(0);
   };
 
   const handleEdit = (index: number) => {
@@ -49,6 +49,7 @@ export const Services = ({ formik }: any) => {
             value={formik.values.services[index].startingPrice}
             onChange={formik.handleChange}
             label={'Valor do serviço:'}
+            placeholder="Ex.: 30.00"
           />
         </Grid>
         <Grid item xs={3} md={2} sx={{ minWidth: '200px' }}>
@@ -57,6 +58,7 @@ export const Services = ({ formik }: any) => {
             value={formik.values.services[index].estimatedTime}
             onChange={formik.handleChange}
             label={'Tempo estimado:'}
+            placeholder="Ex.: 30"
           />
         </Grid>
         <Grid item xs={1} md={1}>

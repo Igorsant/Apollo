@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Header } from '../../../components/Header/Header';
@@ -33,6 +33,7 @@ const Title = styled.h2`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [form, setForm] = useState({ email: '', password: '' });
 
@@ -49,6 +50,7 @@ const Login = () => {
       .then((res) => {
         if (res.status === 200) {
           setToken(res.data.jwt);
+          navigate('/dashboard', { replace: true });
         }
       })
       .catch((err) => {

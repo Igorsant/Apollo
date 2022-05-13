@@ -6,7 +6,7 @@ import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
 import PerfilProfissional from './pages/PerfilProfissional/PerfilProfissional';
 import Login from './pages/Login/LoginClient';
 import LoginProfissional from './pages/Login/LoginProfissional';
-import { Dashboard } from '@mui/icons-material';
+import { Dashboard } from './pages/Dashboard/Dashboard';
 
 export const AppRouter = () => {
   return (

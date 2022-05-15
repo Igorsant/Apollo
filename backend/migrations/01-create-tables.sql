@@ -75,11 +75,13 @@ CREATE TABLE Review (
 	FOREIGN KEY (customer_id) REFERENCES Customer(id)
 );
 
-CREATE TABLE Schedulling (
+CREATE TABLE Scheduling (
 	id SERIAL NOT NULL,
 	professional_id INTEGER NOT NULL,
 	customer_id INTEGER NOT NULL,
-	schedulling_datetime TIMESTAMP NOT NULL,
+	start_time TIMESTAMP NOT NULL,
+	end_time TIMESTAMP NOT NULL,
+	total_price NUMERIC NOT NULL,
 	confirmed BOOLEAN NOT NULL DEFAULT FALSE,
 
 	PRIMARY KEY (id),
@@ -98,12 +100,12 @@ CREATE TABLE Service (
 	FOREIGN KEY (professional_id) REFERENCES Professional(id)
 );
 
-CREATE TABLE Schedulling_Service (
-	schedule_id INTEGER NOT NULL,
+CREATE TABLE Scheduling_Service (
+	scheduling_id INTEGER NOT NULL,
 	service_id INTEGER NOT NULL,
 
-	PRIMARY KEY (schedule_id, service_id),
-	FOREIGN KEY (schedule_id) REFERENCES Schedulling(id),
+	PRIMARY KEY (scheduling_id, service_id),
+	FOREIGN KEY (scheduling_id) REFERENCES Scheduling(id),
 	FOREIGN KEY (service_id) REFERENCES Service(id)
 );
 

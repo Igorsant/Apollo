@@ -6,12 +6,13 @@ import databaseService from '../services/DatabaseService';
 import professionalRepository from '../repositories/professional.repository';
 import schedulingRepository from '../repositories/scheduling.repository';
 import serviceRepository from '../repositories/service.repository';
+import SchedulingType from '../types/scheduling.type';
 
 export default class SchedulingController {
   public static async create(req: Request, res: Response) {
-    const scheduling = req.body;
+    const rawScheduling = req.body;
 
-    const { professionalId, startTime, serviceIds } = scheduling;
+    const { professionalId, startTime, serviceIds } = rawScheduling;
 
     const professionalExists = await professionalRepository.exists(
       +professionalId
@@ -58,22 +59,44 @@ export default class SchedulingController {
         [0, 0]
       );
 
-      const startTimeInMilisseconds = Date.parse(startTime)
-      const serviceDurationInMilisseconds = estimatedTime * 60000
+      const startTimeInMilisseconds = Date.parse(startTime);
+      const serviceDurationInMilisseconds = estimatedTime * 60000;
 
       const endTime = startTimeInMilisseconds + serviceDurationInMilisseconds;
 
-      scheduling.totalPrice = totalPrice;
-      scheduling.endTime = endTime
+      rawScheduling.totalPrice = totalPrice;
+      rawScheduling.endTime = new Date(endTime).toISOString();
 
-      // TODO Adicionar scheduling no banco e linkar cada servico a ele
+      const customerId = res.locals.user.id;
+      rawScheduling.customerId = customerId;
 
-      return res
-        .status(201)
-        .json({ message: 'Agendamento criado com sucesso.' });
+      delete rawScheduling.serviceIds;
     } catch (err) {
       console.error(err);
-      return internalError(res, 'Não foi possível realizar o agendamento');
+      return internalError(res, 'Erro ao obter dados de serviços.');
     }
+
+    const scheduling: SchedulingType = Object.assign(rawScheduling, {});
+
+    return databaseService.connection.transaction(async (trx) => {
+      try {
+        const schedulingId = await schedulingRepository.createScheduling(
+          scheduling,
+          trx
+        );
+
+        await schedulingRepository.insertSchedulingServices(
+          +schedulingId,
+          serviceIds,
+          trx
+        );
+        return res
+          .status(201)
+          .json({ message: 'Agendamento criado com sucesso.' });
+      } catch (err) {
+        console.log(err);
+        return internalError(res, 'Erro ao criar agendamento.');
+      }
+    });
   }
 }

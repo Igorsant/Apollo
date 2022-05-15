@@ -1,35 +1,41 @@
 import { Knex } from 'knex';
-import { toCamel, toSnake } from 'snake-camel';
+import { toSnake } from 'snake-camel';
 
 import databaseService from '../services/DatabaseService';
 import SchedulingType from '../types/scheduling.type';
 
 class SchedulingRepository {
   private tableName = 'scheduling';
+  private schedulingServiceTable = 'scheduling_service';
 
-  public async createScheduling(scheduling: SchedulingType) {
-    return databaseService.connection
+  public async createScheduling(
+    scheduling: SchedulingType,
+    trx: Knex = databaseService.connection
+  ) {
+    const schedulingIds = await trx
       .table(this.tableName)
-      .insert(scheduling)
+      .insert(toSnake(scheduling))
       .returning('id');
+
+    return schedulingIds[0].id;
   }
 
+  public async insertSchedulingServices(
+    schedulingId: number,
+    services: number[],
+    trx: Knex = databaseService.connection
+  ) {
+    const schedulingServices = services
+      .map((service) => {
+        return {
+          schedulingId,
+          serviceId: service
+        };
+      })
+      .map(toSnake);
 
-  // public async insertAll(
-  //   schedulings: SchedulingType[],
-  //   trx: Knex = databaseService.connection
-  // ) {
-  //   if (schedulings.length === 0) return;
-  //   return trx(this.tableName).insert(schedulings.map(toSnake));
-  // }
-
-  // public async findByProfessionalId(professionalId: number) {
-  //   return databaseService.connection
-  //     .table(this.tableName)
-  //     .select('id', 'name', 'starting_price', 'estimated_time')
-  //     .where('professional_id', professionalId)
-  // .then((rows) => rows.map(toCamel));
-  // }
+    return trx(this.schedulingServiceTable).insert(schedulingServices);
+  }
 }
 
 const schedulingRepository = new SchedulingRepository();

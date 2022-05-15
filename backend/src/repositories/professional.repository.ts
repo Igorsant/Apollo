@@ -59,10 +59,10 @@ class ProfessionalRepository {
     return professional;
   }
 
-  public async findById(id: number): Promise<any> {
+  public async findById(id: number, select: string[] = ['*']): Promise<any> {
     return databaseService.connection
       .table(this.tableName)
-      .select('*')
+      .select(...select)
       .where('id', id)
       .first()
       .then(toCamel);
@@ -164,6 +164,13 @@ class ProfessionalRepository {
     return await databaseService.connection
       .table(this.tableName)
       .where('id', id)
+      .then((rows) => rows.length > 0);
+  }
+
+  public async existsEmail(email: string): Promise<boolean> {
+    return await databaseService.connection
+      .table(this.tableName)
+      .where('email', email)
       .then((rows) => rows.length > 0);
   }
 

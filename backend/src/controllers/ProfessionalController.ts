@@ -73,9 +73,10 @@ export default class ProfessionalController {
   public static async login(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const professional = await professionalRepository.findByEmail(email);
+    if (!(await professionalRepository.existsEmail(email)))
+      return badRequest(res, 'Credenciais inválidas');
 
-    if (!professional) return badRequest(res, 'Credenciais inválidas');
+    const professional = await professionalRepository.findByEmail(email);
 
     const passwordsMatch = await bcrypt.compare(
       password,

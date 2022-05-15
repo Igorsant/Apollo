@@ -1,10 +1,11 @@
 import express from 'express';
 
+import authGuard from '../middlewares/authGuard.middleware';
 import {
   createSchedulingSchema,
-  deleteSchedulingSchema
+  deleteSchedulingSchema,
+  schedulingQuerySchema
 } from '../schemas/scheduling.schema';
-import authGuard from '../middlewares/authGuard.middleware';
 import SchedulingController from '../controllers/SchedulingController';
 import validateReq from '../middlewares/validateRequest.middleware';
 
@@ -21,6 +22,12 @@ schedulingRouter.delete(
   authGuard('CUSTOMER'),
   validateReq(deleteSchedulingSchema, 'params'),
   SchedulingController.deleteById
+);
+schedulingRouter.get(
+  '/',
+  authGuard(),
+  validateReq(schedulingQuerySchema, 'query'),
+  SchedulingController.get
 );
 
 export default schedulingRouter;

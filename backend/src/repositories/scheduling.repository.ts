@@ -3,6 +3,9 @@ import { toCamel, toSnake } from 'snake-camel';
 
 import databaseService from '../services/DatabaseService';
 import SchedulingType from '../types/scheduling.type';
+import { userPicture } from '../helpers/image.helper';
+import professionalRepository from './professional.repository';
+import serviceRepository from './service.repository';
 
 class SchedulingRepository {
   private tableName = 'scheduling';
@@ -60,6 +63,52 @@ class SchedulingRepository {
       .delete();
 
     return trx.table(this.tableName).where('id', schedulingId).delete();
+  }
+
+  public async findAll(
+    userId: number,
+    userType: 'CUSTOMER' | 'PROFESSIONAL',
+    confirmed: boolean
+  ) {
+    const userField =
+      userType === 'CUSTOMER' ? 'customer_id' : 'professional_id';
+
+    const schedulings = await databaseService.connection
+      .table(this.tableName)
+      .select(
+        'id',
+        'professional_id',
+        'start_time',
+        'end_time',
+        'total_price',
+        'confirmed'
+      )
+      .where('confirmed', confirmed)
+      .andWhere(userField, userId)
+      .then((rows) => rows.map(toCamel) as SchedulingType[]);
+
+    for (const scheduling of schedulings) {
+      const servicesIds = await databaseService.connection
+        .table(this.schedulingServiceTable)
+        .select('service_id')
+        .where('scheduling_id', scheduling.id)
+        .then((rows) => rows.map((r) => r.service_id));
+
+      const professional = await professionalRepository.findById(
+        scheduling.professionalId,
+        ['id', 'nickname', 'picture_name']
+      );
+
+      professional.picturePath = userPicture(professional.pictureName);
+      delete professional.pictureName;
+      delete scheduling.professionalId;
+
+      scheduling.professional = professional;
+
+      scheduling.services = await serviceRepository.findByIds(servicesIds);
+    }
+
+    return schedulings;
   }
 }
 

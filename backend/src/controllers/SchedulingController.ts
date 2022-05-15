@@ -144,6 +144,25 @@ export default class SchedulingController {
         .json({ message: 'Agendamento removido com sucesso.' });
     });
   }
+
+  public static async get(req: Request, res: Response) {
+    const confirmed = req.query.confirmed === 'true';
+    const { user } = res.locals;
+
+    try {
+      const schedulings = await schedulingRepository.findAll(
+        user.id,
+        user.type,
+        confirmed
+      );
+
+      return res.status(200).json(schedulings);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro interno ao retornar agendamentos');
+    }
+  }
 }
 
 function hoursFromScheduling(scheduling: SchedulingType): number {

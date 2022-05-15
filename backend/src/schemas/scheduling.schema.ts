@@ -21,3 +21,7 @@ export default schedulingSchema;
 export const schedulingQuerySchema = Joi.object({
   confirmed: Joi.boolean().required()
 });
+
+export const schedulingIdSchema = Joi.object({
+  schedulingId: Joi.number().integer().min(1).required()
+});

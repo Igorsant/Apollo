@@ -110,6 +110,53 @@ class SchedulingRepository {
 
     return schedulings;
   }
+
+  public async findById(
+    id: number,
+    userId: number,
+    userType: 'CUSTOMER' | 'PROFESSIONAL'
+  ) {
+    const userField =
+      userType === 'CUSTOMER' ? 'customer_id' : 'professional_id';
+
+    const scheduling = await databaseService.connection
+      .table(this.tableName)
+      .select(
+        'id',
+        'professional_id',
+        'start_time',
+        'end_time',
+        'total_price',
+        'confirmed'
+      )
+      .where('id', id)
+      .andWhere(userField, userId)
+      .first()
+      .then((row) => toCamel(row) as SchedulingType);
+
+    if (!scheduling) return null;
+
+    const servicesIds = await databaseService.connection
+      .table(this.schedulingServiceTable)
+      .select('service_id')
+      .where('scheduling_id', scheduling.id)
+      .then((rows) => rows.map((r) => r.service_id));
+
+    const professional = await professionalRepository.findById(
+      scheduling.professionalId,
+      ['id', 'nickname', 'picture_name']
+    );
+
+    professional.picturePath = userPicture(professional.pictureName);
+    delete professional.pictureName;
+    delete scheduling.professionalId;
+
+    scheduling.professional = professional;
+
+    scheduling.services = await serviceRepository.findByIds(servicesIds);
+
+    return scheduling;
+  }
 }
 
 const schedulingRepository = new SchedulingRepository();

@@ -163,6 +163,31 @@ export default class SchedulingController {
       return internalError(res, 'Erro interno ao retornar agendamentos');
     }
   }
+
+  public static async getOne(req: Request, res: Response) {
+    const schedulingId = +req.params.schedulingId;
+    const { user } = res.locals;
+
+    try {
+      const scheduling = await schedulingRepository.findById(
+        schedulingId,
+        user.id,
+        user.type
+      );
+
+      if (!scheduling)
+        return notFound(
+          res,
+          `Agendamento com id ${schedulingId} não encontrado.`
+        );
+
+      return res.status(200).json(scheduling);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro interno ao retornar agendamentos');
+    }
+  }
 }
 
 function hoursFromScheduling(scheduling: SchedulingType): number {

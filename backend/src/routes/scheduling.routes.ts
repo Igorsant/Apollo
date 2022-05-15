@@ -4,6 +4,7 @@ import authGuard from '../middlewares/authGuard.middleware';
 import {
   createSchedulingSchema,
   deleteSchedulingSchema,
+  schedulingIdSchema,
   schedulingQuerySchema
 } from '../schemas/scheduling.schema';
 import SchedulingController from '../controllers/SchedulingController';
@@ -28,6 +29,12 @@ schedulingRouter.get(
   authGuard(),
   validateReq(schedulingQuerySchema, 'query'),
   SchedulingController.get
+);
+schedulingRouter.get(
+  '/:schedulingId',
+  authGuard(),
+  validateReq(schedulingIdSchema, 'params'),
+  SchedulingController.getOne
 );
 
 export default schedulingRouter;

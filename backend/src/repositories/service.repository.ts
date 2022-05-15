@@ -7,6 +7,14 @@ import ServiceType from '../types/service.type';
 class ServiceRepository {
   private tableName = 'service';
 
+  public async findByIds(ids: number[]) {
+    return databaseService.connection
+      .table(this.tableName)
+      .select('starting_price', 'estimated_time')
+      .whereIn('id', ids)
+      .then((rows) => rows.map(toCamel));
+  }
+
   public async insertAll(
     services: ServiceType[],
     trx: Knex = databaseService.connection

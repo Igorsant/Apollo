@@ -6,6 +6,7 @@ import customerRouter from './routes/customer.routes';
 import databaseService from './services/DatabaseService';
 import professionalRouter from './routes/professional.routes';
 import reviewRouter from './routes/review.routes';
+import schedulingRouter from './routes/scheduling.routes';
 
 databaseService
   .connect()
@@ -13,15 +14,16 @@ databaseService
     console.log('Banco de dados conectado com sucesso');
 
     const app = express();
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 3001;
 
-    app.use(cors())
+    app.use(cors());
     app.use(express.json({ limit: '20mb' }));
 
     app.use('/pictures', express.static(PICTURES_FOLDER));
-    app.use('/professionals', professionalRouter);
     app.use('/customers', customerRouter);
+    app.use('/professionals', professionalRouter);
     app.use('/reviews', reviewRouter);
+    app.use('/schedulings', schedulingRouter);
 
     app.listen(port, () => {
       console.log(`Servidor disponível em http://localhost:${port}`);

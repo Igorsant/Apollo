@@ -1,9 +1,9 @@
 type ServiceType = {
+  estimatedTime?: number;
   id?: number;
-  estimatedDuration: number;
-  name: string;
+  name?: string;
   professionalId?: number;
-  startingPrice: number;
+  startingPrice?: number;
 };
 
 export default ServiceType;

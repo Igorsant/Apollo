@@ -1,63 +1,79 @@
-import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 
-import { cpfIsValid } from '../helpers/cpf.helper';
+import { badRequest, internalError, notFound } from '../helpers/http.helper';
+import ServiceType from '../types/service.type';
+import databaseService from '../services/DatabaseService';
+import professionalRepository from '../repositories/professional.repository';
 import schedulingRepository from '../repositories/scheduling.repository';
-import {
-  badRequest,
-  conflict,
-  forbidden,
-  internalError,
-  notFound
-} from '../helpers/http.helper';
-import {
-  deletePicture,
-  saveBase64Image,
-  userPicture
-} from '../helpers/image.helper';
-import phoneRepository from '../repositories/phone.repository';
+import serviceRepository from '../repositories/service.repository';
 
 export default class SchedulingController {
   public static async create(req: Request, res: Response) {
     const scheduling = req.body;
 
-    // if (!cpfIsValid(scheduling.cpf))
-    //   return badRequest(res, `cpf ${scheduling.cpf} é inválido.`);
+    const { professionalId, startTime, serviceIds } = scheduling;
 
-    // try {
-    //   scheduling.pictureName = await saveBase64Image(scheduling.pictureBase64);
-    //   delete scheduling.pictureBase64;
-    // } catch (err) {
-    //   console.error(err);
-    //   return internalError(res, 'Erro interno ao salvar imagem.');
-    // }
+    const professionalExists = await professionalRepository.exists(
+      +professionalId
+    );
 
-    // const salt = await bcrypt.genSalt(10);
-    // scheduling.passwordHash = await bcrypt.hash(scheduling.password, salt);
-    // delete scheduling.password;
+    if (!professionalExists) {
+      const noProfessionalError = `professionalId ${professionalId} não encontrado.`;
+      return badRequest(res, noProfessionalError);
+    }
 
-    // try {
-    //   await schedulingRepository.insert(scheduling);
+    const availableServices = await serviceRepository.findByProfessionalId(
+      +professionalId
+    );
 
-    //   scheduling.picturePath = userPicture(scheduling.pictureName);
+    if (!availableServices) {
+      const noServicesError = `professionalId ${professionalId} não possui serviços disponíveis.`;
+      return badRequest(res, noServicesError);
+    }
 
-    //   delete scheduling.passwordHash;
-    //   delete scheduling.pictureName;
+    let selectedServices: ServiceType[] = availableServices.filter(
+      (service: ServiceType) => serviceIds.includes(service.id)
+    );
 
-    //   return res.status(201).json(scheduling);
-    // } catch (err) {
-    //   if (scheduling.pictureName) deletePicture(scheduling.pictureName);
+    if (!selectedServices) {
+      const noAvailableServicesError = `Não foi possível buscar serviços para professionalId ${professionalId}`;
+      return internalError(res, noAvailableServicesError);
+    }
 
-    //   if (err.routine?.includes('unique')) {
-    //     const [_, key] = err.constraint.split('_');
+    if (!selectedServices.length) {
+      const servicesNotFoundError = `Serviços selecionados [${serviceIds}] não encontrados.`;
+      return notFound(res, servicesNotFoundError);
+    }
 
-    //     return conflict(res, key, scheduling[key]);
-    //   }
+    try {
+      selectedServices = await serviceRepository.findByIds(
+        selectedServices.map((s: ServiceType) => +s.id)
+      );
 
-    //   console.error(err);
+      const [estimatedTime, totalPrice] = selectedServices.reduce(
+        (total: number[], current: ServiceType) => [
+          total[0] + +current.estimatedTime,
+          total[1] + +current.startingPrice
+        ],
+        [0, 0]
+      );
 
-    //   return internalError(res, 'Erro ao inserir agendamento no banco de dados');
-    // }
+      const startTimeInMilisseconds = Date.parse(startTime)
+      const serviceDurationInMilisseconds = estimatedTime * 60000
+
+      const endTime = startTimeInMilisseconds + serviceDurationInMilisseconds;
+
+      scheduling.totalPrice = totalPrice;
+      scheduling.endTime = endTime
+
+      // TODO Adicionar scheduling no banco e linkar cada servico a ele
+
+      return res
+        .status(201)
+        .json({ message: 'Agendamento criado com sucesso.' });
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Não foi possível realizar o agendamento');
+    }
   }
 }

@@ -7,45 +7,29 @@ import SchedulingType from '../types/scheduling.type';
 class SchedulingRepository {
   private tableName = 'scheduling';
 
-  public async insertAll(
-    schedulings: SchedulingType[],
-    trx: Knex = databaseService.connection
-  ) {
-    if (schedulings.length === 0) return;
-    return trx(this.tableName).insert(schedulings.map(toSnake));
-  }
-
-  public async findByProfessionalId(professionalId: number) {
+  public async createScheduling(scheduling: SchedulingType) {
     return databaseService.connection
       .table(this.tableName)
-      .select('id', 'name', 'starting_price', 'estimated_time')
-      .where('professional_id', professionalId)
-      .then((rows) => rows.map(toCamel));
+      .insert(scheduling)
+      .returning('id');
   }
 
-  public async deleteAll(
-    schedulingIds: number[],
-    trx: Knex = databaseService.connection
-  ) {
-    return trx(this.tableName).delete().whereIn('id', schedulingIds);
-  }
 
-  public async updateAll(
-    schedulings: SchedulingType[],
-    trx: Knex = databaseService.connection
-  ) {
-    const toUpdate = schedulings.filter((s) => s.id);
-    const toCreate = schedulings.filter((s) => !s.id);
+  // public async insertAll(
+  //   schedulings: SchedulingType[],
+  //   trx: Knex = databaseService.connection
+  // ) {
+  //   if (schedulings.length === 0) return;
+  //   return trx(this.tableName).insert(schedulings.map(toSnake));
+  // }
 
-    if (toCreate.length > 0) await this.insertAll(toCreate, trx);
-
-    const promises = [];
-    for (const s of toUpdate) {
-      promises.push(trx(this.tableName).update(toSnake(s)).where('id', s.id));
-    }
-
-    return Promise.all(promises);
-  }
+  // public async findByProfessionalId(professionalId: number) {
+  //   return databaseService.connection
+  //     .table(this.tableName)
+  //     .select('id', 'name', 'starting_price', 'estimated_time')
+  //     .where('professional_id', professionalId)
+  // .then((rows) => rows.map(toCamel));
+  // }
 }
 
 const schedulingRepository = new SchedulingRepository();

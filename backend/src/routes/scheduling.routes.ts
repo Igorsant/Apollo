@@ -14,7 +14,7 @@ const schedulingRouter = express.Router();
 
 schedulingRouter.post(
   '/',
-  authGuard('CUSTOMER'),
+  // authGuard('CUSTOMER'),
   validateReq(createSchedulingSchema, 'body'),
   SchedulingController.create
 );

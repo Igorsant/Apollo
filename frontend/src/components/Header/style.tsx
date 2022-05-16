@@ -24,3 +24,38 @@ export const NavItem = styled.li`
 export const Logo = styled(Link)`
   font-size: 1.5em;
 `;
+
+export const ClickableLogo = styled.div`
+  display: flex;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const DropdownContent = styled.ul`
+  display: none;
+  position: absolute;
+  list-style: none;
+  box-shadow: -5px 0px 20px rgba(0, 0, 0, 0.2);
+  background-color: var(--background);
+  width: 10%;
+  li {
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+    border-bottom: 1px solid gray;
+  }
+  li:hover {
+    cursor: pointer;
+  }
+`;
+
+export const Wrapper = styled.div`
+  & ${ClickableLogo}:hover + ${DropdownContent} {
+    display: block;
+  }
+  ${DropdownContent}:hover {
+    display: block;
+  }
+  margin: auto 0;
+`;

@@ -19,7 +19,7 @@ schedulingRouter.post(
 schedulingRouter.delete(
   '/:schedulingId',
   authGuard('CUSTOMER'),
-  validateReq(deleteSchedulingSchema, 'query'),
+  validateReq(deleteSchedulingSchema, 'params'),
   SchedulingController.deleteById
 );
 

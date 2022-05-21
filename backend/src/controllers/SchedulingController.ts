@@ -150,11 +150,15 @@ export default class SchedulingController {
     const { user } = res.locals;
 
     try {
-      const schedulings = await schedulingRepository.findAll(
-        user.id,
-        user.type,
-        confirmed
-      );
+      const schedulings = await schedulingRepository
+        .findAll(user.id, user.type, confirmed)
+        .then((schedulings) => {
+          for (const s of schedulings)
+            if (user.type === 'CUSTOMER') delete s.customer;
+            else delete s.professional;
+
+          return schedulings;
+        });
 
       return res.status(200).json(schedulings);
     } catch (err) {
@@ -180,6 +184,9 @@ export default class SchedulingController {
           res,
           `Agendamento com id ${schedulingId} não encontrado.`
         );
+
+      if (user.type === 'CUSTOMER') delete scheduling.customer;
+      else delete scheduling.professional;
 
       return res.status(200).json(scheduling);
     } catch (err) {

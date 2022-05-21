@@ -6,6 +6,7 @@ import SchedulingType from '../types/scheduling.type';
 import { userPicture } from '../helpers/image.helper';
 import professionalRepository from './professional.repository';
 import serviceRepository from './service.repository';
+import customerRepository from './customer.repository';
 
 class SchedulingRepository {
   private tableName = 'scheduling';
@@ -73,11 +74,14 @@ class SchedulingRepository {
     const userField =
       userType === 'CUSTOMER' ? 'customer_id' : 'professional_id';
 
+    const todayString = new Date().toISOString().split('T')[0];
+
     const schedulings = await databaseService.connection
       .table(this.tableName)
       .select(
         'id',
         'professional_id',
+        'customer_id',
         'start_time',
         'end_time',
         'total_price',
@@ -85,6 +89,7 @@ class SchedulingRepository {
       )
       .where('confirmed', confirmed)
       .andWhere(userField, userId)
+      .andWhere('start_time', '>', todayString)
       .then((rows) => rows.map(toCamel) as SchedulingType[]);
 
     for (const scheduling of schedulings) {
@@ -101,9 +106,21 @@ class SchedulingRepository {
 
       professional.picturePath = userPicture(professional.pictureName);
       delete professional.pictureName;
-      delete scheduling.professionalId;
 
       scheduling.professional = professional;
+
+      const customer = await customerRepository.findById(
+        scheduling.customerId,
+        ['nickname', 'picture_name']
+      );
+
+      customer.picturePath = userPicture(customer.pictureName);
+      delete customer.pictureName;
+
+      scheduling.customer = customer;
+
+      delete scheduling.customerId;
+      delete scheduling.professionalId;
 
       scheduling.services = await serviceRepository.findByIds(servicesIds);
     }
@@ -119,11 +136,14 @@ class SchedulingRepository {
     const userField =
       userType === 'CUSTOMER' ? 'customer_id' : 'professional_id';
 
+    const todayString = new Date().toISOString().split('T')[0];
+
     const scheduling = await databaseService.connection
       .table(this.tableName)
       .select(
         'id',
         'professional_id',
+        'customer_id',
         'start_time',
         'end_time',
         'total_price',
@@ -131,6 +151,7 @@ class SchedulingRepository {
       )
       .where('id', id)
       .andWhere(userField, userId)
+      .andWhere('start_time', '>', todayString)
       .first()
       .then((row) => toCamel(row) as SchedulingType);
 
@@ -149,9 +170,21 @@ class SchedulingRepository {
 
     professional.picturePath = userPicture(professional.pictureName);
     delete professional.pictureName;
-    delete scheduling.professionalId;
 
     scheduling.professional = professional;
+
+    const customer = await customerRepository.findById(scheduling.customerId, [
+      'nickname',
+      'picture_name'
+    ]);
+
+    customer.picturePath = userPicture(customer.pictureName);
+    delete customer.pictureName;
+
+    scheduling.customer = customer;
+
+    delete scheduling.customerId;
+    delete scheduling.professionalId;
 
     scheduling.services = await serviceRepository.findByIds(servicesIds);
 

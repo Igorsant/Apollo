@@ -7,18 +7,10 @@ import phoneRepository from './phone.repository';
 class CustomerRepository {
   private tableName = 'customer';
 
-  public async findById(id: number): Promise<any> {
+  public async findById(id: number, fields = ['*']): Promise<any> {
     return databaseService.connection
       .table(this.tableName)
-      .select(
-        'full_name',
-        'nickname',
-        'phone_id',
-        'picture_name',
-        'email',
-        'cpf',
-        'password_hash'
-      )
+      .select(...fields)
       .where('id', id)
       .first()
       .then(toCamel);

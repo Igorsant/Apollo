@@ -10,6 +10,7 @@ type SchedulingType = {
   startTime?: Date;
   totalPrice?: string;
   professional?: { nickname: string; picturePath: string; id: number };
+  customer?: { nickname: string; picturePath: string };
 };
 
 export default SchedulingType;

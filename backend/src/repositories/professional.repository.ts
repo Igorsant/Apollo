@@ -39,6 +39,8 @@ class ProfessionalRepository {
       .first()
       .then(toCamel);
 
+    if (!professional) return null;
+
     const { phone } = await phoneRepository.findById(professional.phoneId);
 
     professional.phone = phone;

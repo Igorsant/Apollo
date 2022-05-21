@@ -1,12 +1,17 @@
 import { Request, Response } from 'express';
 
-import { badRequest, internalError, notFound } from '../helpers/http.helper';
-import ServiceType from '../types/service.type';
+import {
+  badRequest,
+  internalError,
+  notFound,
+  unauthorizedAccess
+} from '../helpers/http.helper';
 import databaseService from '../services/DatabaseService';
 import professionalRepository from '../repositories/professional.repository';
 import schedulingRepository from '../repositories/scheduling.repository';
-import serviceRepository from '../repositories/service.repository';
 import SchedulingType from '../types/scheduling.type';
+import serviceRepository from '../repositories/service.repository';
+import ServiceType from '../types/service.type';
 
 export default class SchedulingController {
   public static async create(req: Request, res: Response) {
@@ -97,6 +102,21 @@ export default class SchedulingController {
         console.log(err);
         return internalError(res, 'Erro ao criar agendamento.');
       }
+    });
+  }
+
+  public static async deleteById(req: Request, res: Response) {
+    const { schedulingId } = req.query;
+
+    return databaseService.connection.transaction(async (trx) => {
+      try {
+        // TODO Remover tudo o que tiver relacionado com esse agendamento se não tiver sido confirmado
+      } catch (err) {
+        console.error(err);
+        return internalError(res, 'Não foi possível remover o agendamento');
+      }
+
+      return unauthorizedAccess(res);
     });
   }
 }

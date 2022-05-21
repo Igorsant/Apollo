@@ -10,6 +10,10 @@ export const createSchedulingSchema = Joi.object({
     .required()
 });
 
+export const deleteSchedulingSchema = Joi.object({
+  schedulingId: Joi.number().integer().required()
+});
+
 const schedulingSchema = Joi.object({});
 
 export default schedulingSchema;

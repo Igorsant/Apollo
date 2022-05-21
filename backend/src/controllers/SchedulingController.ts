@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
 import { badRequest, internalError, notFound } from '../helpers/http.helper';
-import ServiceType from '../types/service.type';
 import databaseService from '../services/DatabaseService';
 import professionalRepository from '../repositories/professional.repository';
 import schedulingRepository from '../repositories/scheduling.repository';
-import serviceRepository from '../repositories/service.repository';
 import SchedulingType from '../types/scheduling.type';
+import serviceRepository from '../repositories/service.repository';
+import ServiceType from '../types/service.type';
 
 export default class SchedulingController {
   public static async create(req: Request, res: Response) {
@@ -99,4 +99,59 @@ export default class SchedulingController {
       }
     });
   }
+
+  public static async deleteById(req: Request, res: Response) {
+    const { schedulingId } = req.params;
+
+    return databaseService.connection.transaction(async (trx) => {
+      let scheduling: SchedulingType;
+
+      try {
+        scheduling = await schedulingRepository.findById(+schedulingId, trx);
+
+        if (!scheduling) {
+          return badRequest(
+            res,
+            `Não existe agendamento com id ${schedulingId}`
+          );
+        }
+      } catch (err) {
+        console.error(err);
+        return internalError(res, 'Houve algum erro ao buscar por agendamento');
+      }
+
+      const toleranceHours = 24;
+      const remainingHoursUntilService = hoursFromScheduling(scheduling);
+
+      if (remainingHoursUntilService < toleranceHours) {
+        const errorMessage =
+          'Não é possível remover agendamento com menos de 24h de antecedência';
+        return badRequest(res, errorMessage);
+      }
+
+      try {
+        await schedulingRepository.removeById(+schedulingId);
+      } catch (err) {
+        console.error(err);
+        return internalError(
+          res,
+          'Houve algum erro durante a remoção do agendamento'
+        );
+      }
+
+      return res
+        .status(204)
+        .json({ message: 'Agendamento removido com sucesso.' });
+    });
+  }
+}
+
+function hoursFromScheduling(scheduling: SchedulingType): number {
+  const currentTimestamp = Date.now();
+  const schedulingTimestamp = scheduling.startTime.getTime();
+
+  const remainingTime = schedulingTimestamp - currentTimestamp;
+  const remainingHours = Math.ceil(remainingTime / (1000 * 60 * 60));
+
+  return remainingHours;
 }

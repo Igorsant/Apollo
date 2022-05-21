@@ -1,10 +1,10 @@
 type SchedulingType = {
-  confirmed: boolean;
+  confirmed?: boolean;
   customerId?: number;
-  endTime: Date;
+  endTime?: Date;
   professionalId?: number;
-  startTime: Date;
-  totalPrice: string;
+  startTime?: Date;
+  totalPrice?: string;
 };
 
 export default SchedulingType;

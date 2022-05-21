@@ -69,6 +69,7 @@ CREATE TABLE Review (
 	customer_id INTEGER NOT NULL,
 	comment VARCHAR(512),
 	rating SMALLINT NOT NULL,
+	last_modified TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (professional_id) REFERENCES Professional(id),

@@ -20,19 +20,22 @@ class ReviewRepository {
       .where('id', id)
       .update({
         comment: review.comment,
-        rating: review.rating
+        rating: review.rating,
+        last_modified: review.lastModified
       });
   }
 
   public async findByProfessionalId(professionalId: number, rating?: number) {
     const reviews = await databaseService.connection
       .table(this.tableName)
-      .select('rating', 'comment', 'customer_id')
+      .select('rating', 'comment', 'customer_id', 'last_modified')
       .where('professional_id', professionalId)
       .modify((queryBuilder) => {
         if (rating) queryBuilder.andWhere('rating', '=', rating);
       })
       .then((rows) => rows.map(toCamel) as any[]);
+
+    console.log(reviews);
 
     for (const r of reviews) {
       const { fullName, pictureName } = await customerRepository.findById(

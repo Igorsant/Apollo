@@ -311,4 +311,29 @@ export default class ProfessionalController {
       return internalError(res, 'Erro ao retornar profissionais favoritados.');
     }
   }
+
+  public static async getById(req: Request, res: Response) {
+    const { professionalId } = req.params;
+
+    try {
+      const professionalArray = await professionalRepository.findByIds([
+        +professionalId
+      ]);
+
+      if (!(professionalArray && professionalArray.length))
+        return badRequest(res, 'Profissional não existente');
+
+      const professional = professionalArray[0];
+
+      delete professional.id;
+      delete professional.passwordHash;
+      delete professional.pictureName;
+
+      return res.status(200).json(professional);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro interno ao buscar profissional');
+    }
+  }
 }

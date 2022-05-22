@@ -52,5 +52,10 @@ professionalRouter.get(
   authGuard('CUSTOMER'),
   ProfessionalController.getFavorites
 );
+professionalRouter.get(
+  '/:professionalId',
+  validateReq(professionalIdSchema, 'params'),
+  ProfessionalController.getById
+);
 
 export default professionalRouter;

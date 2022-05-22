@@ -118,7 +118,8 @@ class SchedulingRepository {
   public async findById(
     id: number,
     userId: number,
-    userType: 'CUSTOMER' | 'PROFESSIONAL'
+    userType: 'CUSTOMER' | 'PROFESSIONAL',
+    confirmed: boolean = false
   ) {
     const userField =
       userType === 'CUSTOMER' ? 'customer_id' : 'professional_id';
@@ -137,6 +138,7 @@ class SchedulingRepository {
         'confirmed'
       )
       .where('id', id)
+      .andWhere('confirmed', confirmed)
       .andWhere(userField, userId)
       .andWhere('start_time', '>', todayString)
       .first()
@@ -176,6 +178,13 @@ class SchedulingRepository {
     scheduling.services = await serviceRepository.findByIds(servicesIds);
 
     return scheduling;
+  }
+
+  public async confirmById(schedulingId: string) {
+    return databaseService.connection
+      .table(this.tableName)
+      .update('confirmed', true)
+      .where('id', schedulingId);
   }
 }
 

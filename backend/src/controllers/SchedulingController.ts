@@ -173,6 +173,38 @@ export default class SchedulingController {
     }
   }
 
+  public static async acceptById(req: Request, res: Response) {
+    const { schedulingId } = req.params;
+
+    let scheduling: SchedulingType;
+
+    try {
+      const { user } = res.locals;
+      scheduling = await schedulingRepository.findById(
+        +schedulingId,
+        user.id,
+        'PROFESSIONAL'
+      );
+
+      if (!scheduling) {
+        const errorMessage = `Não existe agendamento com id ${schedulingId}`;
+        return badRequest(res, errorMessage);
+      }
+    } catch (err) {
+      console.error(err);
+      const errorMessage = `Não foi possível buscar o agendamento com id ${schedulingId}`;
+      return internalError(res, errorMessage);
+    }
+
+    try {
+      await schedulingRepository.confirmById(schedulingId);
+      return res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Não foi possível confirmar agendamento');
+    }
+  }
+
   public static async getOne(req: Request, res: Response) {
     const schedulingId = +req.params.schedulingId;
     const { user } = res.locals;

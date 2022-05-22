@@ -41,19 +41,6 @@ class SchedulingRepository {
     return trx(this.schedulingServiceTable).insert(schedulingServices);
   }
 
-  public async findById(
-    schedulingId: number,
-    trx: Knex = databaseService.connection
-  ) {
-    const scheduling = trx
-      .table(this.tableName)
-      .select('*')
-      .where('id', schedulingId)
-      .first()
-      .then(toCamel);
-    return scheduling;
-  }
-
   public async removeById(
     schedulingId: number,
     trx: Knex = databaseService.connection

@@ -102,12 +102,17 @@ export default class SchedulingController {
 
   public static async deleteById(req: Request, res: Response) {
     const { schedulingId } = req.params;
+    const user = res.locals.user;
 
     return databaseService.connection.transaction(async (trx) => {
       let scheduling: SchedulingType;
 
       try {
-        scheduling = await schedulingRepository.findById(+schedulingId, trx);
+        scheduling = await schedulingRepository.findById(
+          +schedulingId,
+          user.id,
+          user.type
+        );
 
         if (!scheduling) {
           return badRequest(

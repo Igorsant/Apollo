@@ -45,6 +45,7 @@ CREATE TABLE Professional (
 	cpf CHAR(11) UNIQUE NOT NULL,
 	password_hash VARCHAR(256) NOT NULL,
 	about_me TEXT,
+	average_rating DECIMAL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone_id) REFERENCES Phone(id),
@@ -69,6 +70,7 @@ CREATE TABLE Review (
 	customer_id INTEGER NOT NULL,
 	comment VARCHAR(512),
 	rating SMALLINT NOT NULL,
+	last_modified TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (professional_id) REFERENCES Professional(id),

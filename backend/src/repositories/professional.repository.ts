@@ -80,7 +80,8 @@ class ProfessionalRepository {
         'workplace_id',
         'full_name',
         'nickname',
-        'picture_name'
+        'picture_name',
+        'average_rating'
       )
       .whereIn('id', ids)
       .then((rows) => rows.map(toCamel) as any[]);
@@ -186,6 +187,16 @@ class ProfessionalRepository {
     return trx(this.tableName)
       .update(toSnake(localProfessional))
       .where('id', id);
+  }
+
+  public async updateAverageRating(
+    professionalId: number,
+    averageRating: number
+  ) {
+    return databaseService.connection
+      .table(this.tableName)
+      .update('average_rating', averageRating)
+      .where('id', professionalId);
   }
 }
 

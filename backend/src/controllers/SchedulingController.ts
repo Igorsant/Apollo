@@ -104,50 +104,45 @@ export default class SchedulingController {
     const { schedulingId } = req.params;
     const user = res.locals.user;
 
-    return databaseService.connection.transaction(async (trx) => {
-      let scheduling: SchedulingType;
+    let scheduling: SchedulingType;
 
-      try {
-        scheduling = await schedulingRepository.findById(
-          +schedulingId,
-          user.id,
-          user.type
-        );
+    try {
+      scheduling = await schedulingRepository.findById(
+        +schedulingId,
+        user.id,
+        user.type
+      );
 
-        if (!scheduling) {
-          return badRequest(
-            res,
-            `Não existe agendamento com id ${schedulingId}`
-          );
-        }
-      } catch (err) {
-        console.error(err);
-        return internalError(res, 'Houve algum erro ao buscar por agendamento');
+      if (!scheduling) {
+        return badRequest(res, `Não existe agendamento com id ${schedulingId}`);
       }
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Houve algum erro ao buscar por agendamento');
+    }
 
-      const toleranceHours = 24;
-      const remainingHoursUntilService = hoursFromScheduling(scheduling);
+    const toleranceHours = 24;
+    const remainingHoursUntilService = hoursFromScheduling(scheduling);
 
-      if (remainingHoursUntilService < toleranceHours) {
-        const errorMessage =
-          'Não é possível remover agendamento com menos de 24h de antecedência';
-        return badRequest(res, errorMessage);
-      }
+    if (remainingHoursUntilService < toleranceHours) {
+      const errorMessage =
+        'Não é possível remover agendamento com menos de 24h de antecedência';
+      return badRequest(res, errorMessage);
+    }
 
-      try {
-        await schedulingRepository.removeById(+schedulingId);
-      } catch (err) {
-        console.error(err);
-        return internalError(
-          res,
-          'Houve algum erro durante a remoção do agendamento'
-        );
-      }
+    try {
+      await schedulingRepository.removeById(+schedulingId);
+    } catch (err) {
+      console.error(err);
+      return internalError(
+        res,
+        'Houve algum erro durante a remoção do agendamento'
+      );
+    }
 
-      return res
-        .status(204)
-        .json({ message: 'Agendamento removido com sucesso.' });
-    });
+    return res
+      .status(204)
+      .json({ message: 'Agendamento removido com sucesso.' });
   }
 
   public static async get(req: Request, res: Response) {
@@ -170,6 +165,72 @@ export default class SchedulingController {
       console.error(err);
 
       return internalError(res, 'Erro interno ao retornar agendamentos');
+    }
+  }
+
+  public static async acceptById(req: Request, res: Response) {
+    const { schedulingId } = req.params;
+
+    let scheduling: SchedulingType;
+
+    try {
+      const { user } = res.locals;
+      scheduling = await schedulingRepository.findById(
+        +schedulingId,
+        user.id,
+        'PROFESSIONAL',
+        false
+      );
+
+      if (!scheduling) {
+        const errorMessage = `Não existe agendamento com id ${schedulingId}`;
+        return badRequest(res, errorMessage);
+      }
+    } catch (err) {
+      console.error(err);
+      const errorMessage = `Não foi possível buscar o agendamento com id ${schedulingId}`;
+      return internalError(res, errorMessage);
+    }
+
+    try {
+      await schedulingRepository.confirmById(schedulingId);
+      return res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Não foi possível confirmar agendamento');
+    }
+  }
+
+  public static async refuseById(req: Request, res: Response) {
+    const { schedulingId } = req.params;
+
+    let scheduling: SchedulingType;
+
+    try {
+      const { user } = res.locals;
+      scheduling = await schedulingRepository.findById(
+        +schedulingId,
+        user.id,
+        'PROFESSIONAL',
+        false
+      );
+
+      if (!scheduling) {
+        const errorMessage = `Não existe agendamento com id ${schedulingId}`;
+        return badRequest(res, errorMessage);
+      }
+    } catch (err) {
+      console.error(err);
+      const errorMessage = `Não foi possível buscar o agendamento com id ${schedulingId}`;
+      return internalError(res, errorMessage);
+    }
+
+    try {
+      await schedulingRepository.removeById(+schedulingId);
+      return res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      return internalError(res, 'Não foi possível confirmar agendamento');
     }
   }
 

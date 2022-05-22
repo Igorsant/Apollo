@@ -42,6 +42,12 @@ schedulingRouter.patch(
   validateReq(schedulingIdSchema, 'params'),
   SchedulingController.acceptById
 );
+schedulingRouter.patch(
+  '/:schedulingId/refuse',
+  authGuard('PROFESSIONAL'),
+  validateReq(schedulingIdSchema, 'params'),
+  SchedulingController.refuseById
+);
 
 
 export default schedulingRouter;

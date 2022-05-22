@@ -35,8 +35,6 @@ class ReviewRepository {
       })
       .then((rows) => rows.map(toCamel) as any[]);
 
-    console.log(reviews);
-
     for (const r of reviews) {
       const { fullName, pictureName } = await customerRepository.findById(
         r.customerId

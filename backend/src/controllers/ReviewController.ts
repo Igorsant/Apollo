@@ -34,6 +34,8 @@ export default class ReviewController {
     if (await reviewRepository.exists(review.professionalId, customer.id))
       return badRequest(res, 'Você já avaliou este profissional.');
 
+    review.lastModified = new Date().toISOString();
+
     try {
       await reviewRepository.insert(review);
 
@@ -60,6 +62,8 @@ export default class ReviewController {
 
     if (!(await reviewRepository.reviewExists(+reviewId)))
       return badRequest(res, 'reviewId inválido');
+
+    review.lastModified = new Date().toISOString();
 
     try {
       await reviewRepository.update(+reviewId, review);

@@ -102,12 +102,17 @@ export default class SchedulingController {
 
   public static async deleteById(req: Request, res: Response) {
     const { schedulingId } = req.params;
+    const user = res.locals.user;
 
     return databaseService.connection.transaction(async (trx) => {
       let scheduling: SchedulingType;
 
       try {
-        scheduling = await schedulingRepository.findById(+schedulingId, trx);
+        scheduling = await schedulingRepository.findById(
+          +schedulingId,
+          user.id,
+          user.type
+        );
 
         if (!scheduling) {
           return badRequest(
@@ -143,6 +148,57 @@ export default class SchedulingController {
         .status(204)
         .json({ message: 'Agendamento removido com sucesso.' });
     });
+  }
+
+  public static async get(req: Request, res: Response) {
+    const confirmed = req.query.confirmed === 'true';
+    const { user } = res.locals;
+
+    try {
+      const schedulings = await schedulingRepository
+        .findAll(user.id, user.type, confirmed)
+        .then((schedulings) => {
+          for (const s of schedulings)
+            if (user.type === 'CUSTOMER') delete s.customer;
+            else delete s.professional;
+
+          return schedulings;
+        });
+
+      return res.status(200).json(schedulings);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro interno ao retornar agendamentos');
+    }
+  }
+
+  public static async getOne(req: Request, res: Response) {
+    const schedulingId = +req.params.schedulingId;
+    const { user } = res.locals;
+
+    try {
+      const scheduling = await schedulingRepository.findById(
+        schedulingId,
+        user.id,
+        user.type
+      );
+
+      if (!scheduling)
+        return notFound(
+          res,
+          `Agendamento com id ${schedulingId} não encontrado.`
+        );
+
+      if (user.type === 'CUSTOMER') delete scheduling.customer;
+      else delete scheduling.professional;
+
+      return res.status(200).json(scheduling);
+    } catch (err) {
+      console.error(err);
+
+      return internalError(res, 'Erro interno ao retornar agendamentos');
+    }
   }
 }
 

@@ -45,6 +45,7 @@ CREATE TABLE Professional (
 	cpf CHAR(11) UNIQUE NOT NULL,
 	password_hash VARCHAR(256) NOT NULL,
 	about_me TEXT,
+	average_rating DECIMAL,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (phone_id) REFERENCES Phone(id),

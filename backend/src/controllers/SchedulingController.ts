@@ -107,12 +107,12 @@ export default class SchedulingController {
     return databaseService.connection.transaction(async (trx) => {
       let scheduling: SchedulingType;
 
-      try {
-        scheduling = await schedulingRepository.findById(
-          +schedulingId,
-          user.id,
-          user.type
-        );
+    try {
+      scheduling = await schedulingRepository.findById(
+        +schedulingId,
+        user.id,
+        user.type
+      );
 
         if (!scheduling) {
           return badRequest(
@@ -183,7 +183,8 @@ export default class SchedulingController {
       scheduling = await schedulingRepository.findById(
         +schedulingId,
         user.id,
-        'PROFESSIONAL'
+        'PROFESSIONAL',
+        false
       );
 
       if (!scheduling) {

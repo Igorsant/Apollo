@@ -119,7 +119,7 @@ class SchedulingRepository {
     id: number,
     userId: number,
     userType: 'CUSTOMER' | 'PROFESSIONAL',
-    confirmed: boolean = false
+    confirmed: boolean = null
   ) {
     const userField =
       userType === 'CUSTOMER' ? 'customer_id' : 'professional_id';
@@ -138,9 +138,11 @@ class SchedulingRepository {
         'confirmed'
       )
       .where('id', id)
-      .andWhere('confirmed', confirmed)
       .andWhere(userField, userId)
       .andWhere('start_time', '>', todayString)
+      .modify((queryBuilder) => {
+        if (confirmed !== null) queryBuilder.where('confirmed', confirmed);
+      })
       .first()
       .then((row) => toCamel(row) as SchedulingType);
 

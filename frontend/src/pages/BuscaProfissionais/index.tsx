@@ -12,13 +12,15 @@ const BuscarProfissionais = () => {
   const query = useQuery();
   // const name = query.get('name');
   const city = query.get('city');
+  const queryValue = query.get('query') || ' ';
   const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
   const [profissionais, setProfissionais] = useState<IProfissional[]>([]);
   useEffect(() => {
     api
       .get('/professionals/search', {
         params: {
-          city: city
+          city,
+          query: queryValue
         }
       })
       .then((res) => {
@@ -76,7 +78,7 @@ const BuscarProfissionais = () => {
                         <Typography>{`${profissional.workplace.street}, ${profissional.workplace.streetNumber} `}</Typography>
                       </Grid>
                       <Grid item>
-                        <Typography>{`${profissional.workplace.phone1.phone}`}</Typography>
+                        <Typography>{`${profissional.workplace.phones[0].phone}`}</Typography>
                       </Grid>
                     </Grid>
                   </CardContent>

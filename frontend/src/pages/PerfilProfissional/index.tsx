@@ -56,9 +56,10 @@ const mockProfessional = {
     street: 'Rua das Flores',
     streetNumber: '985',
     complement: 'Sala 12',
-    phone1: { phone: '8536566555', isPhoneWhatsapp: false },
-
-    phone2: { phone: '8536566555', isPhoneWhatsapp: true }
+    phones: [
+      { phone: '8536566555', isPhoneWhatsapp: false },
+      { phone: '8536566555', isPhoneWhatsapp: true }
+    ]
   }
 };
 
@@ -104,7 +105,7 @@ export default function PerfilProfissional() {
               <Grid item>
                 {`${profissional?.workplace.street}, ${profissional?.workplace.streetNumber}`}
               </Grid>
-              <Grid item>{`${profissional?.workplace.phone1.phone}`}</Grid>
+              <Grid item>{`${profissional?.workplace.phones[0].phone}`}</Grid>
               <Grid item>
                 <Button variant="contained" style={{ width: '120px' }}>
                   Agendar

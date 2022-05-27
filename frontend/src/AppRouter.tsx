@@ -20,7 +20,6 @@ export const AppRouter = () => {
         <Route path="/cadastro/profissional" element={<CadastroProfissional />} />
         <Route path="/perfil/profissional/:id" element={<PerfilProfissional />} />
         <Route path="/buscar/profissional" element={<BuscarProfissionais />} />
-        <Route path="/perfil/Profissional/:id" element={<PerfilProfissional />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>

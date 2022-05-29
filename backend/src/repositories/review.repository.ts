@@ -28,7 +28,7 @@ class ReviewRepository {
   public async findByProfessionalId(professionalId: number, rating?: number) {
     const reviews = await databaseService.connection
       .table(this.tableName)
-      .select('rating', 'comment', 'customer_id', 'last_modified')
+      .select('id', 'rating', 'comment', 'customer_id', 'last_modified')
       .where('professional_id', professionalId)
       .modify((queryBuilder) => {
         if (rating) queryBuilder.andWhere('rating', '=', rating);
@@ -70,6 +70,17 @@ class ReviewRepository {
       .table(this.tableName)
       .where('id', reviewId)
       .delete();
+  }
+
+  public async userOwnsReview(
+    userId: number,
+    reviewId: number
+  ): Promise<boolean> {
+    return databaseService.connection
+      .table(this.tableName)
+      .where('id', reviewId)
+      .andWhere('customer_id', userId)
+      .then((rows) => rows.length > 0);
   }
 }
 

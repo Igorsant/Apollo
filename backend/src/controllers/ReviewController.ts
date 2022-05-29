@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { badRequest, internalError } from '../helpers/http.helper';
+import { badRequest, forbidden, internalError } from '../helpers/http.helper';
 import professionalRepository from '../repositories/professional.repository';
 import reviewRepository from '../repositories/review.repository';
 
@@ -61,6 +61,7 @@ export default class ReviewController {
   public static async update(req: Request, res: Response) {
     const { reviewId } = req.params;
     const review = req.body;
+    const { id: userId } = res.locals.user;
 
     const professionalExists = await professionalRepository.exists(
       review.professionalId
@@ -69,6 +70,9 @@ export default class ReviewController {
 
     if (!(await reviewRepository.reviewExists(+reviewId)))
       return badRequest(res, 'reviewId inválido');
+
+    if (!(await reviewRepository.userOwnsReview(userId, +reviewId)))
+      return forbidden(res);
 
     review.lastModified = new Date().toISOString();
 
@@ -96,9 +100,13 @@ export default class ReviewController {
 
   public static async delete(req: Request, res: Response) {
     const { reviewId } = req.params;
+    const { id: userId } = res.locals.user;
 
     if (!(await reviewRepository.reviewExists(+reviewId)))
       return badRequest(res, 'reviewId inválido');
+
+    if (!(await reviewRepository.userOwnsReview(userId, +reviewId)))
+      return forbidden(res);
 
     try {
       await reviewRepository.delete(+reviewId);

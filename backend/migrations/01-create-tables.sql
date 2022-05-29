@@ -68,7 +68,7 @@ CREATE TABLE Review (
 	id SERIAL NOT NULL,
 	professional_id INTEGER NOT NULL,
 	customer_id INTEGER NOT NULL,
-	comment VARCHAR(512),
+	comment VARCHAR(1024),
 	rating SMALLINT NOT NULL,
 	last_modified TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

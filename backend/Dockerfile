@@ -18,7 +18,8 @@ COPY package*.json ./
 
 RUN npm ci --only=production
 
-COPY --from=build /usr/src/app/* ./
+COPY --from=build /usr/src/app/build/ ./
+COPY --from=build /usr/src/app/static ./static
 
 EXPOSE $PORT
 

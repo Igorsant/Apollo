@@ -7,7 +7,7 @@ import databaseService from './services/DatabaseService';
 import professionalRouter from './routes/professional.routes';
 import reviewRouter from './routes/review.routes';
 import schedulingRouter from './routes/scheduling.routes';
-console.log('hello world');
+
 databaseService
   .connect()
   .then(() => {

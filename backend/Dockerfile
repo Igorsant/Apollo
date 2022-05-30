@@ -20,4 +20,6 @@ RUN npm ci --only=production
 
 COPY --from=build /usr/src/app/* ./
 
-CMD node src/index.js
+EXPOSE $PORT
+
+CMD ["node", "src/index.js"]

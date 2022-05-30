@@ -23,7 +23,21 @@ const config: { [key: string]: Knex.Config } = {
       tableName: 'knex_migrations'
     },
     seeds: {
-      directory: "./seeds"
+      directory: './seeds'
+    }
+  },
+  production: {
+    client: 'postgresql',
+    connection: env['DATABASE_URL'],
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    },
+    seeds: {
+      directory: './seeds'
     }
   }
 };

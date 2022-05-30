@@ -20,4 +20,4 @@ RUN npm ci --only=production
 
 COPY --from=build /usr/src/app/* ./
 
-ENTRYPOINT node src/index.js
+CMD node src/index.js

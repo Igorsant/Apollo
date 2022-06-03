@@ -1,4 +1,4 @@
-import { Avatar, Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { ApolloAlert } from '../../components/Alert/Alert';
@@ -7,6 +7,7 @@ import useQuery from '../../hooks/useQuery';
 import api from '../../services/api';
 import IAlert from '../../types/IAlert';
 import IProfissional from '../../types/IProfissional';
+import { UserAvatar } from '../../components/UserAvatar/UserAvatar';
 
 const BuscarProfissionais = () => {
   const query = useQuery();
@@ -65,7 +66,10 @@ const BuscarProfissionais = () => {
                         alignItems="center"
                       >
                         <Grid item>
-                          <Avatar alt={profissional.nickname} src={profissional.pictureBase64} />
+                          <UserAvatar
+                            alt={profissional.nickname}
+                            picturePath={profissional.picturePath}
+                          ></UserAvatar>
                         </Grid>
                         <Grid item>
                           <Typography>{profissional.fullName}</Typography>

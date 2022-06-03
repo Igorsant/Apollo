@@ -21,7 +21,7 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
             <ClickableLogo>
               <Avatar
                 alt="default user"
-                src="https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?fit=300%2C300&ssl=1"
+                src={process.env.REACT_APP_API_URL + user.picturePath}
                 style={{ margin: 'auto 0' }}
               ></Avatar>
               <h3 style={{ margin: 'auto 10px' }}>Bem vindo, {user.nickname}</h3>

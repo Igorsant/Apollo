@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001/'
+  baseURL: process.env.REACT_APP_API_URL
 });
 // api.interceptors.request.use(async (config) => {
 // //   config.headers["Content-Type"] = "application/json;charset=utf-8";

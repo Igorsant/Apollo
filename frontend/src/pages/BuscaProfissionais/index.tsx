@@ -48,7 +48,7 @@ const BuscarProfissionais = () => {
           return (
             <Grid key={profissional.id} item sm={12} md={12}>
               <Card sx={{ width: '100%' }}>
-                <CardActionArea component={Link} to={`/perfil/profissional/${profissional.id}`}>
+                <CardActionArea component={Link} to={`/profissional/perfil/${profissional.id}`}>
                   <CardContent>
                     <Grid
                       container

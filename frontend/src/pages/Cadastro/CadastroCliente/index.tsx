@@ -112,7 +112,7 @@ const CadastroCliente = () => {
             <Grid item xs={12} md={6} style={{ textAlign: 'center' }}>
               <Button
                 component={Link}
-                to="/cadastro/profissional"
+                to="/profissional/cadastro"
                 variant="text"
                 style={{ textTransform: 'none' }}
               >

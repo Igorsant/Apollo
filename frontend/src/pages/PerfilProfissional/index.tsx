@@ -48,7 +48,7 @@ const mockProfessional = {
   id: 1,
   fullName: 'Felipe Gonçalves',
   nickname: 'felipe',
-  picturePath: '',
+  picturePath: '/pictures/default_user.jpg',
   aboutMe: 'AboutMe Test',
   phone: '85999084524',
   services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],

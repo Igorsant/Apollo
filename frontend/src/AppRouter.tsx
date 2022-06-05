@@ -14,13 +14,13 @@ export const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cadastro/cliente" element={<CadastroCliente />} />
+        <Route path="/cadastro" element={<CadastroCliente />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/login/profissional" element={<LoginProfissional />} />
-        <Route path="/cadastro/profissional" element={<CadastroProfissional />} />
-        <Route path="/perfil/profissional/:id" element={<PerfilProfissional />} />
-        <Route path="/buscar/profissional" element={<BuscarProfissionais />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profissional/login" element={<LoginProfissional />} />
+        <Route path="/profissional/cadastro" element={<CadastroProfissional />} />
+        <Route path="/profissional/perfil/:id" element={<PerfilProfissional />} />
+        <Route path="/buscar" element={<BuscarProfissionais />} />
       </Routes>
     </BrowserRouter>
   );

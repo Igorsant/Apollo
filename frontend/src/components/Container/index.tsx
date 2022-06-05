@@ -21,7 +21,7 @@ export const ApolloContainer: FC<ContainerProps> = ({
       {!ehCadastro && !usuarioLogado && (
         <Button
           component={Link}
-          to="/cadastro/cliente"
+          to="/cadastro"
           color="secondary"
           variant="text"
           style={{ gridColumnStart: '1', gridColumnEnd: '3' }}

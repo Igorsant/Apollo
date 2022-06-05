@@ -71,7 +71,7 @@ const Login = () => {
         {' '}
         <Button
           component={Link}
-          to="/cadastro/cliente"
+          to="/cadastro"
           color="secondary"
           variant="text"
           style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
@@ -119,7 +119,7 @@ const Login = () => {
             <Grid item xs={12} md={6} style={{ textAlign: 'center' }}>
               <Button
                 component={Link}
-                to="/login/profissional"
+                to="/profissional/login"
                 variant="text"
                 style={{ textTransform: 'none' }}
               >

@@ -5,7 +5,7 @@ export default interface IProfissional {
   id: number;
   fullName: string;
   nickname: string;
-  pictureBase64: string;
+  picturePath: string;
   aboutMe: string;
   email?: string;
   phone: string;

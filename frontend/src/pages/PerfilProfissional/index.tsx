@@ -48,7 +48,7 @@ const mockProfessional = {
   id: 1,
   fullName: 'Felipe Gonçalves',
   nickname: 'felipe',
-  pictureBase64: '',
+  picturePath: '/pictures/default_user.jpg',
   aboutMe: 'AboutMe Test',
   phone: '85999084524',
   services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],
@@ -98,7 +98,7 @@ export default function PerfilProfissional() {
         <Grid container>
           <Grid container item alignItems="flex-start" xs={12} md={12}>
             <Grid item xs={2} container justify="center" alignItems="center">
-              <Image src={profissional?.pictureBase64}></Image>
+              <Image src={profissional?.picturePath}></Image>
             </Grid>
             <Grid item direction="column" container xs={8} spacing={2}>
               <Grid item> {profissional?.fullName}</Grid>

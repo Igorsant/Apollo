@@ -129,7 +129,7 @@ const CadastroProfissional = () => {
       .then((res) => {
         if (res.status === 201) {
           console.log('Sucesso');
-          navigate('/login/profissional', { replace: true });
+          navigate('/profissional/login', { replace: true });
         }
       })
       .catch((err) => {

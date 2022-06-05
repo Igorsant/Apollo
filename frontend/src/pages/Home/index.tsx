@@ -39,7 +39,7 @@ const Home = () => {
       <Header>
         <Button
           component={Link}
-          to="/cadastro/cliente"
+          to="/cadastro"
           color="secondary"
           variant="text"
           style={ButtonStyle}
@@ -74,7 +74,7 @@ const Home = () => {
                   variant="contained"
                   style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
                   onClick={() => {
-                    navigate(`/buscar/profissional?city=${search.city}&query=${search.query}`, {
+                    navigate(`/buscar?city=${search.city}&query=${search.query}`, {
                       replace: true
                     });
                   }}
@@ -88,7 +88,7 @@ const Home = () => {
         <Parallax url={p2}>
           <SecondParallax>
             <SecondParallaxSubTitle>Encontre barbearias próximas à você</SecondParallaxSubTitle>
-            <Button component={Link} to="/login/profissional" variant="contained">
+            <Button component={Link} to="/profissional/login" variant="contained">
               Sou profissional
             </Button>
           </SecondParallax>

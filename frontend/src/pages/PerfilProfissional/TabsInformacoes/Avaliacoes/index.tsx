@@ -1,5 +1,6 @@
-import { List, ListItem, Typography, Avatar, Grid, Rating, Divider } from '@mui/material';
+import { List, ListItem, Typography, Grid, Rating, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { UserAvatar } from '../../../../components/UserAvatar/UserAvatar';
 import api from '../../../../services/api';
 import IAlert from '../../../../types/IAlert';
 import IReview from '../../../../types/IReview';
@@ -50,7 +51,10 @@ export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId, setAlert
                 >
                   <Grid item container spacing={2} justifyContent="flex-start" alignItems="center">
                     <Grid item>
-                      <Avatar alt={avaliacao.customerName} src={avaliacao.customerPicturePath} />
+                      <UserAvatar
+                        alt={avaliacao.customerName}
+                        picturePath={avaliacao.customerPicturePath}
+                      ></UserAvatar>
                     </Grid>
                     <Grid item>
                       <Typography>{avaliacao.customerName}</Typography>

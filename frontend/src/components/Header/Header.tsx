@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { HeadContainer, NavBar, Logo, ClickableLogo, DropdownContent, Wrapper } from './style';
 import LogoImage from '../../images/Logo_apollo.png';
 import { isAuthenticated, logout } from '../../services/auth';
-import { Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 
 interface HeaderProps {}
 export const Header: FC<HeaderProps> = ({ children, ...props }) => {
@@ -19,11 +19,11 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
         {isAuthenticated() ? (
           <Wrapper>
             <ClickableLogo>
-              <Avatar
-                alt="default user"
-                src="https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?fit=300%2C300&ssl=1"
+              <UserAvatar
+                alt={user.nickname}
+                picturePath={user.picturePath}
                 style={{ margin: 'auto 0' }}
-              ></Avatar>
+              ></UserAvatar>
               <h3 style={{ margin: 'auto 10px' }}>Bem vindo, {user.nickname}</h3>
             </ClickableLogo>
             <DropdownContent>

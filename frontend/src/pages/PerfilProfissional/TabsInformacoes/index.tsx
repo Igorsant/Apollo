@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import TabPanel from '../../../components/Tab/TabPanel/TabPanel';
 import ApolloTab from '../../../components/Tab/Tabs';
-import IAlert from '../../../types/IAlert';
 import IProfissional from '../../../types/IProfissional';
 import { Avaliacoes } from './Avaliacoes';
 import ServicosDisponiveis from './ServicosDisponiveis';
@@ -9,9 +8,8 @@ import ServicosDisponiveis from './ServicosDisponiveis';
 interface TabsInformacoesProps {
   profissional: IProfissional | undefined;
   id: string | undefined;
-  setAlert: React.Dispatch<React.SetStateAction<IAlert>>;
 }
-export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, id, setAlert }) => {
+export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, id }) => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   return (
@@ -32,7 +30,7 @@ export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, 
         <ServicosDisponiveis servicos={profissional?.services}></ServicosDisponiveis>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <Avaliacoes setAlert={setAlert} profissionalId={id}></Avaliacoes>
+        <Avaliacoes profissionalId={id}></Avaliacoes>
       </TabPanel>
     </>
   );

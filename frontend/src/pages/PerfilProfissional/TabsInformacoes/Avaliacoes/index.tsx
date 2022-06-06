@@ -1,16 +1,16 @@
 import { List, ListItem, Typography, Grid, Rating, Divider } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { NotificationContext } from '../../../../components/NotificationProvider/NotificationProvider';
 import { UserAvatar } from '../../../../components/UserAvatar/UserAvatar';
 import api from '../../../../services/api';
-import IAlert from '../../../../types/IAlert';
 import IReview from '../../../../types/IReview';
 
 interface AvaliacoesProps {
   profissionalId: string | undefined;
-  setAlert: React.Dispatch<React.SetStateAction<IAlert>>;
 }
-export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId, setAlert }) => {
+export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId }) => {
   const [avaliacoes, setAvaliacoes] = useState<IReview[] | undefined>(undefined);
+  const { showNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     if (profissionalId !== undefined) {
@@ -22,7 +22,7 @@ export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId, setAlert
           }
         })
         .catch((err) => {
-          setAlert({ open: true, message: err.message, severity: 'error' });
+          showNotification(err, 'error');
         });
     }
     console.log(profissionalId);

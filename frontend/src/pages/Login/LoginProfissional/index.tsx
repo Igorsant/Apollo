@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Box, Theme, Grid } from '@mui/material';
@@ -10,8 +10,7 @@ import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInput
 
 import api from '../../../services/api';
 import { setToken } from '../../../services/auth';
-import { ApolloAlert } from '../../../components/Alert/Alert';
-import IAlert from '../../../types/IAlert';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -38,7 +37,7 @@ const Title = styled.h2`
 const LoginProfissional = () => {
   const classes = useStyles();
   const [form, setForm] = useState({ email: '', password: '' });
-  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
+  const { showNotification } = useContext(NotificationContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -46,12 +45,11 @@ const LoginProfissional = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, open: false });
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (form.email.length === 0 || form.password.length === 0)
+      return showNotification('Por favor preencha os campos do formulário', 'warning');
+
     api
       .post('professionals/login', form)
       .then((res) => {
@@ -60,7 +58,7 @@ const LoginProfissional = () => {
         }
       })
       .catch((err) => {
-        setAlert({ open: true, message: err.message, severity: 'error' });
+        showNotification(err, 'error');
       });
   };
 
@@ -78,7 +76,6 @@ const LoginProfissional = () => {
           Criar Conta
         </Button>
       </Header>
-      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <form onSubmit={handleSubmit}>
         <Box className={classes.root}>
           <Grid
@@ -103,6 +100,7 @@ const LoginProfissional = () => {
             </Grid>
             <Grid item xs={12} md={12}>
               <TextInputLaranja
+                type="password"
                 name="password"
                 value={form.password}
                 onChange={handleChange}

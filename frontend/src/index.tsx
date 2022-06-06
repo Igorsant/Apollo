@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { AppRouter } from './AppRouter';
+import { NotificationProvider } from './components/NotificationProvider/NotificationProvider';
 
 const themeOptions = {
   palette: {
@@ -23,7 +24,9 @@ const theme = createTheme(themeOptions);
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <AppRouter></AppRouter>
+      <NotificationProvider>
+        <AppRouter></AppRouter>
+      </NotificationProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

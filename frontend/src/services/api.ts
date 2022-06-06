@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { errorHandler } from './errorHandler';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -16,17 +17,15 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error(error.message);
-
-    if (error.response.status === 403) {
+    if (error.response?.status === 403) {
       setTimeout(() => {
         window.location.pathname = '';
       }, 2000);
     }
 
-    console.error(error.response);
+    const errMessage = errorHandler(error);
 
-    return Promise.reject(error);
+    return Promise.reject(errMessage);
   }
 );
 

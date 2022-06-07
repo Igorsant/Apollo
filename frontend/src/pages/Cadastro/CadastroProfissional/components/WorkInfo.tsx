@@ -85,7 +85,7 @@ export const WorkInfo = ({ formik }: any) => {
             name="workplace.phones[0].phone"
             value={formik.values.workplace.phones[0].phone}
             onChange={formik.handleChange}
-            placeholder="Ex.: 3834 9583"
+            placeholder="Ex.: 8512345678"
             label={'Telefone 1:'}
             errorMessage={formik.errors.workplace?.phones[0]?.phone as string}
           />
@@ -95,7 +95,7 @@ export const WorkInfo = ({ formik }: any) => {
             name="phone"
             value={phone2.phone}
             onChange={handleChange}
-            placeholder="Ex.: 9 9834 9583"
+            placeholder="Ex.: 85912345678"
             label={'Telefone 2:'}
             errorMessage={
               formik.errors.workplace?.phones.length > 1

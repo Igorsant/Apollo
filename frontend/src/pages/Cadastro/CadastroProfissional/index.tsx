@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 import ITelefone from '../../../types/ITelefone';
 import { profissionalSchema } from '../../../schemas/profissionalSchema';
+import { WorkHours } from './components/WorkHours/WorkHours';
 
 interface SubmitProfessional {
   cpf: string;
@@ -158,6 +159,7 @@ const CadastroProfissional = () => {
             <PersonalInfo formik={formik} />
             <Services formik={formik} />
             <WorkInfo formik={formik} />
+            <WorkHours formik={formik} />
 
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
               <Button type="submit" variant="contained" style={{ width: '40%' }}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Header } from '../../../components/Header/Header';
@@ -9,13 +9,18 @@ import { Services } from './components/Services';
 import { WorkInfo } from './components/WorkInfo';
 import api from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import ITelefone from '../../../types/ITelefone';
+import { profissionalSchema } from '../../../schemas/profissionalSchema';
+import { WorkHours } from './components/WorkHours/WorkHours';
+import { useTitle } from '../../../hooks/useTitle';
 
 interface SubmitProfessional {
   cpf: string;
   email: string;
   fullName: string;
   nickname: string;
-  aboutMe: string;
+  aboutMe?: string;
   password: string;
   phone: string;
   pictureBase64: string;
@@ -30,13 +35,11 @@ interface SubmitProfessional {
     endTime: string;
   }[];
   workplace: {
+    city: string;
     street: string;
     streetNumber: string;
-    complement: string;
-    phone1: string;
-    isPhone1Whatsapp: boolean;
-    phone2: string;
-    isPhone2Whatsapp: boolean;
+    complement?: string;
+    phones: ITelefone[];
   };
 }
 
@@ -58,8 +61,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CadastroProfissional = () => {
+  useTitle('Cadastro Profissional');
+
   const classes = useStyles();
   const navigate = useNavigate();
+  const { showNotification } = useContext(NotificationContext);
 
   const formik = useFormik({
     initialValues: {
@@ -72,31 +78,22 @@ const CadastroProfissional = () => {
       phone: '',
       pictureBase64: '',
       confirmPassword: '',
-      services: [
-        {
-          name: '',
-          startingPrice: '',
-          estimatedTime: ''
-        }
-      ],
-      workHours: [
-        {
-          weekday: '',
-          startTime: '',
-          endTime: ''
-        }
-      ],
+      services: [],
+      workHours: [],
       workplace: {
+        city: '',
         street: '',
         streetNumber: '',
         complement: '',
-        phone1: '',
-        isPhone1Whatsapp: true,
-        phone2: '',
-        isPhone2Whatsapp: true
+        phones: [
+          {
+            phone: '',
+            isPhoneWhatsapp: false
+          }
+        ]
       }
     },
-    validationSchema: null,
+    validationSchema: profissionalSchema,
     onSubmit: (values) => {
       console.log(values);
       const { confirmPassword, ...profissional } = values;
@@ -104,11 +101,14 @@ const CadastroProfissional = () => {
         ...profissional,
         pictureBase64: formatBase64Image(profissional.pictureBase64)
       });
-      formik.resetForm();
     },
     validateOnChange: false,
     validateOnBlur: false
   });
+
+  useEffect(() => {
+    console.log(formik.errors);
+  }, [formik.errors]);
 
   const formatBase64Image = (value: string | ArrayBuffer | null) => {
     let valueBase64 = '';
@@ -124,16 +124,19 @@ const CadastroProfissional = () => {
 
   const handleSubmit = (values: SubmitProfessional) => {
     console.log(values);
+    if (values.aboutMe?.length === 0) delete values.aboutMe;
+    if (values.workplace.complement?.length === 0) delete values.workplace.complement;
     api
       .post('professionals', values)
       .then((res) => {
         if (res.status === 201) {
-          console.log('Sucesso');
+          formik.resetForm();
+          showNotification('Profissional cadastrado com sucesso', 'success');
           navigate('/profissional/login', { replace: true });
         }
       })
       .catch((err) => {
-        console.log(err);
+        showNotification(err, 'error');
       });
   };
 
@@ -153,11 +156,12 @@ const CadastroProfissional = () => {
             <Grid item xs={12} md={12}>
               <Title>Cadastro Profissional</Title>
             </Grid>
-            <ProfileInfo formik={formik} handleChangeImage={handleChangeImage} />
+            <ProfileInfo formik={formik} handleChangeImage={handleChangeImage} profissional />
             <ContactInfo formik={formik} />
             <PersonalInfo formik={formik} />
             <Services formik={formik} />
             <WorkInfo formik={formik} />
+            <WorkHours formik={formik} />
 
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
               <Button type="submit" variant="contained" style={{ width: '40%' }}>

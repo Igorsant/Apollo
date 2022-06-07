@@ -7,8 +7,10 @@ import api from '../../services/api';
 import IProfissional from '../../types/IProfissional';
 import { UserAvatar } from '../../components/UserAvatar/UserAvatar';
 import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
+import { useTitle } from '../../hooks/useTitle';
 
 const BuscarProfissionais = () => {
+  useTitle('Busca');
   const { showNotification } = useContext(NotificationContext);
   const query = useQuery();
   // const name = query.get('name');

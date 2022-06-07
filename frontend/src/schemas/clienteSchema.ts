@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-export const clienteSchema = Yup.object().shape({
+
+export const baseUserSchema = {
   cpf: Yup.string()
     .required('Campo obrigatório')
     .matches(/^[0-9]{11}$/, 'Formato Inválido'),
@@ -19,10 +20,14 @@ export const clienteSchema = Yup.object().shape({
     .max(72, 'Deve ter no máximo 72 caracteres')
     .matches(/^[a-zA-Z0-9!@#$%¨&*(),.<>;:?\]}[{çÇ'"_=+-]{8,72}$/, 'Formato inválido')
     .required('Campo obrigatório'),
-  confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'As senhas não coincidem'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'As senhas não coincidem')
+    .required('Campo obrigatório'),
   phone: Yup.string()
     .matches(/^[0-9]{10,11}$/, 'Formato inválido')
     .required('Campo obrigatório'),
 
   pictureBase64: Yup.string()
-});
+};
+
+export const clienteSchema = Yup.object().shape(baseUserSchema);

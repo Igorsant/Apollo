@@ -10,6 +10,7 @@ import { NotificationContext } from '../../../components/NotificationProvider/No
 
 import api from '../../../services/api';
 import { setToken } from '../../../services/auth';
+import { useTitle } from '../../../hooks/useTitle';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -34,6 +35,7 @@ const Title = styled.h2`
 `;
 
 const Login = () => {
+  useTitle('Login');
   const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const classes = useStyles();

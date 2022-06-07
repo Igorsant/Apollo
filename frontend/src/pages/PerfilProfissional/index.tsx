@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Image = styled.img`
-  heigth: 120px;
+  height: 120px;
   width: 120px;
 `;
 
@@ -67,6 +67,10 @@ export default function PerfilProfissional() {
   const { id } = useParams();
   const [profissional, setProfissional] = useState<IProfissional | undefined>(undefined);
   const { showNotification } = useContext(NotificationContext);
+
+  useEffect(() => {
+    document.title = `Apollo | ${profissional ? profissional.nickname : 'Profissional'}`;
+  }, [profissional]);
 
   useEffect(() => {
     if (id !== undefined) {

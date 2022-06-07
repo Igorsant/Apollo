@@ -4,13 +4,15 @@ import { ImageInput } from '../../../components/ImageInput/ImageInput';
 import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
 import { Subtitle } from './styles';
 import { FormikProps } from 'formik';
+import { TextAreaLaranja } from '../../../components/TextInputLaranja/TextAreaLaranja';
 
 interface ProfileInfoProps {
   handleChangeImage: (value: string | ArrayBuffer | null) => void;
   formik: FormikProps<any>;
+  profissional?: boolean;
 }
 
-export const ProfileInfo = ({ handleChangeImage, formik }: ProfileInfoProps) => (
+export const ProfileInfo = ({ handleChangeImage, formik, profissional }: ProfileInfoProps) => (
   <Grid item xs={12} md={12} sx={{ flexGrow: 1 }} spacing={1} alignContent="center" container>
     <Grid item xs={12} md={12}>
       <Subtitle>Informações do Perfil</Subtitle>
@@ -46,5 +48,18 @@ export const ProfileInfo = ({ handleChangeImage, formik }: ProfileInfoProps) => 
         ></TextInputLaranja>
       </Grid>
     </Grid>
+    {profissional ? (
+      <Grid item xs={12}>
+        <TextAreaLaranja
+          label="Sobre mim:"
+          name="aboutMe"
+          value={formik.values.aboutMe}
+          onChange={formik.handleChange}
+          placeholder="Conte um pouco sobre você para seus clientes"
+        />
+      </Grid>
+    ) : (
+      ''
+    )}
   </Grid>
 );

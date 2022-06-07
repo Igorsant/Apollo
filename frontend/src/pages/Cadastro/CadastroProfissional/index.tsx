@@ -72,13 +72,7 @@ const CadastroProfissional = () => {
       phone: '',
       pictureBase64: '',
       confirmPassword: '',
-      services: [
-        {
-          name: '',
-          startingPrice: '',
-          estimatedTime: ''
-        }
-      ],
+      services: [],
       workHours: [
         {
           weekday: '',
@@ -91,9 +85,9 @@ const CadastroProfissional = () => {
         streetNumber: '',
         complement: '',
         phone1: '',
-        isPhone1Whatsapp: true,
+        isPhone1Whatsapp: false,
         phone2: '',
-        isPhone2Whatsapp: true
+        isPhone2Whatsapp: false
       }
     },
     validationSchema: null,

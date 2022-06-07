@@ -20,5 +20,8 @@ export const TimeLabel = styled.h2`
 
 export const PlusButton = styled(Button)`
   border-radius: 40px;
-  height: 100%;
+  height: 40px !important;
+  padding: 0 !important;
+  margin-top: 30px !important;
+  font-size: 32px !important;
 `;

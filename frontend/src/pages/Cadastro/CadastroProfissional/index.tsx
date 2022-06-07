@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Header } from '../../../components/Header/Header';
@@ -9,6 +9,9 @@ import { Services } from './components/Services';
 import { WorkInfo } from './components/WorkInfo';
 import api from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import ITelefone from '../../../types/ITelefone';
+import { profissionalSchema } from '../../../schemas/profissionalSchema';
 
 interface SubmitProfessional {
   cpf: string;
@@ -33,10 +36,7 @@ interface SubmitProfessional {
     street: string;
     streetNumber: string;
     complement: string;
-    phone1: string;
-    isPhone1Whatsapp: boolean;
-    phone2: string;
-    isPhone2Whatsapp: boolean;
+    phones: ITelefone[];
   };
 }
 
@@ -58,8 +58,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CadastroProfissional = () => {
+  useEffect(() => {
+    document.title = 'Apollo | Cadastro Profissional';
+  }, []);
+
   const classes = useStyles();
   const navigate = useNavigate();
+  const { showNotification } = useContext(NotificationContext);
 
   const formik = useFormik({
     initialValues: {
@@ -73,24 +78,21 @@ const CadastroProfissional = () => {
       pictureBase64: '',
       confirmPassword: '',
       services: [],
-      workHours: [
-        {
-          weekday: '',
-          startTime: '',
-          endTime: ''
-        }
-      ],
+      workHours: [],
       workplace: {
+        city: '',
         street: '',
         streetNumber: '',
         complement: '',
-        phone1: '',
-        isPhone1Whatsapp: false,
-        phone2: '',
-        isPhone2Whatsapp: false
+        phones: [
+          {
+            phone: '',
+            isPhoneWhatsapp: false
+          }
+        ]
       }
     },
-    validationSchema: null,
+    validationSchema: profissionalSchema,
     onSubmit: (values) => {
       console.log(values);
       const { confirmPassword, ...profissional } = values;
@@ -98,11 +100,14 @@ const CadastroProfissional = () => {
         ...profissional,
         pictureBase64: formatBase64Image(profissional.pictureBase64)
       });
-      formik.resetForm();
     },
     validateOnChange: false,
     validateOnBlur: false
   });
+
+  useEffect(() => {
+    console.log(formik.errors);
+  }, [formik.errors]);
 
   const formatBase64Image = (value: string | ArrayBuffer | null) => {
     let valueBase64 = '';
@@ -122,12 +127,13 @@ const CadastroProfissional = () => {
       .post('professionals', values)
       .then((res) => {
         if (res.status === 201) {
-          console.log('Sucesso');
+          formik.resetForm();
+          showNotification('Profissional cadastrado com sucesso', 'success');
           navigate('/profissional/login', { replace: true });
         }
       })
       .catch((err) => {
-        console.log(err);
+        showNotification(err, 'error');
       });
   };
 
@@ -147,7 +153,7 @@ const CadastroProfissional = () => {
             <Grid item xs={12} md={12}>
               <Title>Cadastro Profissional</Title>
             </Grid>
-            <ProfileInfo formik={formik} handleChangeImage={handleChangeImage} />
+            <ProfileInfo formik={formik} handleChangeImage={handleChangeImage} profissional />
             <ContactInfo formik={formik} />
             <PersonalInfo formik={formik} />
             <Services formik={formik} />

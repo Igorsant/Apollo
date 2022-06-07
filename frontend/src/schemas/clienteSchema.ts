@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-export const clienteSchema = Yup.object().shape({
+
+export const baseUserSchema = {
   cpf: Yup.string()
     .required('Campo obrigatório')
     .matches(/^[0-9]{11}$/, 'Formato Inválido'),
@@ -27,4 +28,6 @@ export const clienteSchema = Yup.object().shape({
     .required('Campo obrigatório'),
 
   pictureBase64: Yup.string()
-});
+};
+
+export const clienteSchema = Yup.object().shape(baseUserSchema);

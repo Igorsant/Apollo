@@ -18,12 +18,14 @@ import p2 from '../../images/parallax2.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
 import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
+import { useTitle } from '../../hooks/useTitle';
 
 interface ISearch {
   city: string;
   query: string;
 }
 const Home = () => {
+  useTitle('Home');
   const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState<ISearch>({

@@ -11,6 +11,7 @@ import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInput
 import api from '../../../services/api';
 import { setToken } from '../../../services/auth';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import { useTitle } from '../../../hooks/useTitle';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -35,6 +36,7 @@ const Title = styled.h2`
 `;
 
 const LoginProfissional = () => {
+  useTitle('Login Profissional');
   const classes = useStyles();
   const [form, setForm] = useState({ email: '', password: '' });
   const { showNotification } = useContext(NotificationContext);

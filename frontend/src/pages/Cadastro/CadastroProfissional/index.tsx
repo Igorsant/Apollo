@@ -13,6 +13,7 @@ import { NotificationContext } from '../../../components/NotificationProvider/No
 import ITelefone from '../../../types/ITelefone';
 import { profissionalSchema } from '../../../schemas/profissionalSchema';
 import { WorkHours } from './components/WorkHours/WorkHours';
+import { useTitle } from '../../../hooks/useTitle';
 
 interface SubmitProfessional {
   cpf: string;
@@ -59,9 +60,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CadastroProfissional = () => {
-  useEffect(() => {
-    document.title = 'Apollo | Cadastro Profissional';
-  }, []);
+  useTitle('Cadastro Profissional');
 
   const classes = useStyles();
   const navigate = useNavigate();

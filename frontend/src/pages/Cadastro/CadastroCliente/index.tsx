@@ -12,6 +12,7 @@ import api from '../../../services/api';
 import ICliente from '../../../types/ICliente';
 import { Title } from '../components/styles';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import { useTitle } from '../../../hooks/useTitle';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CadastroCliente = () => {
+  useTitle('Cadastro');
   const navigate = useNavigate();
   const classes = useStyles();
   const { showNotification } = useContext(NotificationContext);

@@ -20,7 +20,7 @@ interface SubmitProfessional {
   email: string;
   fullName: string;
   nickname: string;
-  aboutMe: string;
+  aboutMe?: string;
   password: string;
   phone: string;
   pictureBase64: string;
@@ -35,9 +35,10 @@ interface SubmitProfessional {
     endTime: string;
   }[];
   workplace: {
+    city: string;
     street: string;
     streetNumber: string;
-    complement: string;
+    complement?: string;
     phones: ITelefone[];
   };
 }
@@ -123,6 +124,8 @@ const CadastroProfissional = () => {
 
   const handleSubmit = (values: SubmitProfessional) => {
     console.log(values);
+    if (values.aboutMe?.length === 0) delete values.aboutMe;
+    if (values.workplace.complement?.length === 0) delete values.workplace.complement;
     api
       .post('professionals', values)
       .then((res) => {

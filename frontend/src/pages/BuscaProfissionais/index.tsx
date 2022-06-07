@@ -1,20 +1,19 @@
 import { Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { ApolloAlert } from '../../components/Alert/Alert';
+import React, { useContext, useEffect, useState } from 'react';
 import { ApolloContainer } from '../../components/Container';
 import useQuery from '../../hooks/useQuery';
 import api from '../../services/api';
-import IAlert from '../../types/IAlert';
 import IProfissional from '../../types/IProfissional';
 import { UserAvatar } from '../../components/UserAvatar/UserAvatar';
+import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
 
 const BuscarProfissionais = () => {
+  const { showNotification } = useContext(NotificationContext);
   const query = useQuery();
   // const name = query.get('name');
   const city = query.get('city');
   const queryValue = query.get('query') || ' ';
-  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
   const [profissionais, setProfissionais] = useState<IProfissional[]>([]);
   useEffect(() => {
     api
@@ -29,15 +28,12 @@ const BuscarProfissionais = () => {
         setProfissionais(res.data);
       })
       .catch((err) => {
-        setAlert({ open: true, message: err.message, severity: 'error' });
+        showNotification(err, 'error');
       });
   }, [query]);
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, open: false });
-  };
+
   return (
     <ApolloContainer>
-      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <Grid container spacing={2} sx={{ p: 10, color: 'black' }}>
         <Typography variant="h6">
           {profissionais !== undefined &&

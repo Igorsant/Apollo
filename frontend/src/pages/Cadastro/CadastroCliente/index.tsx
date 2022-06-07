@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { ProfileInfo, ContactInfo, PersonalInfo } from '../components';
 import api from '../../../services/api';
 import ICliente from '../../../types/ICliente';
 import { Title } from '../components/styles';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CadastroCliente = () => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const { showNotification } = useContext(NotificationContext);
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +54,6 @@ const CadastroCliente = () => {
         ...cliente,
         pictureBase64: formatBase64Image(cliente.pictureBase64)
       });
-      formik.resetForm();
     },
     validateOnChange: false,
     validateOnBlur: false
@@ -76,12 +77,13 @@ const CadastroCliente = () => {
       .post('customers', values)
       .then((res) => {
         if (res.status === 201) {
-          console.log('Sucesso');
+          formik.resetForm();
+          showNotification('Usuário cadastrado com sucesso', 'success');
           navigate('/login', { replace: true });
         }
       })
       .catch((err) => {
-        console.log(err);
+        showNotification(err, 'error');
       });
   };
 
@@ -115,6 +117,7 @@ const CadastroCliente = () => {
                 to="/profissional/cadastro"
                 variant="text"
                 style={{ textTransform: 'none' }}
+                onClick={() => console.log(formik.errors)}
               >
                 Profissional? Clique aqui!
               </Button>

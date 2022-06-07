@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import {
@@ -17,12 +17,14 @@ import p2 from '../../images/parallax2.png';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { TextInputLaranja } from '../../components/TextInputLaranja/TextInputLaranja';
+import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
 
 interface ISearch {
   city: string;
   query: string;
 }
 const Home = () => {
+  const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const [search, setSearch] = useState<ISearch>({
     city: '',
@@ -74,6 +76,9 @@ const Home = () => {
                   variant="contained"
                   style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
                   onClick={() => {
+                    if (!search.city || search.city.length === 0) {
+                      return showNotification('Por favor selecione uma cidade', 'warning');
+                    }
                     navigate(`/buscar?city=${search.city}&query=${search.query}`, {
                       replace: true
                     });

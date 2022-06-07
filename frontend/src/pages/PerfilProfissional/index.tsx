@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -11,9 +11,8 @@ import IProfissional from '../../types/IProfissional';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Button } from '../../components/Button/ApolloButton';
 import { ApolloContainer } from '../../components/Container';
-import IAlert from '../../types/IAlert';
-import { ApolloAlert } from '../../components/Alert/Alert';
 import { TabsInformacoes } from './TabsInformacoes';
+import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -67,7 +66,7 @@ export default function PerfilProfissional() {
   const classes = useStyles();
   const { id } = useParams();
   const [profissional, setProfissional] = useState<IProfissional | undefined>(undefined);
-  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
+  const { showNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     if (id !== undefined) {
@@ -78,14 +77,10 @@ export default function PerfilProfissional() {
         })
         .catch((err) => {
           setProfissional(mockProfessional);
-          setAlert({ open: true, message: err.message, severity: 'error' });
+          showNotification(err, 'error');
         });
     }
   }, [id]);
-
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, open: false });
-  };
 
   const favoritarProfissional = () => {
     console.log('Profissional Favorito');
@@ -93,11 +88,10 @@ export default function PerfilProfissional() {
 
   return (
     <ApolloContainer>
-      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <Box className={classes.root}>
         <Grid container>
           <Grid container item alignItems="flex-start" xs={12} md={12}>
-            <Grid item xs={2} container justify="center" alignItems="center">
+            <Grid item xs={2} container justifyContent="center" alignItems="center">
               <Image src={profissional?.picturePath}></Image>
             </Grid>
             <Grid item direction="column" container xs={8} spacing={2}>
@@ -126,11 +120,7 @@ export default function PerfilProfissional() {
               </Button>
             </Grid>
           </Grid>
-          <TabsInformacoes
-            setAlert={setAlert}
-            id={id}
-            profissional={profissional}
-          ></TabsInformacoes>
+          <TabsInformacoes id={id} profissional={profissional}></TabsInformacoes>
         </Grid>
       </Box>
     </ApolloContainer>

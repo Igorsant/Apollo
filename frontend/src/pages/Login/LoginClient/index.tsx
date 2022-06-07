@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Theme, Grid } from '@mui/material';
@@ -6,11 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
 import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
-import { ApolloAlert } from '../../../components/Alert/Alert';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 
 import api from '../../../services/api';
 import { setToken } from '../../../services/auth';
-import IAlert from '../../../types/IAlert';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -35,10 +34,10 @@ const Title = styled.h2`
 `;
 
 const Login = () => {
+  const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const classes = useStyles();
   const [form, setForm] = useState({ email: '', password: '' });
-  const [alert, setAlert] = useState<IAlert>({ open: false, message: '', severity: undefined });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -46,12 +45,11 @@ const Login = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleCloseAlert = () => {
-    setAlert({ ...alert, open: false });
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (form.email.length === 0 || form.password.length === 0)
+      return showNotification('Por favor preencha os campos do formulário', 'warning');
+
     api
       .post('customers/login', form)
       .then((res) => {
@@ -61,7 +59,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        setAlert({ open: true, message: err.message, severity: 'error' });
+        showNotification(err, 'error');
       });
   };
 
@@ -79,7 +77,6 @@ const Login = () => {
           Criar Conta
         </Button>
       </Header>
-      <ApolloAlert handleClose={handleCloseAlert} {...alert}></ApolloAlert>
       <form onSubmit={handleSubmit}>
         <Box className={classes.root}>
           <Grid

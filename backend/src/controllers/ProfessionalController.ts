@@ -25,6 +25,7 @@ import workplaceRepository from '../repositories/workplace.repository';
 
 import WorkHourType from '../types/workHour.type';
 import favoriteRepository from '../repositories/favorite.repository';
+import reviewRepository from '../repositories/review.repository';
 
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
@@ -107,6 +108,9 @@ export default class ProfessionalController {
     );
 
     const professionals = await professionalRepository.findByIds(ids);
+    for (const p of professionals) {
+      p.totalReviews = await reviewRepository.numberOfReviews(p.id);
+    }
 
     res.status(200).json(professionals);
   }
@@ -324,6 +328,10 @@ export default class ProfessionalController {
         return badRequest(res, 'Profissional não existente');
 
       const professional = professionalArray[0];
+
+      professional.totalReviews = await reviewRepository.numberOfReviews(
+        professional.id
+      );
 
       delete professional.id;
       delete professional.passwordHash;

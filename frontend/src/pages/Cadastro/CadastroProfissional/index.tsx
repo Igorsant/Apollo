@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
-import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
 import { useFormik } from 'formik';
 import { ContactInfo, PersonalInfo, ProfileInfo, Title } from '../components';
@@ -142,7 +141,6 @@ const CadastroProfissional = () => {
 
   return (
     <div>
-      <Header></Header>
       <form onSubmit={formik.handleSubmit}>
         <Box className={classes.root}>
           <Grid

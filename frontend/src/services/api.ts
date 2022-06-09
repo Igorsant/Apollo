@@ -1,18 +1,21 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import { getToken } from './auth';
 import { errorHandler } from './errorHandler';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL
 });
-// api.interceptors.request.use(async (config) => {
-// //   config.headers["Content-Type"] = "application/json;charset=utf-8";
-// //   config.headers["Access-Control-Allow-Origin"] = "*";
-// //   //   const token = getToken();
 
-// //   //   if (token) config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use((config: AxiosRequestConfig) => {
+  const token = getToken();
 
-// //   return config;
-// // });
+  if (token) {
+    if (config.headers === undefined) config.headers = {};
+    config.headers.Authorization = 'Bearer ' + token;
+  }
+
+  return config;
+});
 
 api.interceptors.response.use(
   (response) => response,

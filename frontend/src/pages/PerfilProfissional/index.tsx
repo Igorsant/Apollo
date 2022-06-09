@@ -50,6 +50,8 @@ const mockProfessional = {
   aboutMe: 'AboutMe Test',
   phone: '85999084524',
   services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],
+  averageRating: null,
+  totalReviews: 0,
   workplace: {
     street: 'Rua das Flores',
     streetNumber: '985',

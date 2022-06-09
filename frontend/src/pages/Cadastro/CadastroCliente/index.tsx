@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
 import { useFormik } from 'formik';
 import { clienteSchema } from '../../../schemas/clienteSchema';
@@ -91,7 +90,6 @@ const CadastroCliente = () => {
 
   return (
     <div>
-      <Header></Header>
       <form onSubmit={formik.handleSubmit}>
         <Box className={classes.root}>
           <Grid

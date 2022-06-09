@@ -10,7 +10,6 @@ import api from '../../services/api';
 import IProfissional from '../../types/IProfissional';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Button } from '../../components/Button/ApolloButton';
-import { ApolloContainer } from '../../components/Container';
 import { TabsInformacoes } from './TabsInformacoes';
 import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
 
@@ -91,42 +90,40 @@ export default function PerfilProfissional() {
   };
 
   return (
-    <ApolloContainer>
-      <Box className={classes.root}>
-        <Grid container>
-          <Grid container item alignItems="flex-start" xs={12} md={12}>
-            <Grid item xs={2} container justifyContent="center" alignItems="center">
-              <Image src={profissional?.picturePath}></Image>
+    <Box className={classes.root}>
+      <Grid container>
+        <Grid container item alignItems="flex-start" xs={12} md={12}>
+          <Grid item xs={2} container justifyContent="center" alignItems="center">
+            <Image src={profissional?.picturePath}></Image>
+          </Grid>
+          <Grid item direction="column" container xs={8} spacing={2}>
+            <Grid item> {profissional?.fullName}</Grid>
+            <Grid item>
+              {`${profissional?.workplace.street}, ${profissional?.workplace.streetNumber}`}
             </Grid>
-            <Grid item direction="column" container xs={8} spacing={2}>
-              <Grid item> {profissional?.fullName}</Grid>
-              <Grid item>
-                {`${profissional?.workplace.street}, ${profissional?.workplace.streetNumber}`}
-              </Grid>
-              <Grid item>{`${profissional?.workplace.phones[0].phone}`}</Grid>
-              <Grid item>
-                <Button variant="contained" style={{ width: '120px' }}>
-                  Agendar
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              container
-              direction="row"
-              justifyContent="flex-end"
-              alignItems="flex-start"
-              xs={2}
-            >
-              <Button onClick={favoritarProfissional} variant="outlined" style={{ width: '120px' }}>
-                <FavoriteIcon />
-                Salvar
+            <Grid item>{`${profissional?.workplace.phones[0].phone}`}</Grid>
+            <Grid item>
+              <Button variant="contained" style={{ width: '120px' }}>
+                Agendar
               </Button>
             </Grid>
           </Grid>
-          <TabsInformacoes id={id} profissional={profissional}></TabsInformacoes>
+          <Grid
+            item
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="flex-start"
+            xs={2}
+          >
+            <Button onClick={favoritarProfissional} variant="outlined" style={{ width: '120px' }}>
+              <FavoriteIcon />
+              Salvar
+            </Button>
+          </Grid>
         </Grid>
-      </Box>
-    </ApolloContainer>
+        <TabsInformacoes id={id} profissional={profissional}></TabsInformacoes>
+      </Grid>
+    </Box>
   );
 }

@@ -26,7 +26,6 @@ const BuscarProfissionais = () => {
         }
       })
       .then((res) => {
-        console.log(res.data);
         setProfissionais(res.data);
       })
       .catch((err) => {

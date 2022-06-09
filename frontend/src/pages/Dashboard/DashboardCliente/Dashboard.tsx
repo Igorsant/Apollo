@@ -1,7 +1,7 @@
 import React from 'react';
-import { AuthCheck } from '../../components/AuthCheck/AuthCheck';
+import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import styled from 'styled-components';
-import { Header } from '../../components/Header/Header';
+import { Header } from '../../../components/Header/Header';
 
 const MainCard = styled.div`
   background-color: white;

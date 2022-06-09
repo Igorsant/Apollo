@@ -1,7 +1,7 @@
-import { Container, Link } from '@mui/material';
+import { Container } from '@mui/material';
 import React, { FC } from 'react';
 import { Button } from '../Button/ApolloButton';
-
+import { Link } from 'react-router-dom';
 import { Header } from '../Header/Header';
 
 interface ContainerProps {

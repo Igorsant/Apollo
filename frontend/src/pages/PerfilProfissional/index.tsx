@@ -16,6 +16,7 @@ import { useUser } from '../../hooks/useUser';
 import { ProfessionalNameArea, Row } from '../BuscaProfissionais/ProfessionalCard/styles';
 import { Favorite, Phone, Room, Star, WhatsApp } from '@mui/icons-material';
 import { formatPhone } from '../../services/formatPhone';
+import useQuery from '../../hooks/useQuery';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -78,6 +79,8 @@ export default function PerfilProfissional() {
   const navigate = useNavigate();
   const user: any = useUser();
   const [isFavorite, setIsFavorite] = useState(false);
+  const query = useQuery();
+  const isAgendar = query.get('agendar');
 
   useEffect(() => {
     if (user && user.type === 'CUSTOMER') {
@@ -107,6 +110,10 @@ export default function PerfilProfissional() {
               time: service.estimatedTime
             }))
           );
+          if (isAgendar === 'true') {
+            console.log(profissional, services);
+            setShowAgendar(true);
+          }
         })
         .catch((err) => {
           navigate('/');

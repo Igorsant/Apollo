@@ -38,7 +38,7 @@ export const Step1 = ({
       }}
     >
       <ArrowDropDown style={{ fontSize: '3em' }} />
-      <h2>Selectione serviços</h2>
+      <h2>Selecione serviços</h2>
       {servicesAvailable.map((service) => (
         <ServicesButton
           key={service.id}

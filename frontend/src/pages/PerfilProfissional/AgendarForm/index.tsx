@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { Close, ContentPasteSearchOutlined } from '@mui/icons-material';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Close } from '@mui/icons-material';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { Button } from '../../../components/Button/ApolloButton';
 import { Step1 } from './steps/step1';
 import { Step2 } from './steps/step2';
 import { Step3 } from './steps/step3';
 import { Step4 } from './steps/step4';
 import api from '../../../services/api';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 
 export type ServiceType = {
   id: number;
@@ -32,6 +33,7 @@ export const AgendarForm = ({
   const [indexStep, setIndexStep] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [time, setTime] = useState<Date | null>(null);
+  const { showNotification } = useContext(NotificationContext);
 
   const steps = [
     <Step1
@@ -81,8 +83,9 @@ export const AgendarForm = ({
       serviceIds: choosenServices.map((s) => s.id)
     };
     console.log(data);
-    api.post(`schedulings`, data).then((res) => {
-      console.log('success');
+    api.post(`schedulings`, data).then((_) => {
+      showNotification('Agendamento criado com sucesso', 'success');
+      setShowAgendar(false);
     });
   };
 

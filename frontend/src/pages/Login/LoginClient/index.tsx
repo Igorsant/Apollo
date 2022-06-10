@@ -57,7 +57,7 @@ const Login = () => {
       .then((res) => {
         if (res.status === 200) {
           setToken(res.data.jwt);
-          navigate('/dashboard', { replace: true });
+          navigate('/dashboard/cliente', { replace: true });
         }
       })
       .catch((err) => {

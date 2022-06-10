@@ -71,7 +71,7 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
               <Row>
                 <Rating
                   readOnly
-                  value={profissional.averageRating}
+                  value={Number.parseFloat(profissional.averageRating ?? '0')}
                   precision={0.5}
                   icon={<Star color="primary" fontSize="inherit" />}
                   emptyIcon={<Star htmlColor="#FFE3D8" fontSize="inherit" />}

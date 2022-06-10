@@ -12,7 +12,7 @@ export default function ServicosDisponiveis({ servicos = [] }: ServicosProps) {
     <Grid container spacing={2}>
       {servicos.map((servico, index) => (
         <Grid key={index} container item md={6}>
-          <Grid item justify="center" alignItems="center" md={12}>
+          <Grid item container justify="center" alignItems="center" md={12}>
             {servico.name}
           </Grid>
           <Grid item md={8}>

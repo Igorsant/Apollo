@@ -1,5 +1,5 @@
 import React from 'react';
-import { AuthCheck } from '../../components/AuthCheck/AuthCheck';
+import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import styled from 'styled-components';
 
 const MainCard = styled.div`

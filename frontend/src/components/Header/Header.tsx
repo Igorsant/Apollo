@@ -36,7 +36,14 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
               <h3 style={{ margin: 'auto 10px' }}>Bem vindo, {user.nickname}</h3>
             </ClickableLogo>
             <DropdownContent>
-              <li onClick={() => navigate('/dashboard')}>Dashboard</li>
+              <li
+                onClick={() => {
+                  if (isProfessionalPath) navigate('/dashboard/profissional');
+                  navigate('dashboard/cliente');
+                }}
+              >
+                Dashboard
+              </li>
               <li
                 onClick={() => {
                   logout();

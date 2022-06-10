@@ -141,14 +141,14 @@ export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
                       </Button>
                     </Grid>
                     <Grid item xs={6} md={2} className={classes.item}>
-                      <IconButton
+                      <Button
                         className={classes.buttonIcon}
                         onClick={() => {
                           declinar(agendamento.id);
                         }}
                       >
                         <Cancel fontSize="large" />
-                      </IconButton>
+                      </Button>
                     </Grid>
                   </Grid>
                 </ListItem>

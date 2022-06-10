@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Theme } from '@mui/material';
-import { Grid, Box, IconButton } from '@material-ui/core';
+import { Button, Theme } from '@mui/material';
+import { Grid, Box } from '@material-ui/core';
 import { NavigateNext, NavigateBefore } from '@mui/icons-material';
 import moment from 'moment';
 import { IAgendamento } from '../../../../../types/IAgendamento';
@@ -56,13 +56,13 @@ export const Agendamentos = ({ agendamentos }: IAgendamentos) => {
         Agendamentos
       </Grid>
       <Grid item xs={12} className={classes.header}>
-        <IconButton onClick={subtractDay} disabled={moment(data).isSame(new Date(), 'day')}>
+        <Button onClick={subtractDay} disabled={moment(data).isSame(new Date(), 'day')}>
           <NavigateBefore />
-        </IconButton>
+        </Button>
         {moment(data).locale('pt-br').format('DD/MM/YYYY')}
-        <IconButton onClick={addDay}>
+        <Button onClick={addDay}>
           <NavigateNext />
-        </IconButton>
+        </Button>
       </Grid>
       {agendamentos
         .filter((agendamento) => moment(agendamento.startTime).isSame(data, 'day'))

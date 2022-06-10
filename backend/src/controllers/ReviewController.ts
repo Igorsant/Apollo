@@ -16,8 +16,6 @@ export default class ReviewController {
     if (res.locals.user && res.locals.user.type === 'CUSTOMER')
       reviews.sort((a, _) => (a.customerId === res.locals.user.id ? -1 : 0));
 
-    reviews.map((r) => delete r.customerId);
-
     return res.status(200).json(reviews);
   }
 

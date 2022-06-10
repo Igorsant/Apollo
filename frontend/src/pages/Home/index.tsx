@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 import {
   Parallax,
   UpFirstContent,
   DownFirstContent,
-  ButtonStyle,
   DownGridContainer,
   FirstParallax,
   SecondParallax,
@@ -40,20 +38,6 @@ const Home = () => {
   };
   return (
     <>
-      <Header>
-        <Button
-          component={Link}
-          to="/cadastro"
-          color="secondary"
-          variant="text"
-          style={ButtonStyle}
-        >
-          Criar conta
-        </Button>
-        <Button component={Link} to="/login" color="secondary" variant="text" style={ButtonStyle}>
-          Entrar
-        </Button>
-      </Header>
       <div id="main">
         <Parallax url={p1}>
           <FirstParallax>

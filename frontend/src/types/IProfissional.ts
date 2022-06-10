@@ -14,4 +14,6 @@ export default interface IProfissional {
   services: IServico[];
   workHours?: IHoraTrabalho[];
   workplace: ILocalTrabalho;
+  averageRating: string | null;
+  totalReviews: number;
 }

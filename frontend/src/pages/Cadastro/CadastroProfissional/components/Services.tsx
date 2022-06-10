@@ -5,10 +5,7 @@ import { Subtitle, PlusButton } from '../../components';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { NotificationContext } from '../../../../components/NotificationProvider/NotificationProvider';
-
-function formatMoney(value: number): string {
-  return new Intl.NumberFormat('pt-BR', { currency: 'BRL', style: 'currency' }).format(value);
-}
+import { formatMoney } from '../../../../services/formatMoney';
 
 export const Services = ({ formik }: any) => {
   const [editIndex, setEditIndex] = useState<number | null>(null);

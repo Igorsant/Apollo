@@ -3,9 +3,11 @@ import { HeadContainer, NavBar, Logo, ClickableLogo, DropdownContent, Wrapper } 
 import LogoImage from '../../images/Logo_apollo.png';
 import LogoProfissional from '../../images/Logo_apollo_profissional.png';
 import { isAuthenticated, logout } from '../../services/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
+import { Button } from '../Button/ApolloButton';
+import { ButtonStyle } from '../../pages/Home/style';
 
 interface HeaderProps {}
 export const Header: FC<HeaderProps> = ({ children, ...props }) => {
@@ -34,7 +36,14 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
               <h3 style={{ margin: 'auto 10px' }}>Bem vindo, {user.nickname}</h3>
             </ClickableLogo>
             <DropdownContent>
-              <li onClick={() => navigate('/dashboard')}>Dashboard</li>
+              <li
+                onClick={() => {
+                  if (isProfessionalPath) navigate('/dashboard/profissional');
+                  navigate('dashboard/cliente');
+                }}
+              >
+                Dashboard
+              </li>
               <li
                 onClick={() => {
                   logout();
@@ -46,7 +55,26 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
             </DropdownContent>
           </Wrapper>
         ) : (
-          children
+          <>
+            <Button
+              component={Link}
+              to={isProfessionalPath ? '/profissional/cadastro' : '/cadastro'}
+              color="secondary"
+              variant="text"
+              style={ButtonStyle}
+            >
+              Criar conta
+            </Button>
+            <Button
+              component={Link}
+              to={isProfessionalPath ? '/profissional/login' : '/login'}
+              color="secondary"
+              variant="text"
+              style={ButtonStyle}
+            >
+              Entrar
+            </Button>
+          </>
         )}
       </NavBar>
     </HeadContainer>

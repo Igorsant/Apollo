@@ -31,7 +31,7 @@ const ErrorMessage = styled.span`
 `;
 
 interface ApolloTextAreaLaranjaProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label: string | React.ReactNode;
   value: string | number;
   name: string;
   errorMessage?: string;

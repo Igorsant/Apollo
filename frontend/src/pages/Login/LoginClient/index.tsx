@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
-import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
 import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
@@ -57,7 +56,7 @@ const Login = () => {
       .then((res) => {
         if (res.status === 200) {
           setToken(res.data.jwt);
-          navigate('/dashboard', { replace: true });
+          navigate('/dashboard/cliente', { replace: true });
         }
       })
       .catch((err) => {
@@ -67,18 +66,6 @@ const Login = () => {
 
   return (
     <div>
-      <Header>
-        {' '}
-        <Button
-          component={Link}
-          to="/cadastro"
-          color="secondary"
-          variant="text"
-          style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
-        >
-          Criar Conta
-        </Button>
-      </Header>
       <form onSubmit={handleSubmit}>
         <Box className={classes.root}>
           <Grid

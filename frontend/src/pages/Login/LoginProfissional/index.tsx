@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Theme, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Header } from '../../../components/Header/Header';
 import { Button } from '../../../components/Button/ApolloButton';
 import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
 
@@ -38,6 +37,8 @@ const Title = styled.h2`
 const LoginProfissional = () => {
   useTitle('Login Profissional');
   const classes = useStyles();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({ email: '', password: '' });
   const { showNotification } = useContext(NotificationContext);
 
@@ -57,6 +58,7 @@ const LoginProfissional = () => {
       .then((res) => {
         if (res.status === 200) {
           setToken(res.data.jwt);
+          navigate('/dashboard/profissional', { replace: true });
         }
       })
       .catch((err) => {
@@ -66,18 +68,6 @@ const LoginProfissional = () => {
 
   return (
     <div>
-      <Header>
-        {' '}
-        <Button
-          component={Link}
-          to="/profissional/cadastro"
-          color="secondary"
-          variant="text"
-          style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
-        >
-          Criar Conta
-        </Button>
-      </Header>
       <form onSubmit={handleSubmit}>
         <Box className={classes.root}>
           <Grid

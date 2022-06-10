@@ -4,7 +4,5 @@ export const errorHandler = (err: any): string => {
     return err.response.data.error ?? 'Erro: formulário possui dados inválidos';
   if (err.response?.status >= 500 && err.response?.status <= 599)
     return err.response.data.error ?? 'Erro interno do servidor';
-
-  console.error(err);
   return 'Erro';
 };

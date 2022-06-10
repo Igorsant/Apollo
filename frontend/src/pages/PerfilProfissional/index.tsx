@@ -13,6 +13,7 @@ import { Button } from '../../components/Button/ApolloButton';
 import { ApolloContainer } from '../../components/Container';
 import { TabsInformacoes } from './TabsInformacoes';
 import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
+import { AgendarForm, ServiceType } from './AgendarForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -43,29 +44,31 @@ const Image = styled.img`
   width: 120px;
 `;
 
-const mockProfessional = {
-  id: 1,
-  fullName: 'Felipe Gonçalves',
-  nickname: 'felipe',
-  picturePath: '/pictures/default_user.jpg',
-  aboutMe: 'AboutMe Test',
-  phone: '85999084524',
-  services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],
-  workplace: {
-    street: 'Rua das Flores',
-    streetNumber: '985',
-    complement: 'Sala 12',
-    phones: [
-      { phone: '8536566555', isPhoneWhatsapp: false },
-      { phone: '8536566555', isPhoneWhatsapp: true }
-    ]
-  }
-};
+// const mockProfessional = {
+//   id: 1,
+//   fullName: 'Felipe Gonçalves',
+//   nickname: 'felipe',
+//   picturePath: '/pictures/default_user.jpg',
+//   aboutMe: 'AboutMe Test',
+//   phone: '85999084524',
+//   services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],
+//   workplace: {
+//     street: 'Rua das Flores',
+//     streetNumber: '985',
+//     complement: 'Sala 12',
+//     phones: [
+//       { phone: '8536566555', isPhoneWhatsapp: false },
+//       { phone: '8536566555', isPhoneWhatsapp: true }
+//     ]
+//   }
+// };
 
 export default function PerfilProfissional() {
   const classes = useStyles();
   const { id } = useParams();
+  const [showAgendar, setShowAgendar] = useState(false);
   const [profissional, setProfissional] = useState<IProfissional | undefined>(undefined);
+  const [services, setServices] = useState<ServiceType[]>([]);
   const { showNotification } = useContext(NotificationContext);
 
   useEffect(() => {
@@ -78,9 +81,14 @@ export default function PerfilProfissional() {
         .get(`professionals/${id}`)
         .then((res) => {
           setProfissional(res.data);
+          setServices(
+            res.data.services.map((service: any) => ({
+              name: service.name,
+              time: service.estimatedTime
+            }))
+          );
         })
         .catch((err) => {
-          setProfissional(mockProfessional);
           showNotification(err, 'error');
         });
     }
@@ -105,7 +113,11 @@ export default function PerfilProfissional() {
               </Grid>
               <Grid item>{`${profissional?.workplace.phones[0].phone}`}</Grid>
               <Grid item>
-                <Button variant="contained" style={{ width: '120px' }}>
+                <Button
+                  variant="contained"
+                  style={{ width: '120px' }}
+                  onClick={() => setShowAgendar(true)}
+                >
                   Agendar
                 </Button>
               </Grid>
@@ -127,6 +139,28 @@ export default function PerfilProfissional() {
           <TabsInformacoes id={id} profissional={profissional}></TabsInformacoes>
         </Grid>
       </Box>
+      {showAgendar && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '0px',
+            height: '100%',
+            width: '100%',
+            left: '0px',
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <AgendarForm
+            setShowAgendar={setShowAgendar}
+            services={services}
+            professionalId={id}
+            servicesIds={profissional?.services.map((service) => service.id)}
+          />
+        </div>
+      )}
     </ApolloContainer>
   );
 }

@@ -50,6 +50,7 @@ export const SecondParallax = styled(FirstParallax)`
 
 export const SecondParallaxSubTitle = styled.h2`
   width: 40%;
+  margin-bottom: 30px;
 `;
 
 export const ButtonStyle = {

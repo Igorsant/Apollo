@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import CadastroCliente from './pages/Cadastro/CadastroCliente';
 import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
@@ -13,7 +13,7 @@ import { Header } from './components/Header/Header';
 
 export const AppRouter = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -26,6 +26,6 @@ export const AppRouter = () => {
         <Route path="/dashboard/cliente" element={<Dashboard />} />
         <Route path="/dashboard/profissional" element={<DashboardProfissional />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };

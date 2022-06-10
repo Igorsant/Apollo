@@ -1,7 +1,8 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://igorsant.github.io/Apollo/",
+  "private": false,
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -22,6 +23,7 @@
     "@types/styled-components": "^5.1.24",
     "axios": "^0.26.1",
     "formik": "^2.2.9",
+    "gh-pages": "^4.0.0",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.3",
     "react": "^17.0.2",
@@ -41,7 +43,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint '**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" --config ./.prettierrc"
+    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" --config ./.prettierrc",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

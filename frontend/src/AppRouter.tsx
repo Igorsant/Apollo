@@ -9,10 +9,12 @@ import LoginProfissional from './pages/Login/LoginProfissional';
 import BuscarProfissionais from './pages/BuscaProfissionais';
 import { Dashboard } from './pages/Dashboard/DashboardCliente/Dashboard';
 import { DashboardProfissional } from './pages/Dashboard/DashboardProfissional/DashboardProfissional';
+import { Header } from './components/Header/Header';
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cadastro" element={<CadastroCliente />} />

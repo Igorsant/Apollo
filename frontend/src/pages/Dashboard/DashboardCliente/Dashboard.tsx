@@ -1,7 +1,6 @@
 import React from 'react';
 import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import styled from 'styled-components';
-import { Header } from '../../../components/Header/Header';
 
 const MainCard = styled.div`
   background-color: white;
@@ -14,7 +13,6 @@ const MainCard = styled.div`
 export const Dashboard = () => {
   return (
     <AuthCheck>
-      <Header></Header>
       <MainCard>Agendamentos pendentes</MainCard>
     </AuthCheck>
   );

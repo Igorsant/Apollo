@@ -82,6 +82,14 @@ class ReviewRepository {
       .andWhere('customer_id', userId)
       .then((rows) => rows.length > 0);
   }
+
+  public async numberOfReviews(professionalId: number): Promise<number> {
+    return databaseService.connection
+      .table(this.tableName)
+      .select('id')
+      .where('professional_id', professionalId)
+      .then((rows) => rows.length);
+  }
 }
 
 const reviewRepository = new ReviewRepository();

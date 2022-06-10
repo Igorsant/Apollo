@@ -6,16 +6,13 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL
 });
 
-api.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  if (config.headers === undefined) {
-    config.headers = {};
-  }
-  config.headers['Content-Type'] = 'application/json;charset=utf-8';
-  config.headers['Access-Control-Allow-Origin'] = '*';
-
+api.interceptors.request.use((config: AxiosRequestConfig) => {
   const token = getToken();
 
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    if (config.headers === undefined) config.headers = {};
+    config.headers.Authorization = 'Bearer ' + token;
+  }
 
   return config;
 });

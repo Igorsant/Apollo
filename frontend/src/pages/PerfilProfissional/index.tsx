@@ -102,6 +102,7 @@ export default function PerfilProfissional() {
           setProfissional(res.data);
           setServices(
             res.data.services.map((service: any) => ({
+              id: service.id,
               name: service.name,
               time: service.estimatedTime
             }))

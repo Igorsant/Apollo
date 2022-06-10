@@ -9,8 +9,9 @@ import { Step4 } from './steps/step4';
 import api from '../../../services/api';
 
 export type ServiceType = {
+  id: number;
   name: string;
-  time: number;
+  time: string;
 };
 
 type AgendarFormType = {
@@ -46,15 +47,11 @@ export const AgendarForm = ({
       key={3}
       day={startDate}
       services={choosenServices}
-      totalTime={
-        choosenServices.reduce(
-          (acc, next) => ({
-            ...acc,
-            time: acc.time + next.time
-          }),
-          { name: '', time: 0 }
-        ).time
-      }
+      totalTime={choosenServices
+        .map((s) => Number.parseInt(s.time))
+        .reduce((acc, next) => {
+          return acc + next;
+        }, 0)}
       schedule={time as Date}
     />
   ];
@@ -81,7 +78,7 @@ export const AgendarForm = ({
     const data = {
       professionalId,
       startTime: startDate,
-      servicesIds
+      serviceIds: choosenServices.map((s) => s.id)
     };
     console.log(data);
     api.post(`schedulings`, data).then((res) => {

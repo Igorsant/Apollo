@@ -38,8 +38,8 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
             <DropdownContent>
               <li
                 onClick={() => {
-                  if (isProfessionalPath) navigate('/dashboard/profissional');
-                  navigate('dashboard/cliente');
+                  if (user?.type === 'PROFESSIONAL') navigate('/dashboard/profissional');
+                  else navigate('dashboard/cliente');
                 }}
               >
                 Dashboard

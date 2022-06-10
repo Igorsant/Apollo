@@ -41,10 +41,10 @@ export const Step1 = ({
       <h2>Selectione serviços</h2>
       {servicesAvailable.map((service) => (
         <ServicesButton
-          key={service.name}
+          key={service.id}
           onClick={() => {
             setChoosenServices((curr) => [...curr, service]);
-            setServicesAvailable((curr) => curr.filter((val) => val.name !== service.name));
+            setServicesAvailable((curr) => curr.filter((val) => val.id !== service.id));
           }}
         >
           {service.name}
@@ -55,10 +55,10 @@ export const Step1 = ({
       <h4>Serviços Selecionados:</h4>
       {choosenServices.map((service) => (
         <ServicesButton
-          key={service.name}
+          key={service.id}
           onClick={() => {
             setServicesAvailable((curr) => [...curr, service]);
-            setChoosenServices((curr) => curr.filter((val) => val.name !== service.name));
+            setChoosenServices((curr) => curr.filter((val) => val.id !== service.id));
           }}
         >
           {service.name}
@@ -68,13 +68,11 @@ export const Step1 = ({
     <h2 style={{ marginTop: '100px', color: 'var(--header)' }}>
       Tempo total estimado:
       {choosenServices.length > 0 &&
-        choosenServices.reduce(
-          (acc, next) => ({
-            ...acc,
-            time: acc.time + next.time
-          }),
-          { name: '', time: 0 }
-        ).time}{' '}
+        choosenServices
+          .map((s) => Number.parseInt(s.time))
+          .reduce((acc, next) => {
+            return acc + next;
+          }, 0)}{' '}
       min.
     </h2>
   </>

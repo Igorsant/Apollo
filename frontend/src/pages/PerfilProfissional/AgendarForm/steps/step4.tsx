@@ -34,18 +34,29 @@ export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) =>
     </div>
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <LabelContainer>
-        <Label>Serviços Selececionados:</Label>
+        <Label>Serviços Selecionados:</Label>
         {services.map((service) => (
           <ServicesButton key={service.name}>{service.name}</ServicesButton>
         ))}
       </LabelContainer>
       <LabelContainer>
-        <Label>Dia Selececionado:</Label>
-        <Label>{day.getUTCDate() + '/' + (day.getMonth() + 1) + '/' + day.getFullYear()}</Label>
+        <Label>Dia Selecionados:</Label>
+        <Label>
+          {day.getUTCDate() +
+            '/' +
+            (day.getMonth() + 1).toString().padStart(2, '0') +
+            '/' +
+            day.getFullYear()}
+        </Label>
       </LabelContainer>
       <LabelContainer>
-        <Label>Horário Selececionado:</Label>
-        <Label>{schedule && schedule.getHours() + ':' + schedule.getMinutes()}</Label>
+        <Label>Horário Selecionados:</Label>
+        <Label>
+          {schedule &&
+            schedule.getHours().toString().padStart(2, '0') +
+              ':' +
+              schedule.getMinutes().toString().padStart(2, '0')}
+        </Label>
       </LabelContainer>
       <LabelContainer>
         <Label>Tempo total estimado:</Label>

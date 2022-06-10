@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
-import { Header } from '../../../components/Header/Header';
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@mui/material';
 import { Box, Grid } from '@material-ui/core';
@@ -46,7 +45,6 @@ export const DashboardProfissional = () => {
   const classes = useStyles();
   return (
     <AuthCheck>
-      <Header></Header>
       <Box className={classes.root}>
         <Grid container justifyContent="flex-end" spacing={2}>
           <Grid item xs={12} sm={12} md={12}>

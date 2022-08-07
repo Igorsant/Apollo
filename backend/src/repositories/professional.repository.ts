@@ -24,7 +24,7 @@ class ProfessionalRepository {
         `${this.tableName}.workplace_id`,
         `${this.workplaceTableName}.id`
       )
-      .where(`${this.workplaceTableName}.city`, city)
+      .whereILike(`${this.workplaceTableName}.city`, `%${city}%`)
       .modify((queryBuilder) => {
         if (query)
           queryBuilder.whereILike(`${this.tableName}.full_name`, `%${query}%`);

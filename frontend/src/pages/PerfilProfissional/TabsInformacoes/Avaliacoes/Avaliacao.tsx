@@ -1,4 +1,3 @@
-import React from 'react';
 import { Delete, Edit, Star } from '@mui/icons-material';
 import { Grid, IconButton, ListItem, Rating, Typography } from '@mui/material';
 import { UserAvatar } from '../../../../components/UserAvatar/UserAvatar';

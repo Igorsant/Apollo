@@ -1,4 +1,3 @@
-import React from 'react';
 import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import { Box, Theme } from '@mui/material';
 import { makeStyles } from '@material-ui/core';

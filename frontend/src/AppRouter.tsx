@@ -1,5 +1,4 @@
-import React from 'react';
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
 import CadastroCliente from './pages/Cadastro/CadastroCliente';
 import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
@@ -13,7 +12,7 @@ import { Header } from './components/Header/Header';
 
 export const AppRouter = () => {
   return (
-    <HashRouter>
+    <Router>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -25,7 +24,11 @@ export const AppRouter = () => {
         <Route path="/buscar" element={<BuscarProfissionais />} />
         <Route path="/dashboard/cliente" element={<Dashboard />} />
         <Route path="/dashboard/profissional" element={<DashboardProfissional />} />
+        <Route
+          path="*"
+          element={<h1 style={{ color: 'black ' }}>Desculpe, essa página não existe</h1>}
+        />
       </Routes>
-    </HashRouter>
+    </Router>
   );
 };

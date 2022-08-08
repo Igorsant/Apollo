@@ -1,5 +1,5 @@
 import { Button, Card, Grid, IconButton, Rating } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import IProfissional from '../../../types/IProfissional';
 import { MainCardArea, ButtonArea, Row, ProfessionalNameArea } from './styles';

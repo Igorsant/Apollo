@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@mui/material';

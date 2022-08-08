@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { HighlightStep, OtherSteps } from '../../style';
 import { Line } from '../line';
 import 'react-datepicker/dist/react-datepicker.css';

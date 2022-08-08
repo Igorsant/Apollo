@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import useQuery from '../../hooks/useQuery';
 import api from '../../services/api';
 import IProfissional from '../../types/IProfissional';

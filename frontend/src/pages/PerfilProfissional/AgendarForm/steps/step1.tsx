@@ -1,5 +1,5 @@
 import { ArrowDropDown } from '@mui/icons-material';
-import React, { SetStateAction, Dispatch } from 'react';
+import { SetStateAction, Dispatch } from 'react';
 import { ServiceType } from '..';
 import { HighlightStep, OtherSteps, ServicesButton } from '../../style';
 import { Line } from '../line';

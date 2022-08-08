@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { Close } from '@mui/icons-material';
-import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Button } from '../../../components/Button/ApolloButton';
 import { Step1 } from './steps/step1';
 import { Step2 } from './steps/step2';

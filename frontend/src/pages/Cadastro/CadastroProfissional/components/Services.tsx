@@ -1,5 +1,5 @@
 import { Button, Grid, IconButton } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { TextInputLaranja } from '../../../../components/TextInputLaranja/TextInputLaranja';
 import { Subtitle, PlusButton } from '../../components';
 import DeleteIcon from '@mui/icons-material/Delete';

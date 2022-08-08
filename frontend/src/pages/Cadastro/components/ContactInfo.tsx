@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid } from '@mui/material';
 import { TextInputLaranja } from '../../../components/TextInputLaranja/TextInputLaranja';
 import { Subtitle } from './styles';

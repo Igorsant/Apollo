@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { HeadContainer, NavBar, Logo, ClickableLogo, DropdownContent, Wrapper } from './style';
 import LogoImage from '../../images/Logo_apollo.png';
 import LogoProfissional from '../../images/Logo_apollo_profissional.png';
@@ -61,6 +61,7 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
               to={isProfessionalPath ? '/profissional/cadastro' : '/cadastro'}
               color="secondary"
               variant="text"
+              data-cy="createAccountButton"
               style={ButtonStyle}
             >
               Criar conta

@@ -1,5 +1,5 @@
 import { Grid, FormControlLabel, Checkbox } from '@mui/material';
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { TextInputLaranja } from '../../../../components/TextInputLaranja/TextInputLaranja';
 import { Subtitle } from '../../components';
 

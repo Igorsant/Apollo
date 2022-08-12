@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import CadastroCliente from './pages/Cadastro/CadastroCliente';
 import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
@@ -9,15 +9,19 @@ import BuscarProfissionais from './pages/BuscaProfissionais';
 import { Dashboard } from './pages/Dashboard/DashboardCliente/Dashboard';
 import { DashboardProfissional } from './pages/Dashboard/DashboardProfissional/DashboardProfissional';
 import { Header } from './components/Header/Header';
-
+import { isAuthenticated } from './services/auth';
+const isUserAuthenticated: boolean | undefined = isAuthenticated();
 export const AppRouter = () => {
   return (
     <Router>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cadastro" element={<CadastroCliente />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/cadastro"
+          element={isUserAuthenticated ? <Navigate to="/" /> : <CadastroCliente />}
+        />
+        <Route path="/login" element={isUserAuthenticated ? <Navigate to="/" /> : <Login />} />
         <Route path="/profissional/login" element={<LoginProfissional />} />
         <Route path="/profissional/cadastro" element={<CadastroProfissional />} />
         <Route path="/profissional/perfil/:id" element={<PerfilProfissional />} />

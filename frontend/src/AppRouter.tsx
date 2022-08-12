@@ -10,18 +10,15 @@ import { Dashboard } from './pages/Dashboard/DashboardCliente/Dashboard';
 import { DashboardProfissional } from './pages/Dashboard/DashboardProfissional/DashboardProfissional';
 import { Header } from './components/Header/Header';
 import { isAuthenticated } from './services/auth';
-const isUserAuthenticated: boolean | undefined = isAuthenticated();
+const isUserAuth: boolean | undefined = isAuthenticated();
 export const AppRouter = () => {
   return (
     <Router>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="/cadastro"
-          element={isUserAuthenticated ? <Navigate to="/" /> : <CadastroCliente />}
-        />
-        <Route path="/login" element={isUserAuthenticated ? <Navigate to="/" /> : <Login />} />
+        <Route path="/cadastro" element={isUserAuth ? <Navigate to="/" /> : <CadastroCliente />} />
+        <Route path="/login" element={isUserAuth ? <Navigate to="/" /> : <Login />} />
         <Route path="/profissional/login" element={<LoginProfissional />} />
         <Route path="/profissional/cadastro" element={<CadastroProfissional />} />
         <Route path="/profissional/perfil/:id" element={<PerfilProfissional />} />

@@ -23,8 +23,14 @@ export const AppRouter = () => {
         />
         <Route path="/login" element={isUserAuthenticated ? <Navigate to="/" /> : <Login />} />
         <Route path="/profissional/login" element={<LoginProfissional />} />
-        <Route path="/profissional/cadastro" element={<CadastroProfissional />} />
-        <Route path="/profissional/perfil/:id" element={<PerfilProfissional />} />
+        <Route
+          path="/profissional/cadastro"
+          element={isUserAuthenticated ? <CadastroProfissional /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profissional/perfil/:id"
+          element={isUserAuthenticated ? <PerfilProfissional /> : <Navigate to="/" />}
+        />
         <Route path="/buscar" element={<BuscarProfissionais />} />
         <Route path="/dashboard/cliente" element={<Dashboard />} />
         <Route path="/dashboard/profissional" element={<DashboardProfissional />} />

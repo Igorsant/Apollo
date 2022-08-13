@@ -2,9 +2,9 @@ name: Node.js CI - Backend
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -13,19 +13,15 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x, 16.x]
 
     steps:
     - uses: actions/checkout@v3
-    - name: Usar Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - run: cd backend
-    - run: npm ci
-    
-    - name: github-action-jest
-      with:
-        working-directory: backend
+
+    - name: Selecionar versão Node.js ${{ matrix.node-version }}
+      working-directory: backend
+      run: npm ci
+      
+    - name: Executar Testes com Jest
+      working-directory: backend
+      run: npm test

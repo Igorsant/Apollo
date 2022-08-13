@@ -2,9 +2,9 @@ name: Node.js CI - Backend
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "api-*" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:

@@ -4,7 +4,7 @@
   "description": "API para o sistema Apollo",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "ts-node-dev --require dotenv/config --respawn src/index.ts",
     "build": "tsc",
     "migrate:make": "knex --knexfile knexfile.ts migrate:make -x ts --",

@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [16.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -22,8 +22,8 @@ jobs:
       working-directory: frontend
       run: yarn
     
-    - name: Esperar carregar página
-      run: sleep 15
+    - name: Esperar carregar página em container
+      run: sleep 30
       
     - name: Executar Testes com Cypress
       working-directory: frontend

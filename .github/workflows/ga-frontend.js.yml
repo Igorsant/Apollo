@@ -1,0 +1,30 @@
+name: Node.js CI - Frontend
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Selecionar versão Node.js ${{ matrix.node-version }}
+      working-directory: frontend
+      run: yarn
+    
+    - name: Esperar carregar página
+      run: sleep 15
+      
+    - name: Executar Testes com Cypress
+      working-directory: frontend
+      run: yarn run cypress run

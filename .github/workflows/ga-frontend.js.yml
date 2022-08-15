@@ -7,24 +7,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  cypress-run:
+      runs-on: ubuntu-20.04
 
-    runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Selecionar versão Node.js ${{ matrix.node-version }}
-      working-directory: frontend
-      run: yarn
-    
-    - name: Esperar carregar página em container
-      run: sleep 30
-      
-    - name: Executar Testes com Cypress
-      working-directory: frontend
-      run: yarn run cypress run
+        - name: Cypress run
+          uses: cypress-io/github-action@v4
+          with:
+            working-directory: frontend
+            start: yarn start
+            wait-on: 'http://localhost:3000'

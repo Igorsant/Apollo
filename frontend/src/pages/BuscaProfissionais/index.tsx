@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, CircularProgress, Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import useQuery from '../../hooks/useQuery';
 import api from '../../services/api';
@@ -13,6 +13,7 @@ const BuscarProfissionais = () => {
   useTitle('Busca');
   const user: any = useUser();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [favorites, setFavorites] = useState<number[]>([]);
 
   const { showNotification } = useContext(NotificationContext);
@@ -30,6 +31,7 @@ const BuscarProfissionais = () => {
         }
       })
       .then((res) => {
+        setIsLoading(false);
         setProfissionais(res.data);
       })
       .catch((err) => {
@@ -88,6 +90,21 @@ const BuscarProfissionais = () => {
         return false;
       });
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          minHeight: '80vh',
+          alignItems: 'center'
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Grid container spacing={2} sx={{ p: 10, color: 'black' }}>

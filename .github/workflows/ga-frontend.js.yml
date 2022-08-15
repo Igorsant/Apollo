@@ -22,9 +22,9 @@ jobs:
       working-directory: frontend
       run: yarn
     
-    - name: Esperar carregar página em container
-      run: sleep 30
-      
+    - name: Iniciar aplicação
+      run: yarn start
+
     - name: Executar Testes com Cypress
       working-directory: frontend
       run: yarn run cypress run

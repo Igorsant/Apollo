@@ -1,4 +1,5 @@
 import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
+
 import Home from './pages/Home';
 import CadastroCliente from './pages/Cadastro/CadastroCliente';
 import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
@@ -9,9 +10,26 @@ import BuscarProfissionais from './pages/BuscaProfissionais';
 import { Dashboard } from './pages/Dashboard/DashboardCliente/Dashboard';
 import { DashboardProfissional } from './pages/Dashboard/DashboardProfissional/DashboardProfissional';
 import { Header } from './components/Header/Header';
-import { isAuthenticated } from './services/auth';
+import { isAuthenticated, getUserType } from './services/auth';
+import { ReactElement } from 'react';
+
 const isUserAuthenticated: boolean | undefined = isAuthenticated();
+const userType: string = getUserType();
+
 export const AppRouter = () => {
+  function ProfessionalAuth({ children }: { children: ReactElement }) {
+    if (!(isUserAuthenticated && userType === 'PROFESSIONAL')) {
+      return <Navigate to="/" />;
+    }
+    return children;
+  }
+  function ClientAuth({ children }: { children: ReactElement }) {
+    if (!(isUserAuthenticated && userType === 'CUSTOMER')) {
+      return <Navigate to="/" />;
+    }
+    return children;
+  }
+
   return (
     <Router>
       <Header />
@@ -32,8 +50,22 @@ export const AppRouter = () => {
           element={isUserAuthenticated ? <PerfilProfissional /> : <Navigate to="/" />}
         />
         <Route path="/buscar" element={<BuscarProfissionais />} />
-        <Route path="/dashboard/cliente" element={<Dashboard />} />
-        <Route path="/dashboard/profissional" element={<DashboardProfissional />} />
+        <Route
+          path="/dashboard/cliente"
+          element={
+            <ClientAuth>
+              <Dashboard />
+            </ClientAuth>
+          }
+        />
+        <Route
+          path="/dashboard/profissional"
+          element={
+            <ProfessionalAuth>
+              <DashboardProfissional />
+            </ProfessionalAuth>
+          }
+        />
         <Route
           path="*"
           element={<h1 style={{ color: 'black ' }}>Desculpe, essa página não existe</h1>}

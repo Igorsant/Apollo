@@ -20,3 +20,13 @@ export const isAuthenticated = () => {
     return true;
   }
 };
+
+export const getUserType = () => {
+  if (getToken()) {
+    const value = jwt<any>(getToken() || '');
+    if (value) {
+      return value.type;
+    }
+    return '';
+  }
+};

@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -18,13 +17,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Selecionar versão Node.js ${{ matrix.node-version }}
+    - name: Instalar dependências em Node.js ${{ matrix.node-version }}
       working-directory: frontend
       run: yarn
-    
-    - name: Iniciar aplicação
-      run: yarn start
 
-    - name: Executar Testes com Cypress
-      working-directory: frontend
-      run: yarn run cypress run
+  cypress-run:
+      runs-on: ubuntu-20.04
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Cypress run
+          uses: cypress-io/github-action@v4
+          with:
+            working-directory: frontend
+            start: yarn start
+            wait-on: 'http://localhost:3000'

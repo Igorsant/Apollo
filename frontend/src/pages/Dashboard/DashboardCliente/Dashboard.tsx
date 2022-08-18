@@ -1,4 +1,3 @@
-import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import { Box, Theme } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import { AgendamentosPendentes } from './AgendamentosPendentes/AgendamentosPendentes';
@@ -22,10 +21,8 @@ export const Dashboard = () => {
   const classes = useStyles();
 
   return (
-    <AuthCheck>
-      <Box className={classes.root}>
-        <AgendamentosPendentes />
-      </Box>
-    </AuthCheck>
+    <Box className={classes.root}>
+      <AgendamentosPendentes />
+    </Box>
   );
 };

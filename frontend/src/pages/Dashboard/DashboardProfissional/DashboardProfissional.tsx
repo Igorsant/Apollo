@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import { AuthCheck } from '../../../components/AuthCheck/AuthCheck';
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@mui/material';
 import { Box, Grid } from '@material-ui/core';
@@ -44,17 +43,15 @@ export const DashboardProfissional = () => {
   };
   const classes = useStyles();
   return (
-    <AuthCheck>
-      <Box className={classes.root}>
-        <Grid container justifyContent="flex-end" spacing={2}>
-          <Grid item xs={12} sm={12} md={12}>
-            <Agendamentos agendamentos={agendamentos} />
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
-            <AgendamentosPendentes onAnswer={obterAgendamentos} />
-          </Grid>
+    <Box className={classes.root}>
+      <Grid container justifyContent="flex-end" spacing={2}>
+        <Grid item xs={12} sm={12} md={12}>
+          <Agendamentos agendamentos={agendamentos} />
         </Grid>
-      </Box>
-    </AuthCheck>
+        <Grid item xs={12} sm={12} md={6}>
+          <AgendamentosPendentes onAnswer={obterAgendamentos} />
+        </Grid>
+      </Grid>
+    </Box>
   );
 };

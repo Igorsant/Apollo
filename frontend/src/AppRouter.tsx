@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 
 import Home from './pages/Home';
 import CadastroCliente from './pages/Cadastro/CadastroCliente';
@@ -10,26 +10,11 @@ import BuscarProfissionais from './pages/BuscaProfissionais';
 import { Dashboard } from './pages/Dashboard/DashboardCliente/Dashboard';
 import { DashboardProfissional } from './pages/Dashboard/DashboardProfissional/DashboardProfissional';
 import { Header } from './components/Header/Header';
-import { isAuthenticated, getUserType } from './services/auth';
-import { ReactElement } from 'react';
-
-const isUserAuthenticated: boolean | undefined = isAuthenticated();
-const userType: string = getUserType();
+import { ClientAuth } from './components/AuthCheck/ClientAuth';
+import { ProfessionalAuth } from './components/AuthCheck/ProfissionalAuth';
+import { LoggedIn } from './components/AuthCheck/LoggedIn';
 
 export const AppRouter = () => {
-  function ProfessionalAuth({ children }: { children: ReactElement }) {
-    if (!(isUserAuthenticated && userType === 'PROFESSIONAL')) {
-      return <Navigate to="/" />;
-    }
-    return children;
-  }
-  function ClientAuth({ children }: { children: ReactElement }) {
-    if (!(isUserAuthenticated && userType === 'CUSTOMER')) {
-      return <Navigate to="/" />;
-    }
-    return children;
-  }
-
   return (
     <Router>
       <Header />
@@ -37,17 +22,43 @@ export const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route
           path="/cadastro"
-          element={isUserAuthenticated ? <Navigate to="/" /> : <CadastroCliente />}
+          element={
+            <LoggedIn>
+              <CadastroCliente />
+            </LoggedIn>
+          }
         />
-        <Route path="/login" element={isUserAuthenticated ? <Navigate to="/" /> : <Login />} />
-        <Route path="/profissional/login" element={<LoginProfissional />} />
+        <Route
+          path="/login"
+          element={
+            <LoggedIn>
+              <Login />
+            </LoggedIn>
+          }
+        />
+        <Route
+          path="/profissional/login"
+          element={
+            <LoggedIn>
+              <LoginProfissional />
+            </LoggedIn>
+          }
+        />
         <Route
           path="/profissional/cadastro"
-          element={isUserAuthenticated ? <CadastroProfissional /> : <Navigate to="/" />}
+          element={
+            <LoggedIn>
+              <CadastroProfissional />
+            </LoggedIn>
+          }
         />
         <Route
           path="/profissional/perfil/:id"
-          element={isUserAuthenticated ? <PerfilProfissional /> : <Navigate to="/" />}
+          element={
+            <ClientAuth>
+              <PerfilProfissional />
+            </ClientAuth>
+          }
         />
         <Route path="/buscar" element={<BuscarProfissionais />} />
         <Route

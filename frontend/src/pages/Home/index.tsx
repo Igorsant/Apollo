@@ -48,6 +48,7 @@ const Home = () => {
                   label=""
                   placeholder="Cidade"
                   name="city"
+                  data-cy="queryCityInput"
                   value={search?.city || ''}
                   onChange={handleChange}
                 />
@@ -55,6 +56,7 @@ const Home = () => {
                   label=""
                   placeholder="Busque um profissional"
                   name="query"
+                  data-cy="queryProfessionalInput"
                   value={search?.query || ''}
                   onChange={handleChange}
                 />
@@ -69,6 +71,7 @@ const Home = () => {
                       replace: true
                     });
                   }}
+                  data-cy="searchProfessionalButton"
                 >
                   Buscar
                 </Button>

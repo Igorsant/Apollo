@@ -429,6 +429,8 @@ paths:
           description: Avaliação criada com sucesso
         '400':
           description: Corpo da requisição inválido
+        '401':
+          description: Usuário não autenticado
   /reviews/{reviewId}:
     put:
       tags:
@@ -449,6 +451,8 @@ paths:
           description: OK
         '400':
           description: Corpo da requisição inválido
+        '401':
+          description: Usuário não autenticado
         '403':
           description: Usuário não possui permissão para realizar a operação
         '404':
@@ -471,6 +475,8 @@ paths:
       responses:
         '204':
           description: No Content
+        '401':
+          description: Usuário não autenticado
         '403':
           description: Usuário não possui permissão para realizar a operação
       parameters:
@@ -636,6 +642,7 @@ components:
       properties:
         professionalId:
           type: integer
+          minimum: 1
         rating:
           type: integer
           minimum: 1

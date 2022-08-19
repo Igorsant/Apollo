@@ -48,6 +48,7 @@ const Home = () => {
                   label=""
                   placeholder="Cidade"
                   name="city"
+                  data-cy="queryCityInput"
                   value={search?.city || ''}
                   onChange={handleChange}
                 />
@@ -55,6 +56,7 @@ const Home = () => {
                   label=""
                   placeholder="Busque um profissional"
                   name="query"
+                  data-cy="queryProfessionalInput"
                   value={search?.query || ''}
                   onChange={handleChange}
                 />
@@ -69,6 +71,7 @@ const Home = () => {
                       replace: true
                     });
                   }}
+                  data-cy="searchProfessionalButton"
                 >
                   Buscar
                 </Button>
@@ -79,7 +82,12 @@ const Home = () => {
         <Parallax url={p2}>
           <SecondParallax>
             <SecondParallaxSubTitle>Encontre barbearias próximas à você</SecondParallaxSubTitle>
-            <Button component={Link} to="/profissional/login" variant="contained">
+            <Button
+              component={Link}
+              to="/profissional/login"
+              variant="contained"
+              data-cy="professionalLoginButton"
+            >
               Sou profissional
             </Button>
           </SecondParallax>

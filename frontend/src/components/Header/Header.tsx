@@ -71,6 +71,7 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
               to={isProfessionalPath ? '/profissional/login' : '/login'}
               color="secondary"
               variant="text"
+              data-cy="loginAccountButton"
               style={ButtonStyle}
             >
               Entrar

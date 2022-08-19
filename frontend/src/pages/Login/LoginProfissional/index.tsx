@@ -109,6 +109,7 @@ const LoginProfissional = () => {
                 component={Link}
                 to="/profissional/cadastro"
                 variant="text"
+                data-cy="professionalRegisterButton"
                 style={{ textTransform: 'none' }}
               >
                 Não possui conta? Clique aqui!

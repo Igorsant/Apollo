@@ -39,6 +39,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "cypress": "cypress run",
     "eject": "react-scripts eject",
     "lint": "eslint '**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix",

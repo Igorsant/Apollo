@@ -23,4 +23,11 @@ describe('Validate visitor navigation in application', () => {
     cy.get('[data-cy=professionalLoginButton]').click();
     cy.url().should('equal', 'http://localhost:3000/profissional/login');
   });
+
+  it('should pass if visitor can navigate to professional register page', () => {
+    cy.visit('http://localhost:3000');
+    cy.get('[data-cy=professionalLoginButton]').click();
+    cy.get('[data-cy=professionalRegisterButton]').click();
+    cy.url().should('equal', 'http://localhost:3000/profissional/cadastro');
+  });
 });

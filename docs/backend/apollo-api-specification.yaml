@@ -438,7 +438,7 @@ paths:
             type: integer
       responses:
         '200':
-          description: OK
+          description: Lista de avaliações retornadas
     post:
       tags:
         - review
@@ -459,7 +459,7 @@ paths:
         '400':
           description: Corpo da requisição inválido
         '401':
-          description: Usuário não autenticado
+          description: Usuário não autenticado ou autenticado como profissional
   /reviews/{reviewId}:
     put:
       tags:
@@ -477,9 +477,11 @@ paths:
               $ref: '#/components/schemas/Review'
       responses:
         '200':
-          description: OK
+          description: Avaliação alterada com sucesso
+        '201':
+          description: Corpo da nova avaliação
         '400':
-          description: Corpo da requisição inválido
+          description: Corpo da requisição inválido ou avaliação não encontrada
         '401':
           description: Usuário não autenticado
         '403':
@@ -503,7 +505,9 @@ paths:
         - bearerAuth: []
       responses:
         '204':
-          description: No Content
+          description: Avaliação deletada com sucesso
+        '400':
+          description: Erro na requisição ou avaliação não encontrada
         '401':
           description: Usuário não autenticado
         '403':
@@ -698,12 +702,15 @@ components:
         professionalId:
           type: integer
           minimum: 1
+          example: 1
         rating:
           type: integer
           minimum: 1
           maximum: 5
+          example: 4
         comment:
           type: string
+          example: Bom
     WorktimeChange:
       type: object
       required:

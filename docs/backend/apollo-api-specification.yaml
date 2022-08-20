@@ -298,6 +298,8 @@ paths:
       responses:
         '200':
           description: OK
+        '401':
+          description: Usuario não autenticado
     post:
       tags:
         - scheduling
@@ -317,17 +319,22 @@ paths:
           description: Agendamento criado com sucesso
         '400':
           description: Corpo da requisição inválido
+        '404':
+          description: Serviço(s) não encontrado(s)
   /schedulings/{schedulingId}:
     get:
       tags:
         - scheduling
-      summary: Retorna um agendamento específico do usuário
+      summary: Retorna um agendamento específico do usuário 
+      description: Agendamento precisa iniciar depois da data e horário de consulta
       operationId: getScheduling
       security:
         - bearerAuth: []
       responses:
         '200':
           description: OK
+        '404':
+          description: Agendamento não encontrado
       parameters:
         - name: schedulingId
           in: path
@@ -345,7 +352,9 @@ paths:
         - bearerAuth: []
       responses:
         '204':
-          description: No Content
+          description: Agendamento cancelado com sucesso
+        '400':
+          description: Agendamento não encontrado
         '403':
           description: Usuário não possui permissão para realizar a operação
       parameters:
@@ -366,9 +375,11 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: OK
+          description: Agendamento aceito por profissional
         '400':
           description: Agendamento com id schedulingId não pode ser aceito
+        '401':
+          description: Usuário não autenticado ou logado como cliente
         '403':
           description: Usuário não possui permissão para realizar a operação
         '404':
@@ -391,9 +402,11 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: OK
+          description: Agendamento recusado por profissional
         '400':
           description: Agendamento com id schedulingId não pode ser recusado
+        '401':
+          description: Usuário não autenticado
         '403':
           description: Usuário não possui permissão para realizar a operação
         '404':
@@ -655,12 +668,15 @@ components:
       properties:
         professionalId:
           type: integer
-        datetime:
+          example: 1
+        startTime:
           type: string
+          example: 2023-09-27
         serviceIds:
           type: array
           items:
             type: integer
+          example: [1]
     LoginInfo:
       type: object
       required:

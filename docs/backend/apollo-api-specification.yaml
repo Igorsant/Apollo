@@ -5,6 +5,7 @@ info:
   description: Especificação da API da aplicação Apollo. Para esse documento entende-se cliente/customer como aquele usuário que consome os serviços ofertados na aplicação e profissional/professional como aquele usuário que oferta seus serviços na plataforma
 
 servers:
+  - url: https://apollo-api-unifor.herokuapp.com
   - url: http://localhost:3001
 
 tags:
@@ -567,7 +568,6 @@ components:
         - fullName
         - nickname
         - pictureBase64
-        - aboutMe
         - email
         - phone
         - cpf
@@ -711,23 +711,25 @@ components:
         comment:
           type: string
           example: Bom
-    WorktimeChange:
-      type: object
-      required:
-        - professionalId
-        - startTime
-        - endTime
-        - disable
-      properties:
-        professionalId:
-          type: int
-          example: 1
-        startTime:
-          type: string
-          example: '08:00'
-        endTime:
-          type: string
-          example: '18:00'
-        disable:
-          type: boolean
-          description: Se TRUE indisponibiliza o horário, caso contrário disponibiliza o horário.
+    
+    # Schema não usado
+    # WorktimeChange:
+    #   type: object
+    #   required:
+    #     - professionalId
+    #     - startTime
+    #     - endTime
+    #     - disable
+    #   properties:
+    #     professionalId:
+    #       type: number
+    #       example: 1
+    #     startTime:
+    #       type: string
+    #       example: '08:00'
+    #     endTime:
+    #       type: string
+    #       example: '18:00'
+    #     disable:
+    #       type: boolean
+    #       description: Se TRUE indisponibiliza o horário, caso contrário disponibiliza o horário.

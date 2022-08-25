@@ -107,7 +107,7 @@ const CadastroCliente = () => {
             <ContactInfo formik={formik} />
             <PersonalInfo formik={formik} />
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
-              <Button type="submit" variant="contained" style={{ width: '40%' }}>
+              <Button type="submit" variant="contained" data-cy="siginBtn" style={{ width: '40%' }}>
                 Criar conta
               </Button>
             </Grid>
@@ -117,6 +117,7 @@ const CadastroCliente = () => {
                 to="/profissional/cadastro"
                 variant="text"
                 style={{ textTransform: 'none' }}
+                data-cy="siginRedirect"
                 onClick={() => console.log(formik.errors)}
               >
                 Profissional? Clique aqui!

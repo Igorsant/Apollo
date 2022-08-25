@@ -13,6 +13,7 @@ export const PersonalInfo = ({ formik }: any) => {
           name="cpf"
           value={formik.values.cpf}
           onChange={formik.handleChange}
+          data-cy="profileNationalId"
           label="CPF(Apenas números):"
           errorMessage={formik.errors.cpf}
           placeholder="Ex.: 012345678910"
@@ -25,6 +26,7 @@ export const PersonalInfo = ({ formik }: any) => {
           value={formik.values.password}
           onChange={formik.handleChange}
           errorMessage={formik.errors.password}
+          data-cy="profilePassword"
           label="Senha:"
           placeholder="Ex.: ********"
         ></TextInputLaranja>
@@ -36,6 +38,7 @@ export const PersonalInfo = ({ formik }: any) => {
           value={formik.values.confirmPassword}
           onChange={formik.handleChange}
           errorMessage={formik.errors.confirmPassword}
+          data-cy="profilePasswordConfirm"
           label="Confirmar senha:"
           placeholder="Ex.: ********"
         ></TextInputLaranja>

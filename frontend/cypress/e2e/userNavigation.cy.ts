@@ -22,8 +22,13 @@ describe('Validate visitor navigation in application', () => {
     it('should pass if visitor can navigate to professional search page (city only)', () => {
       cy.visit('http://localhost:3000');
       cy.get('[data-cy=queryCityInput]').type(`for`);
+      cy.intercept({
+        method: 'GET',
+        url: 'http://localhost:3001/professionals/search?city=for&query=+'
+      }).as('getRequest');
       cy.get('[data-cy=searchProfessionalButton]').click();
-      cy.wait(5000);
+
+      cy.wait('@getRequest');
       cy.url().should('equal', 'http://localhost:3000/buscar?city=for&query=');
     });
 
@@ -31,8 +36,14 @@ describe('Validate visitor navigation in application', () => {
       cy.visit('http://localhost:3000');
       cy.get('[data-cy=queryCityInput]').type(`for`);
       cy.get('[data-cy=queryProfessionalInput]').type(`fel`);
+      cy.intercept({
+        method: 'GET',
+        url: 'http://localhost:3001/professionals/search?city=for&query=fel'
+      }).as('getRequest');
+
       cy.get('[data-cy=searchProfessionalButton]').click();
-      cy.wait(5000);
+      cy.wait('@getRequest');
+
       cy.url().should('equal', 'http://localhost:3000/buscar?city=for&query=fel');
     });
 

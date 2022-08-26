@@ -20,6 +20,9 @@ interface Step4Interface {
   schedule: Date;
 }
 
+export const validateStep4 = ({ services, day, totalTime, schedule }: Step4Interface): boolean =>
+  Boolean(services && day && totalTime && schedule);
+
 export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) => (
   <>
     <div style={{ display: 'flex' }}>

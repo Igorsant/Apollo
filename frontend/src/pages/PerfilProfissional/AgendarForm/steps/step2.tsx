@@ -12,6 +12,8 @@ interface Step2Interface {
   setStartDate: Dispatch<SetStateAction<Date>>;
 }
 
+export const validateStep2 = (args: Step2Interface): boolean => Boolean(args.startDate);
+
 export const Step2 = ({ startDate, setStartDate }: Step2Interface) => (
   <>
     <div style={{ display: 'flex' }}>

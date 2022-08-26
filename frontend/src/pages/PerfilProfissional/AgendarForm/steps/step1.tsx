@@ -10,6 +10,10 @@ interface Step1Interface {
   choosenServices: ServiceType[];
   setChoosenServices: Dispatch<SetStateAction<ServiceType[]>>;
 }
+
+export const validateStep1 = (args: Step1Interface): boolean =>
+  Boolean(args.choosenServices && args.choosenServices.length);
+
 export const Step1 = ({
   servicesAvailable,
   setServicesAvailable,

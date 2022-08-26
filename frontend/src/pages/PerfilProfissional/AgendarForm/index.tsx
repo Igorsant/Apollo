@@ -1,10 +1,10 @@
 import { Close } from '@mui/icons-material';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Button } from '../../../components/Button/ApolloButton';
-import { Step1 } from './steps/step1';
-import { Step2 } from './steps/step2';
-import { Step3 } from './steps/step3';
-import { Step4 } from './steps/step4';
+import { Step1, validateStep1 } from './steps/step1';
+import { Step2, validateStep2 } from './steps/step2';
+import { Step3, validateStep3 } from './steps/step3';
+import { Step4, validateStep4 } from './steps/step4';
 import api from '../../../services/api';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 
@@ -57,21 +57,36 @@ export const AgendarForm = ({
     />
   ];
 
-  const handleMove = () => {
-    if (indexStep < 3) {
-      setIndexStep((curr) => curr + 1);
-    } else {
-      // agendar
-    }
-  };
-
-  const handleBack = () => {
-    if (indexStep === 0) {
-      setShowAgendar(false);
-    } else {
-      setIndexStep((curr) => curr - 1);
-    }
-  };
+  const validateFuncions = [
+    () =>
+      validateStep1({
+        servicesAvailable,
+        setServicesAvailable,
+        choosenServices,
+        setChoosenServices
+      }),
+    () =>
+      validateStep2({
+        startDate,
+        setStartDate
+      }),
+    () =>
+      validateStep3({
+        time,
+        setTime
+      }),
+    () =>
+      validateStep4({
+        day: startDate,
+        services: choosenServices,
+        totalTime: choosenServices
+          .map((s) => Number.parseInt(s.time))
+          .reduce((acc, next) => {
+            return acc + next;
+          }, 0),
+        schedule: time as Date
+      })
+  ];
 
   const handleSubmit = () => {
     startDate.setHours(time?.getHours() as number);
@@ -86,6 +101,29 @@ export const AgendarForm = ({
       showNotification('Agendamento criado com sucesso', 'success');
       setShowAgendar(false);
     });
+  };
+
+  const handleMove = () => {
+    if (indexStep === 3) {
+      handleSubmit();
+      return;
+    }
+
+    const validateFn = validateFuncions[indexStep];
+    if (!validateFn()) {
+      showNotification('Alguma informação inválida na etapa de agendamento', 'warning');
+      return;
+    }
+
+    setIndexStep((curr) => curr + 1);
+  };
+
+  const handleBack = () => {
+    if (indexStep === 0) {
+      setShowAgendar(false);
+    } else {
+      setIndexStep((curr) => curr - 1);
+    }
   };
 
   return (

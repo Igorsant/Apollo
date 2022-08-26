@@ -21,15 +21,10 @@ type AgendarFormType = {
   servicesIds: number[] | undefined;
 };
 
-export const AgendarForm = ({
-  setShowAgendar,
-  services,
-  professionalId,
-  servicesIds
-}: AgendarFormType) => {
-  const [servicesAvailable, setServicesAvailable] = useState<ServiceType[]>(services);
+export const AgendarForm = ({ professionalId, services, setShowAgendar }: AgendarFormType) => {
   const [choosenServices, setChoosenServices] = useState<ServiceType[]>([]);
   const [indexStep, setIndexStep] = useState(0);
+  const [servicesAvailable, setServicesAvailable] = useState<ServiceType[]>(services);
   const [startDate, setStartDate] = useState(new Date());
   const [time, setTime] = useState<Date | null>(null);
   const { showNotification } = useContext(NotificationContext);
@@ -91,12 +86,15 @@ export const AgendarForm = ({
   const handleSubmit = () => {
     startDate.setHours(time?.getHours() as number);
     startDate.setMinutes(time?.getMinutes() as number);
+
     const data = {
       professionalId,
       startTime: startDate,
       serviceIds: choosenServices.map((s) => s.id)
     };
+
     console.log(data);
+
     api.post(`schedulings`, data).then((_) => {
       showNotification('Agendamento criado com sucesso', 'success');
       setShowAgendar(false);
@@ -173,7 +171,7 @@ export const AgendarForm = ({
           <Button
             variant="contained"
             style={{ width: '49%', marginLeft: '2%' }}
-            onClick={indexStep < 3 ? handleMove : handleSubmit}
+            onClick={handleMove}
           >
             {indexStep < 3 ? 'Avançar' : 'Confirmar Agendamento'}
           </Button>

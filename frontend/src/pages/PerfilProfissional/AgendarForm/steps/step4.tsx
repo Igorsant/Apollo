@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { ServiceType } from '..';
 import { HighlightStep, ServicesButton } from '../../style';
 import { Line } from '../line';
+import { ServiceType } from '..';
+import styled from 'styled-components';
 
 const Label = styled.h3`
   color: var(--header);

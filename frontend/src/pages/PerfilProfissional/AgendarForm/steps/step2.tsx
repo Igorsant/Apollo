@@ -1,11 +1,12 @@
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dispatch, SetStateAction } from 'react';
 import { HighlightStep, OtherSteps } from '../../style';
 import { Line } from '../line';
-import 'react-datepicker/dist/react-datepicker.css';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface Step2Interface {
   startDate: Date;

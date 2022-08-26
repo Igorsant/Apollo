@@ -1,8 +1,8 @@
 import { ArrowDropDown } from '@mui/icons-material';
-import { SetStateAction, Dispatch } from 'react';
-import { ServiceType } from '..';
 import { HighlightStep, OtherSteps, ServicesButton } from '../../style';
 import { Line } from '../line';
+import { ServiceType } from '..';
+import { SetStateAction, Dispatch } from 'react';
 
 interface Step1Interface {
   servicesAvailable: ServiceType[];

@@ -1,12 +1,12 @@
+import { Button } from '../../../components/Button/ApolloButton';
 import { Close } from '@mui/icons-material';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { Button } from '../../../components/Button/ApolloButton';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 import { Step1, validateStep1 } from './steps/step1';
 import { Step2, validateStep2 } from './steps/step2';
 import { Step3, validateStep3 } from './steps/step3';
 import { Step4, validateStep4 } from './steps/step4';
 import api from '../../../services/api';
-import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 
 export type ServiceType = {
   id: number;

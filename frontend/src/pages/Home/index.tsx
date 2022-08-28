@@ -79,7 +79,12 @@ const Home = () => {
         <Parallax url={p2}>
           <SecondParallax>
             <SecondParallaxSubTitle>Encontre barbearias próximas à você</SecondParallaxSubTitle>
-            <Button component={Link} to="/profissional/login" variant="contained">
+            <Button
+              component={Link}
+              to="/profissional/login"
+              data-cy="redirProfissional"
+              variant="contained"
+            >
               Sou profissional
             </Button>
           </SecondParallax>

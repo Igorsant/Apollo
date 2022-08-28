@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import {} from 'cypress';
-import { css } from 'cypress/types/jquery';
 
 describe('Testing User Sign In', () => {
   describe('Creating new Account', () => {
@@ -45,8 +45,59 @@ describe('Testing User Sign In', () => {
     // Login de Profissional
     // TODO
 
+    // Fluxo 1 - Pelo "Entrar"
+    it('Log In Profissional - Normal (Sucesso)', () => {
+      cy.get('[data-cy=loginAccountButton]').click();
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=loginProfEmailTextInput]').type('marcz@mail.com');
+      cy.get('[data-cy=loginProfPasswordTextInput]').type('12345678');
+      cy.get('[data-cy=loginProfSubmit]').click();
+      cy.url().should('equal', 'http://localhost:3000/dashboard/profissional');
+    });
+    it('Log In Profissional - Normal (Fail - Senha Errada)', () => {
+      cy.get('[data-cy=loginAccountButton]').click();
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=loginProfEmailTextInput]').type('marcz@mail.com');
+      cy.get('[data-cy=loginProfPasswordTextInput]').type('errada');
+      cy.get('[data-cy=loginProfSubmit]').click();
+      cy.url().should('equal', 'http://localhost:3000/profissional/login');
+    });
+    it('Log In Profissional - Normal (Fail- Email Inexistente)', () => {
+      cy.get('[data-cy=loginAccountButton]').click();
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=loginProfEmailTextInput]').type('inexistente@mail.com');
+      cy.get('[data-cy=loginProfPasswordTextInput]').type('12345678');
+      cy.get('[data-cy=loginProfSubmit]').click();
+      cy.url().should('equal', 'http://localhost:3000/profissional/login');
+    });
+
+    // Fluxo 2 - Pela Pagina Principal
+    it('Log In Profissional - Pagina Principal (ALT)(Sucesso)', () => {
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=loginProfEmailTextInput]').type('marcz@mail.com');
+      cy.get('[data-cy=loginProfPasswordTextInput]').type('12345678');
+      cy.get('[data-cy=loginProfSubmit]').click();
+      cy.url().should('equal', 'http://localhost:3000/dashboard/profissional');
+    });
+    it('Log In Profissional - Pagina Principal (ALT)(Fail - Senha Errada)', () => {
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=loginProfEmailTextInput]').type('marcz@mail.com');
+      cy.get('[data-cy=loginProfPasswordTextInput]').type('errado');
+      cy.get('[data-cy=loginProfSubmit]').click();
+      cy.url().should('equal', 'http://localhost:3000/profissional/login');
+    });
+    it('Log In Profissional - Pagina Principal (ALT)(Fail - Email Inexistente)', () => {
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=loginProfEmailTextInput]').type('inexistente@mail.com');
+      cy.get('[data-cy=loginProfPasswordTextInput]').type('12345678');
+      cy.get('[data-cy=loginProfSubmit]').click();
+      cy.url().should('equal', 'http://localhost:3000/profissional/login');
+    });
+
     // Cadastro
-    it('Sign In (no Photo)', () => {
+    // Cliente
+    // SE DER ERRO, CHECA SE O USUÁRIO JÁ EXISTE NO BD; SE SIM, DELETA!
+    it('Sign In Cliente (no Photo)', () => {
       cy.get('[data-cy=createAccountButton]').click();
       cy.get('[data-cy=profileName]').type('BipBop da Silva');
       cy.get('[data-cy=profileAlias]').type('BipBop');
@@ -63,20 +114,46 @@ describe('Testing User Sign In', () => {
       cy.url().should('equal', 'http://localhost:3000/login');
     });
 
-    // it.only('Sign In (w/ Photo)', () => {
-    //   cy.get('[data-cy=createAccountButton]').click();
-    //   cy.get('[data-cy=profilePhoto]').selectFile(
-    //     './../../backend/static/user_pictures/default_user.jpg'
-    //   );
-    //   cy.get('[data-cy=profileName]').type('BipBop da Silva');
-    //   cy.get('[data-cy=profileAlias]').type('BipBop');
-    //   cy.get('[data-cy=profileEmail]').type('bipbop@email.com');
-    //   cy.get('[data-cy=profilePhone]').type('11 99589958');
-    //   cy.get('[data-cy=profileNationalId]').type('98718653090');
-    //   cy.get('[data-cy=profilePassword]').type('12345678');
-    //   cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
-    //   cy.get('[data-cy=siginBtn]').click();
-    //   cy.url().should('equal', 'http://localhost:3000/login');
-    // });
+    // Profissional
+    it('Sign In Profissional (no Photo)', () => {
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=redirSignInProfissional]').click();
+      cy.get('[data-cy=profileName]').type('BipBip da Costa');
+      cy.get('[data-cy=profileAlias]').type('BipBip');
+      cy.get('[data-cy=profileEmail]').type('bipbip@email.com');
+      cy.get('[data-cy=profilePhone]').type('1199589999');
+      cy.get('[data-cy=profileNationalId]').type('06759763084');
+      // Add Corte de Cabelo
+      cy.get('[data-cy=signinNomeServico]').type('Corte Cabelo');
+      cy.get('[data-cy=signinValorServico]').type('50');
+      cy.get('[data-cy=signinTempoEstimado]').type('30');
+      cy.get('[data-cy=signinAddServico]').click();
+      // Add Corte Barba
+      cy.get('[data-cy=signinNomeServico]').type('Corte Barba');
+      cy.get('[data-cy=signinValorServico]').type('40');
+      cy.get('[data-cy=signinTempoEstimado]').type('30');
+      cy.get('[data-cy=signinAddServico]').click();
+      // Local de trabalho
+      cy.get('[data-cy=signinCidade]').type('João Pessoa');
+      cy.get('[data-cy=signinRua]').type('Rua Ficticia Fantasiosa');
+      cy.get('[data-cy=signinNumero]').type('0');
+      cy.get('[data-cy=signinComplemento]').type('Próximo a Maquina do Tempo');
+      cy.get('[data-cy=signinTelefone1]').type('83245367507');
+      cy.get('[data-cy=signinTelefoneWhats1]').click();
+      cy.get('[data-cy=signinTelefone2]').type('83245367507');
+      // Horários de Trabalho
+      // TODO
+      // cy.get('[data-cy=workhourStart]').type('09:00');
+      // cy.get('[data-cy=workourEnd]').type('19:00');
+      // cy.get('[data-cy=workourAdd]').click();
+      // Finally
+      cy.get('[data-cy=profilePassword]').type('12345678');
+      cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
+      cy.get('[data-cy=signinButton]').click();
+      cy.wait(5000);
+      cy.url().should('equal', 'http://localhost:3000/profissional/login');
+    });
+
+    // Pesquisa
   });
 });

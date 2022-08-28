@@ -115,6 +115,7 @@ const LoginProfissional = () => {
               <Button
                 component={Link}
                 to="/profissional/cadastro"
+                data-cy="redirSignInProfissional"
                 variant="text"
                 style={{ textTransform: 'none' }}
               >

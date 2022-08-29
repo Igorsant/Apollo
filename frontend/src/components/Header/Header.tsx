@@ -1,17 +1,15 @@
 import { FC } from 'react';
-import { HeadContainer, NavBar, Logo, ClickableLogo, DropdownContent, Wrapper } from './style';
+import { HeadContainer, NavBar, Logo } from './style';
+import { isAuthenticated } from '../../services/auth';
+import { LoggedUserOptions } from './LoggedUserOptions';
+import { useUser } from '../../hooks/useUser';
+import { VisitorUserOptions } from './VisitorUserOptions';
 import LogoImage from '../../images/Logo_apollo.png';
 import LogoProfissional from '../../images/Logo_apollo_profissional.png';
-import { isAuthenticated, logout } from '../../services/auth';
-import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from '../../hooks/useUser';
-import { UserAvatar } from '../UserAvatar/UserAvatar';
-import { Button } from '../Button/ApolloButton';
-import { ButtonStyle } from '../../pages/Home/style';
 
 interface HeaderProps {}
+
 export const Header: FC<HeaderProps> = ({ children, ...props }) => {
-  const navigate = useNavigate();
   const user = useUser() as any;
 
   const isProfessionalPath =
@@ -26,57 +24,9 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
       </Logo>
       <NavBar style={{ display: 'flex' }} {...props}>
         {isAuthenticated() ? (
-          <Wrapper>
-            <ClickableLogo>
-              <UserAvatar
-                alt={user.nickname}
-                picturePath={user.picturePath}
-                style={{ margin: 'auto 0' }}
-              ></UserAvatar>
-              <h3 style={{ margin: 'auto 10px' }}>Bem vindo, {user.nickname}</h3>
-            </ClickableLogo>
-            <DropdownContent>
-              <li
-                onClick={() => {
-                  if (user?.type === 'PROFESSIONAL') navigate('/dashboard/profissional');
-                  else navigate('dashboard/cliente');
-                }}
-              >
-                Dashboard
-              </li>
-              <li
-                onClick={() => {
-                  logout();
-                  navigate('/login');
-                }}
-              >
-                Logout
-              </li>
-            </DropdownContent>
-          </Wrapper>
+          <LoggedUserOptions user={user} />
         ) : (
-          <>
-            <Button
-              component={Link}
-              to={isProfessionalPath ? '/profissional/cadastro' : '/cadastro'}
-              color="secondary"
-              variant="text"
-              data-cy="createAccountButton"
-              style={ButtonStyle}
-            >
-              Criar conta
-            </Button>
-            <Button
-              component={Link}
-              to={isProfessionalPath ? '/profissional/login' : '/login'}
-              color="secondary"
-              variant="text"
-              data-cy="loginAccountButton"
-              style={ButtonStyle}
-            >
-              Entrar
-            </Button>
-          </>
+          <VisitorUserOptions isProfessionalPath={isProfessionalPath} />
         )}
       </NavBar>
     </HeadContainer>

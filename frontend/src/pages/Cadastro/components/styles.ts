@@ -14,14 +14,13 @@ export const Subtitle = styled.h3`
 export const TimeLabel = styled.h2`
   color: var(--title);
   height: 100%;
-  display: flex;
+  display: grid;
   align-items: center;
 `;
 
 export const PlusButton = styled(Button)`
-  border-radius: 40px;
-  height: 40px !important;
-  padding: 0 !important;
-  margin-top: 30px !important;
-  font-size: 32px !important;
+  width: 100%;
+  span {
+    font-size: 2rem;
+  }
 `;

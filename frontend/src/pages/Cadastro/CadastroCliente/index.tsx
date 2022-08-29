@@ -18,15 +18,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     },
-    [theme.breakpoints.up('sm')]: {
-      maxWidth: '80%'
-    },
-    height: '100%',
+    alignContent: 'center',
     backgroundColor: '#FFFFFF',
-    margin: '60px auto auto auto',
-    display: 'flex',
+    display: 'grid',
+    height: '100%',
     justifyContent: 'center',
-    alignContent: 'center'
+    margin: '60px auto'
   }
 }));
 

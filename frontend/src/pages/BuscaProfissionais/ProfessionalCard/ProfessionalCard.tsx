@@ -53,11 +53,7 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
       >
         <MainCardArea>
           <Row style={{ gap: '1em' }}>
-            <UserAvatar
-              picturePath={profissional.picturePath}
-              alt={profissional.nickname}
-              style={{ width: '60px', height: '60px' }}
-            />
+            <UserAvatar picturePath={profissional.picturePath} alt={profissional.nickname} />
             <ProfessionalNameArea>
               <Row>
                 <h3 style={{ fontSize: '1.2em' }}>{profissional.fullName}</h3>

@@ -23,6 +23,12 @@ export const NavItem = styled.li`
 
 export const Logo = styled(Link)`
   font-size: 1.5em;
+  align-self: stretch;
+  padding: 10px 0;
+
+  img {
+    height: 100%;
+  }
 `;
 
 export const ClickableLogo = styled.div`

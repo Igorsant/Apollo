@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, KeyboardEvent } from 'react';
 import { Footer } from '../../components/Footer/Footer';
 import {
   Parallax,
@@ -36,6 +36,22 @@ const Home = () => {
       [e.target.name]: e.target.value
     }));
   };
+
+  const searchProfessional = () => {
+    if (!search.city || search.city.length === 0) {
+      showNotification('Por favor selecione uma cidade', 'warning');
+      return;
+    }
+
+    navigate(`/buscar?city=${search.city}&query=${search.query}`, { replace: true });
+  };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+
+    searchProfessional();
+  };
+
   return (
     <>
       <div id="main">
@@ -51,6 +67,7 @@ const Home = () => {
                   data-cy="queryCityInput"
                   value={search?.city || ''}
                   onChange={handleChange}
+                  onKeyDown={onKeyDown}
                 />
                 <TextInputLaranja
                   label=""
@@ -59,21 +76,15 @@ const Home = () => {
                   data-cy="queryProfessionalInput"
                   value={search?.query || ''}
                   onChange={handleChange}
+                  onKeyDown={onKeyDown}
                 />
                 <Button
                   variant="contained"
                   style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
-                  onClick={() => {
-                    if (!search.city || search.city.length === 0) {
-                      return showNotification('Por favor selecione uma cidade', 'warning');
-                    }
-                    navigate(`/buscar?city=${search.city}&query=${search.query}`, {
-                      replace: true
-                    });
-                  }}
+                  onClick={() => searchProfessional()}
                   data-cy="searchProfessionalButton"
                 >
-                  Buscar
+                  <span>Buscar</span>
                 </Button>
               </DownGridContainer>
             </DownFirstContent>

@@ -46,7 +46,7 @@ export const Services = ({ formik }: any) => {
 
     formik.setValues({
       ...formik.values,
-      services: services
+      services
     });
 
     setCurService({ name: '', startingPrice: '', estimatedTime: '' });
@@ -61,7 +61,7 @@ export const Services = ({ formik }: any) => {
 
     formik.setValues({
       ...formik.values,
-      services: services
+      services
     });
   };
 
@@ -82,7 +82,7 @@ export const Services = ({ formik }: any) => {
 
     formik.setValues({
       ...formik.values,
-      services: services
+      services
     });
 
     setEditIndex(null);

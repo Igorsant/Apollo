@@ -52,15 +52,12 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
         }}
       >
         <MainCardArea>
-          <Row style={{ gap: '1em' }}>
+          <Row>
             <UserAvatar picturePath={profissional.picturePath} alt={profissional.nickname} />
             <ProfessionalNameArea>
               <Row>
-                <h3 style={{ fontSize: '1.2em' }}>{profissional.fullName}</h3>
-                <IconButton
-                  sx={{ padding: '0 0.2em' }}
-                  onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}
-                >
+                <h3>{profissional.fullName}</h3>
+                <IconButton onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}>
                   <Favorite htmlColor={isFavorite ? '#CD6538' : '#FFE3D8'} />
                 </IconButton>
               </Row>

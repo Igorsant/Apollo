@@ -2,26 +2,39 @@ import styled from 'styled-components';
 
 export const Row = styled.div`
   display: flex;
-  flex-direction: row;
+
+  &:nth-child(1) {
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &:nth-child(1) img {
+    width: 100%;
+  }
+
+  &:nth-child(1) button {
+    padding: 0.3rem;
+  }
 `;
 
 export const MainCardArea = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 8;
-  gap: 0.5em;
+  gap: 0.65rem;
 `;
 
 export const ButtonArea = styled.div`
+  align-items: flex-end;
   display: flex;
   flex: 2;
-  align-items: flex-end;
-  justify-content: flex-end;
   height: 100%;
+  justify-content: flex-end;
 `;
 
 export const ProfessionalNameArea = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  display: grid;
+
+  button svg {
+    aspect-ratio: 1 / 1;
+  }
 `;

@@ -25,7 +25,7 @@ export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, 
       ></ApolloTab>
       <TabPanel value={tabValue} index={0}>
         {profissional?.aboutMe === null ? (
-          <span style={{ color: 'gray' }}>O profissional não disponibilzou esta informação</span>
+          <span style={{ color: 'gray' }}>O profissional não disponibilizou esta informação.</span>
         ) : (
           profissional?.aboutMe
         )}

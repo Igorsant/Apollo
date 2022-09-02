@@ -105,7 +105,7 @@ describe('Testing User Sign In', () => {
       // Caso de Teste a Analisar: Testar com e sem espaço
       cy.get('[data-cy=profilePhone]').type('1199589958');
       // Caso de Teste a Analisar: CPF errado
-      cy.get('[data-cy=profileNationalId]').type('98718653090');
+      cy.get('[data-cy=profileNationalId]').type('10619442042');
       // Caso de teste a Analisar: Confirmação de Senha errada
       cy.get('[data-cy=profilePassword]').type('12345678');
       cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
@@ -114,15 +114,49 @@ describe('Testing User Sign In', () => {
       cy.url().should('equal', 'http://localhost:3000/login');
     });
 
+    it('Sign In Cliente (Fail - Repetido)', () => {
+      cy.get('[data-cy=createAccountButton]').click();
+      cy.get('[data-cy=profileName]').type('BipBop da Silva');
+      cy.get('[data-cy=profileAlias]').type('BipBop');
+      cy.get('[data-cy=profileEmail]').type('bipbop@email.com');
+      // Caso de Teste a Analisar: Testar com e sem espaço
+      cy.get('[data-cy=profilePhone]').type('1199589958');
+      // Caso de Teste a Analisar: CPF errado
+      cy.get('[data-cy=profileNationalId]').type('10619442042');
+      // Caso de teste a Analisar: Confirmação de Senha errada
+      cy.get('[data-cy=profilePassword]').type('12345678');
+      cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
+      cy.get('[data-cy=siginBtn]').click();
+      cy.wait(5000);
+      cy.url().should('equal', 'http://localhost:3000/cadastro');
+    });
+
+    it('Sign In Cliente (Fail - CPF Invalido)', () => {
+      cy.get('[data-cy=createAccountButton]').click();
+      cy.get('[data-cy=profileName]').type('BipBip da Silva');
+      cy.get('[data-cy=profileAlias]').type('BipBip');
+      cy.get('[data-cy=profileEmail]').type('bipbip@email.com');
+      // Caso de Teste a Analisar: Testar com e sem espaço
+      cy.get('[data-cy=profilePhone]').type('1199589958');
+      // Caso de Teste a Analisar: CPF errado
+      cy.get('[data-cy=profileNationalId]').type('11111111111');
+      // Caso de teste a Analisar: Confirmação de Senha errada
+      cy.get('[data-cy=profilePassword]').type('12345678');
+      cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
+      cy.get('[data-cy=siginBtn]').click();
+      cy.wait(5000);
+      cy.url().should('equal', 'http://localhost:3000/cadastro');
+    });
+
     // Profissional
     it('Sign In Profissional (no Photo)', () => {
       cy.get('[data-cy=redirProfissional]').click();
       cy.get('[data-cy=redirSignInProfissional]').click();
-      cy.get('[data-cy=profileName]').type('BipBip da Costa');
-      cy.get('[data-cy=profileAlias]').type('BipBip');
-      cy.get('[data-cy=profileEmail]').type('bipbip@email.com');
+      cy.get('[data-cy=profileName]').type('Bibdi Babdi Bu');
+      cy.get('[data-cy=profileAlias]').type('Bibdi');
+      cy.get('[data-cy=profileEmail]').type('bibdbbu@email.com');
       cy.get('[data-cy=profilePhone]').type('1199589999');
-      cy.get('[data-cy=profileNationalId]').type('06759763084');
+      cy.get('[data-cy=profileNationalId]').type('20151341079');
       // Add Corte de Cabelo
       cy.get('[data-cy=signinNomeServico]').type('Corte Cabelo');
       cy.get('[data-cy=signinValorServico]').type('50');
@@ -142,10 +176,6 @@ describe('Testing User Sign In', () => {
       cy.get('[data-cy=signinTelefoneWhats1]').click();
       cy.get('[data-cy=signinTelefone2]').type('83245367507');
       // Horários de Trabalho
-      // TODO
-      // cy.get('[data-cy=workhourStart]').type('09:00');
-      // cy.get('[data-cy=workourEnd]').type('19:00');
-      // cy.get('[data-cy=workourAdd]').click();
       // Finally
       cy.get('[data-cy=profilePassword]').type('12345678');
       cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
@@ -154,6 +184,74 @@ describe('Testing User Sign In', () => {
       cy.url().should('equal', 'http://localhost:3000/profissional/login');
     });
 
-    // Pesquisa
+    it('Sign In Profissional (Fail - Repetido)', () => {
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=redirSignInProfissional]').click();
+      cy.get('[data-cy=profileName]').type('Bibdi Babdi Bu');
+      cy.get('[data-cy=profileAlias]').type('Bibdi');
+      cy.get('[data-cy=profileEmail]').type('bibdbbu@email.com');
+      cy.get('[data-cy=profilePhone]').type('1199589999');
+      cy.get('[data-cy=profileNationalId]').type('20151341079');
+      // Add Corte de Cabelo
+      cy.get('[data-cy=signinNomeServico]').type('Corte Cabelo');
+      cy.get('[data-cy=signinValorServico]').type('50');
+      cy.get('[data-cy=signinTempoEstimado]').type('30');
+      cy.get('[data-cy=signinAddServico]').click();
+      // Add Corte Barba
+      cy.get('[data-cy=signinNomeServico]').type('Corte Barba');
+      cy.get('[data-cy=signinValorServico]').type('40');
+      cy.get('[data-cy=signinTempoEstimado]').type('30');
+      cy.get('[data-cy=signinAddServico]').click();
+      // Local de trabalho
+      cy.get('[data-cy=signinCidade]').type('João Pessoa');
+      cy.get('[data-cy=signinRua]').type('Rua Ficticia Fantasiosa');
+      cy.get('[data-cy=signinNumero]').type('0');
+      cy.get('[data-cy=signinComplemento]').type('Próximo a Maquina do Tempo');
+      cy.get('[data-cy=signinTelefone1]').type('83245367507');
+      cy.get('[data-cy=signinTelefoneWhats1]').click();
+      cy.get('[data-cy=signinTelefone2]').type('83245367507');
+      // Horários de Trabalho
+      // Finally
+      cy.get('[data-cy=profilePassword]').type('12345678');
+      cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
+      cy.get('[data-cy=signinButton]').click();
+      cy.wait(5000);
+      cy.url().should('equal', 'http://localhost:3000/profissional/cadastro');
+    });
+
+    it('Sign In Profissional (Fail - CPF invalido)', () => {
+      cy.get('[data-cy=redirProfissional]').click();
+      cy.get('[data-cy=redirSignInProfissional]').click();
+      cy.get('[data-cy=profileName]').type('Majimbu');
+      cy.get('[data-cy=profileAlias]').type('Majimbu');
+      cy.get('[data-cy=profileEmail]').type('majimbu@email.com');
+      cy.get('[data-cy=profilePhone]').type('1199589999');
+      cy.get('[data-cy=profileNationalId]').type('11111111111');
+      // Add Corte de Cabelo
+      cy.get('[data-cy=signinNomeServico]').type('Corte Cabelo');
+      cy.get('[data-cy=signinValorServico]').type('50');
+      cy.get('[data-cy=signinTempoEstimado]').type('30');
+      cy.get('[data-cy=signinAddServico]').click();
+      // Add Corte Barba
+      cy.get('[data-cy=signinNomeServico]').type('Corte Barba');
+      cy.get('[data-cy=signinValorServico]').type('40');
+      cy.get('[data-cy=signinTempoEstimado]').type('30');
+      cy.get('[data-cy=signinAddServico]').click();
+      // Local de trabalho
+      cy.get('[data-cy=signinCidade]').type('João Pessoa');
+      cy.get('[data-cy=signinRua]').type('Rua Ficticia Fantasiosa');
+      cy.get('[data-cy=signinNumero]').type('0');
+      cy.get('[data-cy=signinComplemento]').type('Próximo a Maquina do Tempo');
+      cy.get('[data-cy=signinTelefone1]').type('83245367507');
+      cy.get('[data-cy=signinTelefoneWhats1]').click();
+      cy.get('[data-cy=signinTelefone2]').type('83245367507');
+      // Horários de Trabalho
+      // Finally
+      cy.get('[data-cy=profilePassword]').type('12345678');
+      cy.get('[data-cy=profilePasswordConfirm]').type('12345678');
+      cy.get('[data-cy=signinButton]').click();
+      cy.wait(5000);
+      cy.url().should('equal', 'http://localhost:3000/profissional/cadastro');
+    });
   });
 });

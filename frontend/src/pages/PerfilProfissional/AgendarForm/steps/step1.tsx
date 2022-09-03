@@ -21,7 +21,7 @@ export const Step1 = ({
   setChoosenServices
 }: Step1Interface) => (
   <>
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       <HighlightStep>Definir serviços</HighlightStep>
       <Line />
       <OtherSteps>Definir dia</OtherSteps>

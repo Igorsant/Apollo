@@ -1,7 +1,7 @@
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Dispatch, SetStateAction } from 'react';
 import { HighlightStep, OtherSteps } from '../../style';
-import { Line } from '../line';
+import { Line, ActiveLine } from '../line';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import TextField from '@mui/material/TextField';
@@ -20,9 +20,9 @@ export const Step3 = ({ time, setTime }: Step3Interface) => (
   <>
     <div style={{ display: 'flex' }}>
       <HighlightStep>Definir serviços</HighlightStep>
-      <Line />
+      <ActiveLine />
       <HighlightStep>Definir dia</HighlightStep>
-      <Line />
+      <ActiveLine />
       <HighlightStep>Definir horários</HighlightStep>
       <Line />
       <OtherSteps>Confirmar Agendamentos</OtherSteps>

@@ -1,4 +1,4 @@
-import { Grid, Typography, CircularProgress, Box } from '@mui/material';
+import { Grid, CircularProgress, Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import useQuery from '../../hooks/useQuery';
 import api from '../../services/api';
@@ -97,7 +97,7 @@ const BuscarProfissionais = () => {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          minHeight: '80vh',
+          minHeight: '100vh',
           alignItems: 'center'
         }}
       >
@@ -107,23 +107,32 @@ const BuscarProfissionais = () => {
   }
 
   return (
-    <Grid container spacing={2} sx={{ p: 10, color: 'black' }}>
-      <Typography variant="h6">
-        {profissionais !== undefined &&
-          `${profissionais?.length}  ${
-            profissionais?.length === 1 ? ' profissional encontrado' : 'profissionais encontrados'
-          } `}
-      </Typography>
-      {profissionais.map((profissional, index) => {
-        return (
-          <ProfessionalCard
-            key={`profissional-${index}`}
-            profissional={profissional}
-            favorite={favorites.includes(profissional.id)}
-            actions={{ addFavorite, removeFavorite }}
-          ></ProfessionalCard>
-        );
-      })}
+    <Grid container>
+      <Grid
+        container
+        item
+        gap={'0.5rem'}
+        sx={{ p: 5, color: 'gray' }}
+        md={16}
+        gridTemplateColumns={'1fr 1fr'}
+      >
+        <p style={{ width: '100%' }}>
+          {profissionais !== undefined &&
+            `${profissionais?.length}  ${
+              profissionais?.length === 1 ? ' profissional encontrado' : 'profissionais encontrados'
+            } `}
+        </p>
+        {profissionais.map((profissional, index) => {
+          return (
+            <ProfessionalCard
+              key={`profissional-${index}`}
+              profissional={profissional}
+              favorite={favorites.includes(profissional.id)}
+              actions={{ addFavorite, removeFavorite }}
+            ></ProfessionalCard>
+          );
+        })}
+      </Grid>
     </Grid>
   );
 };

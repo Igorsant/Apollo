@@ -37,17 +37,14 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
   };
 
   return (
-    <Grid key={profissional.id} item sm={12} md={12}>
+    <Grid key={profissional.id} item md={true} width={'100%'} whiteSpace={'nowrap'} gap={'1rem'}>
       <Card
         onClick={() => navigate(`/profissional/perfil/${profissional.id}`)}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          padding: '1em',
-          textTransform: 'none',
-          alignItems: 'flex-end',
-          width: '100%',
           cursor: 'pointer',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(400px, 1fr) auto',
+          padding: '1rem',
           userSelect: 'none'
         }}
       >

@@ -1,17 +1,29 @@
 import styled from 'styled-components';
 
-export const HighlightStep = styled.span`
+const Step = styled.span`
   color: white;
-  background: var(--header);
   padding: 10px 20px;
   border-radius: 15px;
+  background: var(--step-bg);
 `;
 
-export const OtherSteps = styled.span`
-  color: white;
-  background: lightgray;
-  padding: 10px 20px;
-  border-radius: 15px;
+export const HighlightStep = styled(Step)`
+  --step-bg: var(--header);
+  animation: animate-highlight-step 700ms forwards;
+
+  @keyframes animate-highlight-step {
+    0% {
+      background: lightgray;
+    }
+
+    100% {
+      background: var(--header);
+    }
+  }
+`;
+
+export const OtherSteps = styled(Step)`
+  --step-bg: lightgray;
 `;
 
 export const ServicesButton = styled.button`

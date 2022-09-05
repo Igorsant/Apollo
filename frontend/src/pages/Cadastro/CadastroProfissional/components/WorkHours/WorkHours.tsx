@@ -18,15 +18,7 @@ export const WorkHours = ({ formik }: any) => {
   const { showNotification } = useContext(NotificationContext);
 
   const [state, setState] = useState({
-    workHours: [
-      { startTime: '', endTime: '' },
-      { startTime: '', endTime: '' },
-      { startTime: '', endTime: '' },
-      { startTime: '', endTime: '' },
-      { startTime: '', endTime: '' },
-      { startTime: '', endTime: '' },
-      { startTime: '', endTime: '' }
-    ]
+    workHours: Array(7).fill({ startTime: '', endTime: '' })
   });
 
   const handleChange = (weekday: number, key: 'startTime' | 'endTime') => {
@@ -51,7 +43,7 @@ export const WorkHours = ({ formik }: any) => {
       const regexp = /^\d{1,2}:\d{2}$/;
 
       if (!regexp.test(newWorkHours.startTime) || !regexp.test(newWorkHours.endTime)) {
-        showNotification('Horário deve seguir o formato 12:34', 'warning');
+        showNotification('Horário deve seguir o formato hh:mm', 'warning');
         return;
       }
 
@@ -93,7 +85,7 @@ export const WorkHours = ({ formik }: any) => {
   const weekdays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
   return (
-    <Grid item xs={12} md={12} sx={{ flexGrow: 1 }} spacing={2} alignContent="center" container>
+    <Grid item xs={12} md={12} spacing={2} container>
       <Grid item xs={12} md={12}>
         <Subtitle>Jornadas de trabalho:</Subtitle>
       </Grid>
@@ -121,7 +113,7 @@ export const WorkHours = ({ formik }: any) => {
                     value={state.workHours[weekday].startTime}
                     data-cy="workhourStart"
                     onChange={handleChange(weekday, 'startTime')}
-                    placeholder="00:00"
+                    placeholder="hh:mm"
                   />
                 </div>
                 <WorkHourInputSeparator>~</WorkHourInputSeparator>
@@ -131,7 +123,7 @@ export const WorkHours = ({ formik }: any) => {
                     value={state.workHours[weekday].endTime}
                     data-cy="workhourEnd"
                     onChange={handleChange(weekday, 'endTime')}
-                    placeholder="00:00"
+                    placeholder="hh:mm"
                   />
                 </div>
                 <WorkHourButton onClick={addWorkHour(weekday)} data-cy="workhourAdd">

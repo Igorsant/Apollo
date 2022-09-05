@@ -46,7 +46,7 @@ export const Services = ({ formik }: any) => {
 
     formik.setValues({
       ...formik.values,
-      services: services
+      services
     });
 
     setCurService({ name: '', startingPrice: '', estimatedTime: '' });
@@ -61,7 +61,7 @@ export const Services = ({ formik }: any) => {
 
     formik.setValues({
       ...formik.values,
-      services: services
+      services
     });
   };
 
@@ -82,7 +82,7 @@ export const Services = ({ formik }: any) => {
 
     formik.setValues({
       ...formik.values,
-      services: services
+      services
     });
 
     setEditIndex(null);
@@ -105,15 +105,15 @@ export const Services = ({ formik }: any) => {
                 setCurService({ name: '', startingPrice: '', estimatedTime: '' });
               }}
             >
-              Clique aqui para cancelar.
+              <span>Clique aqui para cancelar.</span>
             </Button>
           </h4>
         ) : (
           ''
         )}
       </Grid>
-      <Grid item container xs={12} md={12} spacing={2} rowGap={3}>
-        <Grid item xs={12} md={5}>
+      <Grid container spacing={2} rowGap={3}>
+        <Grid item md={true} flexGrow={'1'}>
           <TextInputLaranja
             name={`current-service-name`}
             value={curService.name}
@@ -123,7 +123,7 @@ export const Services = ({ formik }: any) => {
             placeholder="Ex.: Corte de cabelo"
           />
         </Grid>
-        <Grid item xs={3} md={3}>
+        <Grid item md={true} flexGrow={'1'}>
           <TextInputLaranja
             name="current-service-price"
             value={curService.startingPrice}
@@ -134,7 +134,7 @@ export const Services = ({ formik }: any) => {
             prefix="R$"
           />
         </Grid>
-        <Grid item xs={3} md={3} sx={{ minWidth: '200px' }}>
+        <Grid item md={true} flexGrow={'1'}>
           <TextInputLaranja
             name={`current-service-time`}
             value={curService.estimatedTime}
@@ -145,80 +145,103 @@ export const Services = ({ formik }: any) => {
             postfix="min."
           />
         </Grid>
-        <Grid item xs={1} md={1}>
+        <Grid item sm={true} flexGrow={'1'}>
           <PlusButton
             variant="contained"
             data-cy="signinAddServico"
             onClick={editIndex !== null ? handleEdit : handleAdd}
           >
-            {editIndex !== null ? <EditIcon /> : '+'}
+            {editIndex !== null ? <EditIcon /> : <span>+</span>}
           </PlusButton>
         </Grid>
       </Grid>
       <Grid item xs={12} md={12}>
         <table>
-          <thead>
-            <tr style={{ display: 'flex' }}>
-              <th style={{ flex: 1 }}>#</th>
-              <th style={{ flex: 9 }}>Nome do serviço</th>
-              <th style={{ flex: 4 }}>Preço inicial</th>
-              <th style={{ flex: 4 }}>Tempo estimado</th>
-              <th style={{ flex: 2, padding: '10px 0' }}>Ações</th>
+          <tbody
+            style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: 3
+            }}
+          >
+            <tr
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(5, 1fr)'
+              }}
+            >
+              <th>#</th>
+              <th>Nome do serviço</th>
+              <th>Preço inicial</th>
+              <th>Tempo estimado</th>
+              <th>Ações</th>
             </tr>
-          </thead>
-          <tbody>
-            {formik.values.services.length > 0 || (
-              <tr>
-                <td style={{ textAlign: 'center', color: '#999' }} colSpan={5}>
+            <tr>
+              {formik.values.services.length > 0 || (
+                <td
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    color: '#999',
+                    padding: '1rem'
+                  }}
+                >
                   Nenhum serviço adicionado
                 </td>
-              </tr>
-            )}
-            {formik.values.services.map((service: any, index: number) => (
-              <tr key={index} style={{ display: 'flex' }}>
-                <td
-                  style={{
-                    flex: 1,
-                    height: 'fit-content',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  {index + 1}
-                </td>
-                <td style={{ flex: 9, height: 'fit-content' }}>{service.name}</td>
-                <td style={{ flex: 4, height: 'fit-content' }}>
-                  {formatMoney(Number.parseFloat(service.startingPrice))}
-                </td>
-                <td style={{ flex: 4, height: 'fit-content' }}>{service.estimatedTime} min.</td>
-                <td
-                  style={{
-                    flex: 2,
-                    height: 'fit-content',
-                    padding: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <IconButton onClick={() => handleRemove(index)} color="error">
-                    <DeleteIcon />
-                  </IconButton>
-                  <IconButton
-                    color="info"
-                    onClick={() => {
-                      setEditIndex(index);
-                      setCurService(service);
+              )}
+            </tr>
+          </tbody>
+
+          <tfoot
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(5, 1fr)',
+              height: 'max-content'
+            }}
+          >
+            {formik.values.services.map((service: any, index: number) => {
+              const centeringStyle = {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'stretch'
+              };
+
+              return (
+                <>
+                  <td
+                    key={`service-${index}`}
+                    style={{
+                      fontWeight: 'bold',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
                     }}
                   >
-                    <EditIcon />
-                  </IconButton>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                    <span>{index + 1}</span>
+                  </td>
+                  <td style={centeringStyle}>{service.name}</td>
+                  <td style={centeringStyle}>
+                    {formatMoney(Number.parseFloat(service.startingPrice))}
+                  </td>
+                  <td style={centeringStyle}>{service.estimatedTime} min.</td>
+                  <td style={centeringStyle}>
+                    <IconButton onClick={() => handleRemove(index)} color="error">
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      color="info"
+                      onClick={() => {
+                        setEditIndex(index);
+                        setCurService(service);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </td>
+                </>
+              );
+            })}
+          </tfoot>
         </table>
       </Grid>
     </Grid>

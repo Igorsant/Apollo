@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { ServiceType } from '..';
 import { HighlightStep, ServicesButton } from '../../style';
-import { Line } from '../line';
+import { ActiveLine } from '../line';
+import { ServiceType } from '..';
+import styled from 'styled-components';
 
 const Label = styled.h3`
   color: var(--header);
@@ -20,15 +20,18 @@ interface Step4Interface {
   schedule: Date;
 }
 
+export const validateStep4 = ({ services, day, totalTime, schedule }: Step4Interface): boolean =>
+  Boolean(services && day && totalTime && schedule);
+
 export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) => (
   <>
     <div style={{ display: 'flex' }}>
       <HighlightStep>Definir serviços</HighlightStep>
-      <Line />
+      <ActiveLine />
       <HighlightStep>Definir dia</HighlightStep>
-      <Line />
+      <ActiveLine />
       <HighlightStep>Definir horários</HighlightStep>
-      <Line />
+      <ActiveLine />
       <HighlightStep>Confirmar Agendamentos</HighlightStep>
     </div>
     <div style={{ display: 'flex', flexDirection: 'column' }}>

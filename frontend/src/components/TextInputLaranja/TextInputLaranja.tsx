@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, ChangeEventHandler } from 'react';
+import React, { InputHTMLAttributes, KeyboardEventHandler, ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 
 export const Div = styled.div`
@@ -42,6 +42,7 @@ interface ApolloTextInputLaranjaProps extends InputHTMLAttributes<HTMLInputEleme
   name: string;
   errorMessage?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
   prefix?: string;
   postfix?: string;
 }
@@ -78,6 +79,7 @@ export const TextInputLaranja: React.FC<ApolloTextInputLaranjaProps> = ({
   name,
   value,
   onChange,
+  onKeyDown,
   errorMessage,
   type,
   placeholder,
@@ -93,6 +95,7 @@ export const TextInputLaranja: React.FC<ApolloTextInputLaranjaProps> = ({
         value={value}
         name={name}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         style={prefix ? { paddingLeft: `${strLengthInPx(prefix) + 20}px` } : {}}
       />

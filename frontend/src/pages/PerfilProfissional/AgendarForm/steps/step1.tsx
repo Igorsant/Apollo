@@ -1,8 +1,8 @@
 import { ArrowDropDown } from '@mui/icons-material';
-import { SetStateAction, Dispatch } from 'react';
-import { ServiceType } from '..';
 import { HighlightStep, OtherSteps, ServicesButton } from '../../style';
 import { Line } from '../line';
+import { ServiceType } from '..';
+import { SetStateAction, Dispatch } from 'react';
 
 interface Step1Interface {
   servicesAvailable: ServiceType[];
@@ -10,6 +10,10 @@ interface Step1Interface {
   choosenServices: ServiceType[];
   setChoosenServices: Dispatch<SetStateAction<ServiceType[]>>;
 }
+
+export const validateStep1 = (args: Step1Interface): boolean =>
+  Boolean(args.choosenServices && args.choosenServices.length);
+
 export const Step1 = ({
   servicesAvailable,
   setServicesAvailable,
@@ -17,7 +21,7 @@ export const Step1 = ({
   setChoosenServices
 }: Step1Interface) => (
   <>
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       <HighlightStep>Definir serviços</HighlightStep>
       <Line />
       <OtherSteps>Definir dia</OtherSteps>

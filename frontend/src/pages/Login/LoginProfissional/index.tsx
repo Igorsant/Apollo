@@ -117,6 +117,7 @@ const LoginProfissional = () => {
                 to="/profissional/cadastro"
                 data-cy="redirSignInProfissional"
                 variant="text"
+                data-cy="professionalRegisterButton"
                 style={{ textTransform: 'none' }}
               >
                 Não possui conta? Clique aqui!

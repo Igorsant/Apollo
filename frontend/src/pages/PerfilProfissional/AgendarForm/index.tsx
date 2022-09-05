@@ -1,12 +1,12 @@
+import { Button } from '../../../components/Button/ApolloButton';
 import { Close } from '@mui/icons-material';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
-import { Button } from '../../../components/Button/ApolloButton';
-import { Step1 } from './steps/step1';
-import { Step2 } from './steps/step2';
-import { Step3 } from './steps/step3';
-import { Step4 } from './steps/step4';
-import api from '../../../services/api';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import { Step1, validateStep1 } from './steps/step1';
+import { Step2, validateStep2 } from './steps/step2';
+import { Step3, validateStep3 } from './steps/step3';
+import { Step4, validateStep4 } from './steps/step4';
+import api from '../../../services/api';
 
 export type ServiceType = {
   id: number;
@@ -21,15 +21,10 @@ type AgendarFormType = {
   servicesIds: number[] | undefined;
 };
 
-export const AgendarForm = ({
-  setShowAgendar,
-  services,
-  professionalId,
-  servicesIds
-}: AgendarFormType) => {
-  const [servicesAvailable, setServicesAvailable] = useState<ServiceType[]>(services);
+export const AgendarForm = ({ professionalId, services, setShowAgendar }: AgendarFormType) => {
   const [choosenServices, setChoosenServices] = useState<ServiceType[]>([]);
   const [indexStep, setIndexStep] = useState(0);
+  const [servicesAvailable, setServicesAvailable] = useState<ServiceType[]>(services);
   const [startDate, setStartDate] = useState(new Date());
   const [time, setTime] = useState<Date | null>(null);
   const { showNotification } = useContext(NotificationContext);
@@ -57,12 +52,68 @@ export const AgendarForm = ({
     />
   ];
 
+  const validateFuncions = [
+    () =>
+      validateStep1({
+        servicesAvailable,
+        setServicesAvailable,
+        choosenServices,
+        setChoosenServices
+      }),
+    () =>
+      validateStep2({
+        startDate,
+        setStartDate
+      }),
+    () =>
+      validateStep3({
+        time,
+        setTime
+      }),
+    () =>
+      validateStep4({
+        day: startDate,
+        services: choosenServices,
+        totalTime: choosenServices
+          .map((s) => Number.parseInt(s.time))
+          .reduce((acc, next) => {
+            return acc + next;
+          }, 0),
+        schedule: time as Date
+      })
+  ];
+
+  const handleSubmit = () => {
+    startDate.setHours(time?.getHours() as number);
+    startDate.setMinutes(time?.getMinutes() as number);
+
+    const data = {
+      professionalId,
+      startTime: startDate,
+      serviceIds: choosenServices.map((s) => s.id)
+    };
+
+    console.log(data);
+
+    api.post(`schedulings`, data).then((_) => {
+      showNotification('Agendamento criado com sucesso', 'success');
+      setShowAgendar(false);
+    });
+  };
+
   const handleMove = () => {
-    if (indexStep < 3) {
-      setIndexStep((curr) => curr + 1);
-    } else {
-      // agendar
+    if (indexStep === 3) {
+      handleSubmit();
+      return;
     }
+
+    const validateFn = validateFuncions[indexStep];
+    if (!validateFn()) {
+      showNotification('Alguma informação inválida na etapa de agendamento', 'warning');
+      return;
+    }
+
+    setIndexStep((curr) => curr + 1);
   };
 
   const handleBack = () => {
@@ -71,21 +122,6 @@ export const AgendarForm = ({
     } else {
       setIndexStep((curr) => curr - 1);
     }
-  };
-
-  const handleSubmit = () => {
-    startDate.setHours(time?.getHours() as number);
-    startDate.setMinutes(time?.getMinutes() as number);
-    const data = {
-      professionalId,
-      startTime: startDate,
-      serviceIds: choosenServices.map((s) => s.id)
-    };
-    console.log(data);
-    api.post(`schedulings`, data).then((_) => {
-      showNotification('Agendamento criado com sucesso', 'success');
-      setShowAgendar(false);
-    });
   };
 
   return (
@@ -135,7 +171,7 @@ export const AgendarForm = ({
           <Button
             variant="contained"
             style={{ width: '49%', marginLeft: '2%' }}
-            onClick={indexStep < 3 ? handleMove : handleSubmit}
+            onClick={handleMove}
           >
             {indexStep < 3 ? 'Avançar' : 'Confirmar Agendamento'}
           </Button>

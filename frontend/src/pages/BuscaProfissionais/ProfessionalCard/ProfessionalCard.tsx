@@ -37,34 +37,24 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
   };
 
   return (
-    <Grid key={profissional.id} item sm={12} md={12}>
+    <Grid key={profissional.id} item md={true} width={'100%'} whiteSpace={'nowrap'} gap={'1rem'}>
       <Card
         onClick={() => navigate(`/profissional/perfil/${profissional.id}`)}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          padding: '1em',
-          textTransform: 'none',
-          alignItems: 'flex-end',
-          width: '100%',
           cursor: 'pointer',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(400px, 1fr) auto',
+          padding: '1rem',
           userSelect: 'none'
         }}
       >
         <MainCardArea>
-          <Row style={{ gap: '1em' }}>
-            <UserAvatar
-              picturePath={profissional.picturePath}
-              alt={profissional.nickname}
-              style={{ width: '60px', height: '60px' }}
-            />
+          <Row>
+            <UserAvatar picturePath={profissional.picturePath} alt={profissional.nickname} />
             <ProfessionalNameArea>
               <Row>
-                <h3 style={{ fontSize: '1.2em' }}>{profissional.fullName}</h3>
-                <IconButton
-                  sx={{ padding: '0 0.2em' }}
-                  onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}
-                >
+                <h3>{profissional.fullName}</h3>
+                <IconButton onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}>
                   <Favorite htmlColor={isFavorite ? '#CD6538' : '#FFE3D8'} />
                 </IconButton>
               </Row>

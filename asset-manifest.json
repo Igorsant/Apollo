@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "https://igorsant.github.io/Apollo/static/css/main.f9601635.css",
-    "main.js": "https://igorsant.github.io/Apollo/static/js/main.6245468d.js",
+    "main.js": "https://igorsant.github.io/Apollo/static/js/main.d59f71cc.js",
     "static/js/787.8bf072ec.chunk.js": "https://igorsant.github.io/Apollo/static/js/787.8bf072ec.chunk.js",
     "static/media/parallax1.png": "https://igorsant.github.io/Apollo/static/media/parallax1.fde4def18673b79a22c5.png",
     "static/media/parallax2.png": "https://igorsant.github.io/Apollo/static/media/parallax2.520dcfc97af573dc2c5d.png",
@@ -9,11 +9,11 @@
     "static/media/Logo_apollo_profissional.png": "https://igorsant.github.io/Apollo/static/media/Logo_apollo_profissional.3537d7e7136d09fb1c59.png",
     "index.html": "https://igorsant.github.io/Apollo/index.html",
     "main.f9601635.css.map": "https://igorsant.github.io/Apollo/static/css/main.f9601635.css.map",
-    "main.6245468d.js.map": "https://igorsant.github.io/Apollo/static/js/main.6245468d.js.map",
+    "main.d59f71cc.js.map": "https://igorsant.github.io/Apollo/static/js/main.d59f71cc.js.map",
     "787.8bf072ec.chunk.js.map": "https://igorsant.github.io/Apollo/static/js/787.8bf072ec.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f9601635.css",
-    "static/js/main.6245468d.js"
+    "static/js/main.d59f71cc.js"
   ]
 }

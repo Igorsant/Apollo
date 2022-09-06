@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Apollo/static/css/main.f9601635.css",
-    "main.js": "/Apollo/static/js/main.17959d18.js",
-    "static/js/787.8bf072ec.chunk.js": "/Apollo/static/js/787.8bf072ec.chunk.js",
-    "static/media/parallax1.png": "/Apollo/static/media/parallax1.fde4def18673b79a22c5.png",
-    "static/media/parallax2.png": "/Apollo/static/media/parallax2.520dcfc97af573dc2c5d.png",
-    "static/media/Logo_apollo.png": "/Apollo/static/media/Logo_apollo.3ce0bfa59ecac1c5fbb3.png",
-    "static/media/Logo_apollo_profissional.png": "/Apollo/static/media/Logo_apollo_profissional.3537d7e7136d09fb1c59.png",
-    "index.html": "/Apollo/index.html",
-    "main.f9601635.css.map": "/Apollo/static/css/main.f9601635.css.map",
-    "main.17959d18.js.map": "/Apollo/static/js/main.17959d18.js.map",
-    "787.8bf072ec.chunk.js.map": "/Apollo/static/js/787.8bf072ec.chunk.js.map"
+    "main.css": "Apollo/static/css/main.f9601635.css",
+    "main.js": "Apollo/static/js/main.b067dcb1.js",
+    "static/js/787.8bf072ec.chunk.js": "Apollo/static/js/787.8bf072ec.chunk.js",
+    "static/media/parallax1.png": "Apollo/static/media/parallax1.fde4def18673b79a22c5.png",
+    "static/media/parallax2.png": "Apollo/static/media/parallax2.520dcfc97af573dc2c5d.png",
+    "static/media/Logo_apollo.png": "Apollo/static/media/Logo_apollo.3ce0bfa59ecac1c5fbb3.png",
+    "static/media/Logo_apollo_profissional.png": "Apollo/static/media/Logo_apollo_profissional.3537d7e7136d09fb1c59.png",
+    "index.html": "Apollo/index.html",
+    "main.f9601635.css.map": "Apollo/static/css/main.f9601635.css.map",
+    "main.b067dcb1.js.map": "Apollo/static/js/main.b067dcb1.js.map",
+    "787.8bf072ec.chunk.js.map": "Apollo/static/js/787.8bf072ec.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f9601635.css",
-    "static/js/main.17959d18.js"
+    "static/js/main.b067dcb1.js"
   ]
 }

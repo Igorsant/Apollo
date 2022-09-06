@@ -12,7 +12,7 @@ export const LoggedUserOptions = ({ user }: LoggedUserProps) => {
 
   const onDashboardClick = () => {
     if (user?.type === 'PROFESSIONAL') navigate('/dashboard/profissional');
-    else navigate('dashboard/cliente');
+    else navigate('/dashboard/cliente');
   };
 
   const onLogoutClick = () => {

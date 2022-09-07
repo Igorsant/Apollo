@@ -23,7 +23,7 @@ git push heroku <main ou master>
 ### 4) Criar um script `start` no `package.json`
 ```json
 "scripts": {
-	"start": node build/src/index.js
+	"start": "node build/src/index.js"
 }
 ```
 ### 5) Verificar se possui ao menos um processo para executar o projeto

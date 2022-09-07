@@ -16,7 +16,7 @@ import { LoggedIn } from './components/AuthCheck/LoggedIn';
 
 export const AppRouter = () => {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

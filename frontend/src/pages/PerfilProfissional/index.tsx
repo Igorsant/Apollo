@@ -1,21 +1,21 @@
-import { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import { Grid } from '@material-ui/core';
-import Box from '@mui/material/Box';
-import { makeStyles } from '@material-ui/core/styles';
+import { Favorite, Phone, Room, Star, WhatsApp } from '@mui/icons-material';
 import { Rating, Theme } from '@mui/material';
+import Box from '@mui/material/Box';
+import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { AgendarForm, ServiceType } from './AgendarForm';
+import { Button } from '../../components/Button/ApolloButton';
+import { formatPhone } from '../../services/formatPhone';
+import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
+import { ProfessionalNameArea, Row } from '../BuscaProfissionais/ProfessionalCard/styles';
+import { TabsInformacoes } from './TabsInformacoes';
+import { useUser } from '../../hooks/useUser';
 import api from '../../services/api';
 import IProfissional from '../../types/IProfissional';
-import { Button } from '../../components/Button/ApolloButton';
-import { TabsInformacoes } from './TabsInformacoes';
-import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
-import { AgendarForm, ServiceType } from './AgendarForm';
-import { useUser } from '../../hooks/useUser';
-import { ProfessionalNameArea, Row } from '../BuscaProfissionais/ProfessionalCard/styles';
-import { Favorite, Phone, Room, Star, WhatsApp } from '@mui/icons-material';
-import { formatPhone } from '../../services/formatPhone';
 import useQuery from '../../hooks/useQuery';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -47,24 +47,6 @@ const Image = styled.img`
   width: 200px;
 `;
 
-// const mockProfessional = {
-//   id: 1,
-//   fullName: 'Felipe Gonçalves',
-//   nickname: 'felipe',
-//   picturePath: '/pictures/default_user.jpg',
-//   aboutMe: 'AboutMe Test',
-//   phone: '85999084524',
-//   services: [{ name: 'corte de cabelo', startingPrice: '80', estimatedTime: '40' }],
-//   workplace: {
-//     street: 'Rua das Flores',
-//     streetNumber: '985',
-//     complement: 'Sala 12',
-//     phones: [
-//       { phone: '8536566555', isPhoneWhatsapp: false },
-//       { phone: '8536566555', isPhoneWhatsapp: true }
-//     ]
-//   }
-// };
 const ProfilePicture = styled.div`
   display: flex;
 `;
@@ -124,8 +106,8 @@ export default function PerfilProfissional() {
 
   const validarFavorito = () => {
     if (user === null) {
-      navigate('/login');
       showNotification('É necessário estar logado para realizar esta ação', 'error');
+      navigate('/login', { replace: true });
       return false;
     }
     if (user?.type !== 'CUSTOMER') {
@@ -162,8 +144,8 @@ export default function PerfilProfissional() {
 
   const agendarProfissional = () => {
     if (!(user && user.type === 'CUSTOMER')) {
-      navigate('/login');
       showNotification('É necessário estar logado para realizar esta ação', 'error');
+      navigate('/login', { replace: true });
       return;
     }
 

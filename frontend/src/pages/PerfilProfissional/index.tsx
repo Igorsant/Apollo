@@ -160,6 +160,16 @@ export default function PerfilProfissional() {
       .catch((err) => showNotification(err, 'error'));
   };
 
+  const agendarProfissional = () => {
+    if (!(user && user.type === 'CUSTOMER')) {
+      navigate('/login');
+      showNotification('É necessário estar logado para realizar esta ação', 'error');
+      return;
+    }
+
+    setShowAgendar(true);
+  };
+
   return (
     <Box className={classes.root}>
       <Grid container>
@@ -243,7 +253,7 @@ export default function PerfilProfissional() {
               ))}
             </Row>
             <Row>
-              <Button variant="contained" onClick={() => setShowAgendar(true)}>
+              <Button variant="contained" onClick={() => agendarProfissional()}>
                 Agendar
               </Button>
             </Row>

@@ -52,14 +52,7 @@ export const AppRouter = () => {
             </LoggedIn>
           }
         />
-        <Route
-          path="/profissional/perfil/:id"
-          element={
-            <ClientAuth>
-              <PerfilProfissional />
-            </ClientAuth>
-          }
-        />
+        <Route path="/profissional/perfil/:id" element={<PerfilProfissional />} />
         <Route path="/buscar" element={<BuscarProfissionais />} />
         <Route
           path="/dashboard/cliente"

@@ -1,6 +1,9 @@
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { ClickableLogo, DropdownContent, Wrapper } from './style';
 import { logout } from '../../services/auth';
-import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
 
 interface LoggedUserProps {
@@ -9,10 +12,21 @@ interface LoggedUserProps {
 
 export const LoggedUserOptions = ({ user }: LoggedUserProps) => {
   const navigate = useNavigate();
+  const { showNotification } = useContext(NotificationContext);
 
   const onDashboardClick = () => {
-    if (user?.type === 'PROFESSIONAL') navigate('/dashboard/profissional');
-    else navigate('/dashboard/cliente');
+    if (user?.type === 'PROFESSIONAL') {
+      navigate('/dashboard/profissional');
+      return;
+    }
+
+    if (user?.type === 'CUSTOMER') {
+      navigate('/dashboard/cliente');
+      return;
+    }
+
+    showNotification('É necessário estar logado para realizar esta ação', 'error');
+    navigate('/login', { replace: true });
   };
 
   const onLogoutClick = () => {

@@ -1,4 +1,6 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import { HeadContainer, NavBar, Logo } from './style';
 import { isAuthenticated } from '../../services/auth';
 import { LoggedUserOptions } from './LoggedUserOptions';
@@ -11,24 +13,27 @@ interface HeaderProps {}
 
 export const Header: FC<HeaderProps> = ({ children, ...props }) => {
   const user = useUser() as any;
+  const { pathname } = useLocation();
 
-  const isProfessionalPath =
-    window.location.pathname.includes('/profissional') &&
-    !window.location.pathname.includes('/perfil');
-  const logo = isProfessionalPath || user?.type === 'PROFESSIONAL' ? LogoProfissional : LogoImage;
+  const userOptions = useMemo(() => {
+    const isProfessionalPath = pathname.includes('/profissional') && !pathname.includes('/perfil');
+    const logo = isProfessionalPath || user?.type === 'PROFESSIONAL' ? LogoProfissional : LogoImage;
 
-  return (
-    <HeadContainer>
-      <Logo to="/">
-        <img src={logo} alt="Logo da Apollo" width={150} />
-      </Logo>
-      <NavBar style={{ display: 'flex' }} {...props}>
-        {isAuthenticated() ? (
-          <LoggedUserOptions user={user} />
-        ) : (
-          <VisitorUserOptions isProfessionalPath={isProfessionalPath} />
-        )}
-      </NavBar>
-    </HeadContainer>
-  );
+    return (
+      <>
+        <Logo to="/">
+          <img src={logo} alt="Logo da Apollo" width={150} />
+        </Logo>
+        <NavBar style={{ display: 'flex' }} {...props}>
+          {isAuthenticated() ? (
+            <LoggedUserOptions user={user} />
+          ) : (
+            <VisitorUserOptions isProfessionalPath={isProfessionalPath} />
+          )}
+        </NavBar>
+      </>
+    );
+  }, [pathname]);
+
+  return <HeadContainer>{userOptions}</HeadContainer>;
 };

@@ -1,18 +1,18 @@
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 
-import Home from './pages/Home';
-import CadastroCliente from './pages/Cadastro/CadastroCliente';
-import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
-import PerfilProfissional from './pages/PerfilProfissional';
-import Login from './pages/Login/LoginClient';
-import LoginProfissional from './pages/Login/LoginProfissional';
-import BuscarProfissionais from './pages/BuscaProfissionais';
+import { ClientAuth } from './components/AuthCheck/ClientAuth';
 import { Dashboard } from './pages/Dashboard/DashboardCliente/Dashboard';
 import { DashboardProfissional } from './pages/Dashboard/DashboardProfissional/DashboardProfissional';
 import { Header } from './components/Header/Header';
-import { ClientAuth } from './components/AuthCheck/ClientAuth';
-import { ProfessionalAuth } from './components/AuthCheck/ProfissionalAuth';
 import { LoggedIn } from './components/AuthCheck/LoggedIn';
+import { ProfessionalAuth } from './components/AuthCheck/ProfissionalAuth';
+import BuscarProfissionais from './pages/BuscaProfissionais';
+import CadastroCliente from './pages/Cadastro/CadastroCliente';
+import CadastroProfissional from './pages/Cadastro/CadastroProfissional';
+import Home from './pages/Home';
+import Login from './pages/Login/LoginClient';
+import LoginProfissional from './pages/Login/LoginProfissional';
+import PerfilProfissional from './pages/PerfilProfissional';
 
 export const AppRouter = () => {
   return (

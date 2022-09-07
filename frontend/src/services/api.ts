@@ -3,7 +3,10 @@ import { getToken } from './auth';
 import { errorHandler } from './errorHandler';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  }
 });
 
 api.interceptors.request.use((config: AxiosRequestConfig) => {

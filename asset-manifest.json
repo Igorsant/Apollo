@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.385b8ed8.css",
-    "main.js": "/static/js/main.5b58dade.js",
+    "main.js": "/static/js/main.58522ddd.js",
     "static/js/787.28cb0dcd.chunk.js": "/static/js/787.28cb0dcd.chunk.js",
     "static/media/parallax1.png": "/static/media/parallax1.fde4def18673b79a22c5.png",
     "static/media/parallax2.png": "/static/media/parallax2.520dcfc97af573dc2c5d.png",
@@ -9,11 +9,11 @@
     "static/media/Logo_apollo_profissional.png": "/static/media/Logo_apollo_profissional.3537d7e7136d09fb1c59.png",
     "index.html": "/index.html",
     "main.385b8ed8.css.map": "/static/css/main.385b8ed8.css.map",
-    "main.5b58dade.js.map": "/static/js/main.5b58dade.js.map",
+    "main.58522ddd.js.map": "/static/js/main.58522ddd.js.map",
     "787.28cb0dcd.chunk.js.map": "/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.385b8ed8.css",
-    "static/js/main.5b58dade.js"
+    "static/js/main.58522ddd.js"
   ]
 }

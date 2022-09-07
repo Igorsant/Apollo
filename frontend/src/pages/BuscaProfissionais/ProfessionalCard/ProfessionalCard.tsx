@@ -1,15 +1,17 @@
 import { Button, Card, Grid, IconButton, Rating } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import IProfissional from '../../../types/IProfissional';
-import { MainCardArea, ButtonArea, Row, ProfessionalNameArea } from './styles';
-import Room from '@mui/icons-material/Room';
-import Phone from '@mui/icons-material/Phone';
-import WhatsApp from '@mui/icons-material/WhatsApp';
-import { formatPhone } from '../../../services/formatPhone';
-import { UserAvatar } from '../../../components/UserAvatar/UserAvatar';
 import Favorite from '@mui/icons-material/Favorite';
+import Phone from '@mui/icons-material/Phone';
+import Room from '@mui/icons-material/Room';
 import Star from '@mui/icons-material/Star';
+import WhatsApp from '@mui/icons-material/WhatsApp';
+
+import { formatPhone } from '../../../services/formatPhone';
+import { MainCardArea, ButtonArea, Row, ProfessionalNameArea } from './styles';
+import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import { UserAvatar } from '../../../components/UserAvatar/UserAvatar';
+import IProfissional from '../../../types/IProfissional';
 
 interface ProfessionalCardProps {
   profissional: IProfissional;
@@ -18,11 +20,18 @@ interface ProfessionalCardProps {
     addFavorite: (id: number) => Promise<boolean>;
     removeFavorite: (id: number) => Promise<boolean>;
   };
+  user: any;
 }
 
-export const ProfessionalCard = ({ profissional, favorite, actions }: ProfessionalCardProps) => {
+export const ProfessionalCard = ({
+  user,
+  profissional,
+  favorite,
+  actions
+}: ProfessionalCardProps) => {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(favorite);
+  const { showNotification } = useContext(NotificationContext);
 
   const favoritarProfissional = async (ev: any) => {
     ev.stopPropagation();
@@ -34,6 +43,16 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
     ev.stopPropagation();
 
     if (await actions.removeFavorite(profissional.id)) setIsFavorite(false);
+  };
+
+  const agendarProfissional = () => {
+    if (!(user && user?.type === 'CUSTOMER')) {
+      showNotification('É necessário estar logado para realizar esta ação', 'error');
+      navigate('/login', { replace: true });
+      return;
+    }
+
+    navigate(`/profissional/perfil/${profissional.id}?agendar=true`);
   };
 
   return (
@@ -111,7 +130,7 @@ export const ProfessionalCard = ({ profissional, favorite, actions }: Profession
             variant="contained"
             onClick={(ev: any) => {
               ev.stopPropagation();
-              navigate(`/profissional/perfil/${profissional.id}?agendar=true`);
+              agendarProfissional();
             }}
             sx={{ textTransform: 'none', fontSize: '1.2em' }}
           >

@@ -1,24 +1,24 @@
 import { Grid, CircularProgress, Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import useQuery from '../../hooks/useQuery';
+import { useNavigate } from 'react-router-dom';
+
+import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
+import { ProfessionalCard } from './ProfessionalCard/ProfessionalCard';
+import { useTitle } from '../../hooks/useTitle';
+import { useUser } from '../../hooks/useUser';
 import api from '../../services/api';
 import IProfissional from '../../types/IProfissional';
-import { NotificationContext } from '../../components/NotificationProvider/NotificationProvider';
-import { useTitle } from '../../hooks/useTitle';
-import { ProfessionalCard } from './ProfessionalCard/ProfessionalCard';
-import { useUser } from '../../hooks/useUser';
-import { useNavigate } from 'react-router-dom';
+import useQuery from '../../hooks/useQuery';
 
 const BuscarProfissionais = () => {
   useTitle('Busca');
-  const user: any = useUser();
   const navigate = useNavigate();
+  const user: any = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [favorites, setFavorites] = useState<number[]>([]);
 
   const { showNotification } = useContext(NotificationContext);
   const query = useQuery();
-  // const name = query.get('name');
   const city = query.get('city');
   const queryValue = query.get('query') || ' ';
   const [profissionais, setProfissionais] = useState<IProfissional[]>([]);
@@ -47,10 +47,11 @@ const BuscarProfissionais = () => {
 
   const addFavorite = async (professionalId: number): Promise<boolean> => {
     if (user === null) {
-      navigate('/login');
       showNotification('É necessário estar logado para realizar esta ação', 'error');
+      navigate('/login', { replace: true });
       return false;
     }
+
     if (user?.type !== 'CUSTOMER') {
       showNotification('Somente usuários do tipo cliente podem realizar esta ação', 'warning');
       return false;
@@ -70,8 +71,8 @@ const BuscarProfissionais = () => {
 
   const removeFavorite = async (professionalId: number): Promise<boolean> => {
     if (user === null) {
-      navigate('/login');
       showNotification('É necessário estar logado para realizar esta ação', 'error');
+      navigate('/login', { replace: true });
       return false;
     }
     if (user?.type !== 'CUSTOMER') {
@@ -125,11 +126,12 @@ const BuscarProfissionais = () => {
         {profissionais.map((profissional, index) => {
           return (
             <ProfessionalCard
+              user={user}
               key={`profissional-${index}`}
               profissional={profissional}
               favorite={favorites.includes(profissional.id)}
               actions={{ addFavorite, removeFavorite }}
-            ></ProfessionalCard>
+            />
           );
         })}
       </Grid>

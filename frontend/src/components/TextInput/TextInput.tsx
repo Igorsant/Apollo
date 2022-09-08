@@ -10,4 +10,6 @@ const Input = styled.input`
   }
 `;
 
-export const TextInput = ({ hint }: { hint: string }) => <Input type="text" placeholder={hint} />;
+export const TextInput = ({ hint }: { hint: string }) => (
+  <Input data-cy="text-input" type="text" placeholder={hint} />
+);

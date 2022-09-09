@@ -27,6 +27,17 @@ import workHourRepository from '../repositories/workHour.repository';
 import WorkHourType from '../types/workHour.type';
 import workplaceRepository from '../repositories/workplace.repository';
 
+function calculateAverageReview(reviews: ReviewType[]) {
+  if (!reviews) return 0.0;
+
+  return (
+    reviews
+      .map((r: ReviewType) => r.rating)
+      .reduce((total: number, current: number) => total + current, 0.0) /
+    reviews.length
+  );
+}
+
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
     const professional = req.body;
@@ -116,11 +127,7 @@ export default class ProfessionalController {
         continue;
       }
 
-      p.averageRating =
-        reviews
-          .map((r: ReviewType) => r.rating)
-          .reduce((total: number, current: number) => total + current, 0.0) /
-        p.totalReviews;
+      p.averageRating = calculateAverageReview(reviews);
     }
 
     return res.status(200).json(professionals);
@@ -340,9 +347,12 @@ export default class ProfessionalController {
 
       const professional = professionalArray[0];
 
-      professional.totalReviews = await reviewRepository.numberOfReviews(
+      const reviews = await reviewRepository.findByProfessionalId(
         professional.id
       );
+
+      professional.totalReviews = reviews.length;
+      professional.averageRating = calculateAverageReview(reviews);
 
       delete professional.id;
       delete professional.passwordHash;

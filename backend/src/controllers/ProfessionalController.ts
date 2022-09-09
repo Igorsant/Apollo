@@ -16,16 +16,16 @@ import {
   saveBase64Image,
   userPicture
 } from '../helpers/image.helper';
+import favoriteRepository from '../repositories/favorite.repository';
 import phoneRepository from '../repositories/phone.repository';
 import professionalRepository from '../repositories/professional.repository';
+import reviewRepository from '../repositories/review.repository';
+import ReviewType from '../types/review.type';
 import serviceRepository from '../repositories/service.repository';
 import ServiceType from '../types/service.type';
 import workHourRepository from '../repositories/workHour.repository';
-import workplaceRepository from '../repositories/workplace.repository';
-
 import WorkHourType from '../types/workHour.type';
-import favoriteRepository from '../repositories/favorite.repository';
-import reviewRepository from '../repositories/review.repository';
+import workplaceRepository from '../repositories/workplace.repository';
 
 export default class ProfessionalController {
   public static async register(req: Request, res: Response) {
@@ -109,10 +109,21 @@ export default class ProfessionalController {
 
     const professionals = await professionalRepository.findByIds(ids);
     for (const p of professionals) {
-      p.totalReviews = await reviewRepository.numberOfReviews(p.id);
+      const reviews = await reviewRepository.findByProfessionalId(p.id);
+      p.totalReviews = reviews.length;
+
+      if (!reviews) {
+        continue;
+      }
+
+      p.averageRating =
+        reviews
+          .map((r: ReviewType) => r.rating)
+          .reduce((total: number, current: number) => total + current, 0.0) /
+        p.totalReviews;
     }
 
-    res.status(200).json(professionals);
+    return res.status(200).json(professionals);
   }
 
   public static async update(req: Request, res: Response) {

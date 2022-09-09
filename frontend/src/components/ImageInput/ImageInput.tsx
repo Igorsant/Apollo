@@ -82,7 +82,7 @@ export const ImageInput: React.FC<ImageInputProps> = ({ label, name, value, onCh
   return (
     <Div>
       <Label>{label}</Label>
-      <label htmlFor="input-image">
+      <label htmlFor="input-image" data-cy="fileUpload">
         <Input
           id="input-image"
           type="file"

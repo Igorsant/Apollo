@@ -38,6 +38,7 @@ export const NotificationProvider: React.FC<any> = ({ children }) => {
         onClose={closeNotification}
       >
         <Alert
+          data-cy="notification-test-id"
           onClose={closeNotification}
           severity={notification.severity}
           sx={{ width: '100%' }}

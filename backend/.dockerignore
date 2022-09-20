@@ -1,6 +1,5 @@
 db-data/
 node_modules/
-.env*
 .gitignore
 .prettierrc
 docker-compose.yaml

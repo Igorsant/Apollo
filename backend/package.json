@@ -11,7 +11,8 @@
     "migrate:up": "knex --knexfile knexfile.ts migrate:latest",
     "migrate:down": "knex --knexfile knexfile.ts migrate:rollback",
     "seed:make": "knex --knexfile knexfile.ts seed:make",
-    "seed:up": "knex --knexfile knexfile.ts seed:run"
+    "seed:up": "knex --knexfile knexfile.ts seed:run",
+    "docker": "npm run migrate:up && npm run seed:up && npm run dev"
   },
   "author": "",
   "license": "MIT",

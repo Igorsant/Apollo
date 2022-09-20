@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  database:
+    container_name: postgres
+    image: "postgres:12.10"
+    env_file: ./backend/.env
+    ports:
+      - 5432:5432
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - 3000:3000
+    environment:
+      # Need to change the ip to a hostname
+      - REACT_APP_API_URL=http://172.25.0.3:3001
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - 3001:3001

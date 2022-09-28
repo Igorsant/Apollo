@@ -16,7 +16,7 @@ export const validateStep3 = (args: Step3Interface): boolean =>
 
 export const Step3 = ({ time, setTime }: Step3Interface) => (
   <>
-    <div style={{ display: 'flex', justifyContent: 'center', height: '50%', alignItems: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <TimePicker
           label="Horário de início"

@@ -8,8 +8,8 @@ const Label = styled.h3`
 
 const LabelContainer = styled.div`
   display: flex;
-  margin: 20px 0;
   gap: 10px;
+  align-items: center;
 `;
 
 interface Step4Interface {
@@ -24,7 +24,7 @@ export const validateStep4 = ({ services, day, totalTime, schedule }: Step4Inter
 
 export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) => (
   <>
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <LabelContainer>
         <Label>Serviços Selecionados:</Label>
         {services.map((service) => (

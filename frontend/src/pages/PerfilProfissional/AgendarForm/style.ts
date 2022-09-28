@@ -54,13 +54,15 @@ export const ModalTitle = styled.h2`
 export const ModalStepProgress = styled.div`
   align-items: center;
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  grid-template-columns: repeat(7, 0.14fr);
   justify-content: center;
   text-align: center;
+  padding: 10px;
 `;
 
 export const ModalCurrentStep = styled.div`
   grid-area: steps;
+  padding: 15px 10px;
 `;
 
 export const ModalUserButtons = styled.div`

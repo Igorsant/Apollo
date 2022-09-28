@@ -155,7 +155,7 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
             const key = `step-${index}`;
 
             if (stepString === '-') {
-              if (index < indexStep * 2) {
+              if (index <= indexStep * 2) {
                 return <ActiveLine key={key} />;
               }
 
@@ -164,7 +164,7 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
 
             const stepText = stepString;
 
-            if (indexStep > index - 2) {
+            if (index <= indexStep * 2) {
               return <HighlightStep key={key}>{stepText}</HighlightStep>;
             }
 

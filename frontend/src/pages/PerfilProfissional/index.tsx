@@ -244,26 +244,12 @@ export default function PerfilProfissional() {
         <TabsInformacoes id={id} profissional={profissional}></TabsInformacoes>
       </Grid>
       {showAgendar && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '0px',
-            height: '100%',
-            width: '100%',
-            left: '0px',
-            backgroundColor: 'rgba(0,0,0,0.4)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <AgendarForm
-            setShowAgendar={setShowAgendar}
-            services={services}
-            professionalId={id}
-            servicesIds={profissional?.services.map((service) => service.id)}
-          />
-        </div>
+        <AgendarForm
+          setShowAgendar={setShowAgendar}
+          services={services}
+          professionalId={id}
+          servicesIds={profissional?.services.map((service) => service.id)}
+        />
       )}
     </Box>
   );

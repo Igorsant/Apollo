@@ -15,10 +15,11 @@ export const validateStep2 = (args: Step2Interface): boolean => Boolean(args.sta
 
 export const Step2 = ({ startDate, setStartDate }: Step2Interface) => (
   <>
-    <div style={{ display: 'flex', justifyContent: 'center', height: '50%', alignItems: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          label="Basic example"
+          inputFormat="d/m/Y"
+          label="Selecione o dia do serviço"
           value={startDate}
           onChange={(newValue) => {
             if (newValue) setStartDate(newValue);

@@ -1,11 +1,13 @@
-export const Line = () => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div style={{ width: '50px', height: '1px', backgroundColor: 'gray' }}></div>
-  </div>
-);
+import styled from 'styled-components';
 
-export const ActiveLine = () => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div style={{ width: '50px', height: '1px', backgroundColor: 'var(--header)' }}></div>
-  </div>
-);
+export const Line = styled.div`
+  width: 50px;
+  height: 1px;
+  background-color: gray;
+`;
+
+export const ActiveLine = styled.div`
+  width: 50px;
+  height: 1px;
+  background-color: var(--header);
+`;

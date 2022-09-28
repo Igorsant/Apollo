@@ -46,7 +46,6 @@ const CadastroCliente = () => {
     },
     validationSchema: clienteSchema,
     onSubmit: (values) => {
-      console.log(values);
       const { confirmPassword, ...cliente } = values;
       handleSubmit({
         ...cliente,
@@ -70,7 +69,6 @@ const CadastroCliente = () => {
   };
 
   const handleSubmit = (values: ICliente) => {
-    console.log(values);
     api
       .post('customers', values)
       .then((res) => {

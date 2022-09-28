@@ -59,7 +59,6 @@ export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
     api
       .get('/schedulings?confirmed=false')
       .then((res) => {
-        console.log(res);
         setAgendamentos(res.data);
       })
       .catch((err) => {

@@ -114,8 +114,6 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
       serviceIds: choosenServices.map((s) => s.id)
     };
 
-    console.log(data);
-
     api.post(`schedulings`, data).then((_) => {
       showNotification('Agendamento criado com sucesso', 'success');
       setShowAgendar(false);

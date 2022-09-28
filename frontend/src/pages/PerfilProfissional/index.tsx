@@ -93,7 +93,6 @@ export default function PerfilProfissional() {
             }))
           );
           if (isAgendar === 'true') {
-            console.log(profissional, services);
             setShowAgendar(true);
           }
         })

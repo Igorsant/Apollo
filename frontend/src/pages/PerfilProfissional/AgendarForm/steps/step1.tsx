@@ -1,6 +1,5 @@
 import { ArrowDropDown } from '@mui/icons-material';
-import { HighlightStep, OtherSteps, ServicesButton } from '../../style';
-import { Line } from '../line';
+import { ServicesButton } from '../../style';
 import { ServiceType } from '..';
 import { SetStateAction, Dispatch } from 'react';
 
@@ -21,16 +20,6 @@ export const Step1 = ({
   setChoosenServices
 }: Step1Interface) => (
   <>
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <HighlightStep>Definir serviços</HighlightStep>
-      <Line />
-      <OtherSteps>Definir dia</OtherSteps>
-      <Line />
-      <OtherSteps>Definir horários</OtherSteps>
-      <Line />
-      <OtherSteps>Confirmar Agendamentos</OtherSteps>
-    </div>
-
     <div
       style={{
         backgroundColor: 'var(--input)',

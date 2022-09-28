@@ -1,5 +1,4 @@
-import { HighlightStep, ServicesButton } from '../../style';
-import { ActiveLine } from '../line';
+import { ServicesButton } from '../../style';
 import { ServiceType } from '..';
 import styled from 'styled-components';
 
@@ -25,15 +24,6 @@ export const validateStep4 = ({ services, day, totalTime, schedule }: Step4Inter
 
 export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) => (
   <>
-    <div style={{ display: 'flex' }}>
-      <HighlightStep>Definir serviços</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Definir dia</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Definir horários</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Confirmar Agendamentos</HighlightStep>
-    </div>
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <LabelContainer>
         <Label>Serviços Selecionados:</Label>

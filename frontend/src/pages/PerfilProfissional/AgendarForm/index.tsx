@@ -1,12 +1,23 @@
-import { Button } from '../../../components/Button/ApolloButton';
-import { Close } from '@mui/icons-material';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 import { Step1, validateStep1 } from './steps/step1';
 import { Step2, validateStep2 } from './steps/step2';
 import { Step3, validateStep3 } from './steps/step3';
 import { Step4, validateStep4 } from './steps/step4';
+import {
+  AgendarModal,
+  AgendarModalBackground,
+  ModalNextStepButton,
+  ModalPreviousStepButton,
+  ModalCloseButton,
+  ModalCurrentStep,
+  ModalTitle,
+  ModalUserButtons,
+  ModalStepProgress
+} from './style';
 import api from '../../../services/api';
+import { HighlightStep, OtherSteps } from '../style';
+import { ActiveLine, Line } from './line';
 
 export type ServiceType = {
   id: number;
@@ -20,6 +31,16 @@ type AgendarFormType = {
   professionalId: string | undefined;
   servicesIds: number[] | undefined;
 };
+
+const stepStrings = [
+  'Definir Serviços',
+  '-',
+  'Definir Dia',
+  '-',
+  'Definir Horários',
+  '-',
+  'Confirmar Agendamentos'
+];
 
 export const AgendarForm = ({ professionalId, services, setShowAgendar }: AgendarFormType) => {
   const [choosenServices, setChoosenServices] = useState<ServiceType[]>([]);
@@ -125,58 +146,45 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
   };
 
   return (
-    <div
-      style={{
-        width: '80%',
-        backgroundColor: 'white',
-        color: 'black',
-        height: '70%',
-        borderRadius: '5px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
-      <Close
-        style={{
-          float: 'right',
-          fontSize: '3em',
-          color: 'var(--header)',
-          alignSelf: 'end',
-          cursor: 'pointer'
-        }}
-        onClick={() => setShowAgendar(false)}
-      />
-      <h2
-        style={{
-          fontWeight: '400',
-          display: 'block',
-          marginBottom: '50px'
-        }}
-      >
-        Agendar Serviço
-      </h2>
-      <div>
-        <div style={{ height: '40vh' }}>{steps[indexStep]}</div>
+    <AgendarModalBackground>
+      <AgendarModal>
+        <ModalCloseButton onClick={() => setShowAgendar(false)} />
+        <ModalTitle>Agendar Serviço</ModalTitle>
+        <ModalStepProgress>
+          {stepStrings.map((stepString, index) => {
+            const key = `step-${index}`;
 
-        <div style={{ marginTop: '40px' }}>
-          <Button
-            variant="contained"
-            style={{ width: '49%', backgroundColor: '#CD3838' }}
-            onClick={handleBack}
-          >
-            Voltar
-          </Button>
+            if (stepString === '-') {
+              if (index < indexStep * 2) {
+                return <ActiveLine key={key} />;
+              }
 
-          <Button
-            variant="contained"
-            style={{ width: '49%', marginLeft: '2%' }}
-            onClick={handleMove}
-          >
-            {indexStep < 3 ? 'Avançar' : 'Confirmar Agendamento'}
-          </Button>
+              return <Line key={key} />;
+            }
+
+            const stepText = stepString;
+
+            if (indexStep > index - 2) {
+              return <HighlightStep key={key}>{stepText}</HighlightStep>;
+            }
+
+            return <OtherSteps key={key}>{stepText}</OtherSteps>;
+          })}
+        </ModalStepProgress>
+
+        <div>
+          <ModalCurrentStep>{steps[indexStep]}</ModalCurrentStep>
+
+          <ModalUserButtons>
+            <ModalNextStepButton variant="contained" onClick={handleMove}>
+              {indexStep < 3 ? 'Avançar' : 'Confirmar Agendamento'}
+            </ModalNextStepButton>
+            <ModalPreviousStepButton variant="contained" onClick={handleBack}>
+              Voltar
+            </ModalPreviousStepButton>
+          </ModalUserButtons>
         </div>
-      </div>
-    </div>
+      </AgendarModal>
+    </AgendarModalBackground>
   );
 };

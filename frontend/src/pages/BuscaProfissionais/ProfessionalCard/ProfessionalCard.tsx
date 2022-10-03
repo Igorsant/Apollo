@@ -56,7 +56,7 @@ export const ProfessionalCard = ({
   };
 
   return (
-    <Grid key={profissional.id} item md={true} width={'100%'} whiteSpace={'nowrap'} gap={'1rem'}>
+    <Grid key={profissional.id} item md={true} width={'100%'} gap={'1rem'}>
       <Card
         onClick={() => navigate(`/profissional/perfil/${profissional.id}`)}
         sx={{

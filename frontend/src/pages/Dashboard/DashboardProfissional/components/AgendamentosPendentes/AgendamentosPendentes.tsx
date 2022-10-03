@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Theme } from '@mui/material';
-import { Grid, List, ListItem, Divider } from '@material-ui/core';
-import { Cancel } from '@mui/icons-material';
-import moment from 'moment';
-import api from '../../../../../services/api';
-import { NotificationContext } from '../../../../../components/NotificationProvider/NotificationProvider';
 import { Button } from '../../../../../components/Button/ApolloButton';
+import { Cancel } from '@mui/icons-material';
+import { Grid, List, ListItem, Divider } from '@material-ui/core';
 import { IAgendamento } from '../../../../../types/IAgendamento';
+import { makeStyles } from '@material-ui/core/styles';
+import { NotificationContext } from '../../../../../components/NotificationProvider/NotificationProvider';
+import { Theme } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import api from '../../../../../services/api';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface IAgendamentosPendentes {
   onAnswer: () => void;
 }
+
 export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
   const classes = useStyles();
   const { showNotification } = useContext(NotificationContext);
@@ -66,29 +67,20 @@ export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
       });
   };
 
-  const aceitar = (id: Number) => {
+  const patchScheduling = (id: number, acceptScheduling: boolean) => {
+    const patchSchedulingEndpoint = `/schedulings/${id}/${acceptScheduling ? 'accept' : 'refuse'}`;
+
     api
-      .patch(`/schedulings/${id}/accept`)
-      .then((res) => {
+      .patch(patchSchedulingEndpoint)
+      .then((_) => {
         obterAgendamentosPendentes();
         onAnswer();
       })
-      .catch((err) => {
-        return showNotification(err, 'error');
-      });
+      .catch((err) => showNotification(err, 'error'));
   };
 
-  const declinar = (id: Number) => {
-    api
-      .patch(`/schedulings/${id}/refuse`)
-      .then((res) => {
-        obterAgendamentosPendentes();
-        onAnswer();
-      })
-      .catch((err) => {
-        return showNotification(err, 'error');
-      });
-  };
+  const acceptScheduling = (id: number) => patchScheduling(id, true);
+  const refuseScheduling = (id: number) => patchScheduling(id, false);
 
   return (
     <Grid container justifyContent="flex-start" alignItems="flex-start" className={classes.root}>
@@ -131,7 +123,7 @@ export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
                     <Grid item xs={6} md={2} className={classes.item}>
                       <Button
                         onClick={() => {
-                          aceitar(agendamento.id);
+                          acceptScheduling(agendamento.id);
                         }}
                         variant="contained"
                         style={{ backgroundColor: '#2e7d32' }}
@@ -143,7 +135,7 @@ export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
                       <Button
                         className={classes.buttonIcon}
                         onClick={() => {
-                          declinar(agendamento.id);
+                          refuseScheduling(agendamento.id);
                         }}
                       >
                         <Cancel fontSize="large" />

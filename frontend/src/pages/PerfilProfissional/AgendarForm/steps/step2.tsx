@@ -18,7 +18,7 @@ export const Step2 = ({ startDate, setStartDate }: Step2Interface) => (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          inputFormat="d/m/Y"
+          inputFormat="dd/MM/yy"
           label="Selecione o dia do serviço"
           value={startDate}
           onChange={(newValue) => {

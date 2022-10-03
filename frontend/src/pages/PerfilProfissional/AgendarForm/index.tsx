@@ -170,18 +170,16 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
           })}
         </ModalStepProgress>
 
-        <div>
-          <ModalCurrentStep>{steps[indexStep]}</ModalCurrentStep>
+        <ModalCurrentStep>{steps[indexStep]}</ModalCurrentStep>
 
-          <ModalUserButtons>
-            <ModalNextStepButton variant="contained" onClick={handleMove}>
-              {indexStep < 3 ? 'Avançar' : 'Confirmar Agendamento'}
-            </ModalNextStepButton>
-            <ModalPreviousStepButton variant="contained" onClick={handleBack}>
-              Voltar
-            </ModalPreviousStepButton>
-          </ModalUserButtons>
-        </div>
+        <ModalUserButtons>
+          <ModalNextStepButton variant="contained" onClick={handleMove}>
+            {indexStep < 3 ? 'Avançar' : 'Confirmar Agendamento'}
+          </ModalNextStepButton>
+          <ModalPreviousStepButton variant="contained" onClick={handleBack}>
+            Voltar
+          </ModalPreviousStepButton>
+        </ModalUserButtons>
       </AgendarModal>
     </AgendarModalBackground>
   );

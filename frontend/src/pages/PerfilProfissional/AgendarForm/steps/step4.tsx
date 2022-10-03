@@ -1,7 +1,13 @@
-import { HighlightStep, ServicesButton } from '../../style';
-import { ActiveLine } from '../line';
+import { ServicesButton } from '../../style';
 import { ServiceType } from '..';
 import styled from 'styled-components';
+import {
+  getDayFromDate,
+  getHoursFromDate,
+  getMinutesFromDate,
+  getMonthFromDate,
+  getYearFromDate
+} from '../../../../helpers/dateHelper';
 
 const Label = styled.h3`
   color: var(--header);
@@ -9,8 +15,8 @@ const Label = styled.h3`
 
 const LabelContainer = styled.div`
   display: flex;
-  margin: 20px 0;
   gap: 10px;
+  align-items: center;
 `;
 
 interface Step4Interface {
@@ -23,18 +29,15 @@ interface Step4Interface {
 export const validateStep4 = ({ services, day, totalTime, schedule }: Step4Interface): boolean =>
   Boolean(services && day && totalTime && schedule);
 
+const formatSchedulingDate = (date: Date) =>
+  [getDayFromDate(date), getMonthFromDate(date), getYearFromDate(date)].join('/');
+
+const formatSchedulingTime = (date: Date) =>
+  [getHoursFromDate(date), getMinutesFromDate(date)].join(':');
+
 export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) => (
   <>
-    <div style={{ display: 'flex' }}>
-      <HighlightStep>Definir serviços</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Definir dia</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Definir horários</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Confirmar Agendamentos</HighlightStep>
-    </div>
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <LabelContainer>
         <Label>Serviços Selecionados:</Label>
         {services.map((service) => (
@@ -43,22 +46,11 @@ export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) =>
       </LabelContainer>
       <LabelContainer>
         <Label>Dia Selecionados:</Label>
-        <Label>
-          {day.getUTCDate() +
-            '/' +
-            (day.getMonth() + 1).toString().padStart(2, '0') +
-            '/' +
-            day.getFullYear()}
-        </Label>
+        <Label>{formatSchedulingDate(day)}</Label>
       </LabelContainer>
       <LabelContainer>
         <Label>Horário Selecionados:</Label>
-        <Label>
-          {schedule &&
-            schedule.getHours().toString().padStart(2, '0') +
-              ':' +
-              schedule.getMinutes().toString().padStart(2, '0')}
-        </Label>
+        <Label>{schedule && formatSchedulingTime(schedule)}</Label>
       </LabelContainer>
       <LabelContainer>
         <Label>Tempo total estimado:</Label>

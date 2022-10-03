@@ -91,7 +91,6 @@ const CadastroProfissional = () => {
     },
     validationSchema: profissionalSchema,
     onSubmit: (values) => {
-      console.log(values);
       const { confirmPassword, ...profissional } = values;
       handleSubmit({
         ...profissional,
@@ -119,7 +118,6 @@ const CadastroProfissional = () => {
   };
 
   const handleSubmit = (values: SubmitProfessional) => {
-    console.log(values);
     if (values.aboutMe?.length === 0) delete values.aboutMe;
     if (values.workplace.complement?.length === 0) delete values.workplace.complement;
     api

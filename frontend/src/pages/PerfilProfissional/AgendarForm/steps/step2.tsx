@@ -1,8 +1,6 @@
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dispatch, SetStateAction } from 'react';
-import { HighlightStep, OtherSteps } from '../../style';
-import { Line, ActiveLine } from '../line';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import TextField from '@mui/material/TextField';
 
@@ -17,19 +15,11 @@ export const validateStep2 = (args: Step2Interface): boolean => Boolean(args.sta
 
 export const Step2 = ({ startDate, setStartDate }: Step2Interface) => (
   <>
-    <div style={{ display: 'flex' }}>
-      <HighlightStep>Definir serviços</HighlightStep>
-      <ActiveLine />
-      <HighlightStep>Definir dia</HighlightStep>
-      <Line />
-      <OtherSteps>Definir horários</OtherSteps>
-      <Line />
-      <OtherSteps>Confirmar Agendamentos</OtherSteps>
-    </div>
-    <div style={{ display: 'flex', justifyContent: 'center', height: '50%', alignItems: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          label="Basic example"
+          inputFormat="dd/MM/yy"
+          label="Selecione o dia do serviço"
           value={startDate}
           onChange={(newValue) => {
             if (newValue) setStartDate(newValue);

@@ -27,10 +27,21 @@ export const OtherSteps = styled(Step)`
 `;
 
 export const ServicesButton = styled.button`
-  color: white;
   background: var(--header);
-  padding: 5px 10px;
-  border-radius: 10px;
+  border-radius: 25px;
   border: none;
-  margin: 0 7px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 15px;
+  white-space: nowrap;
+  animation: fade 250ms forwards;
+
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;

@@ -21,9 +21,11 @@ export const AgendarModal = styled.div`
   color: black;
   display: grid;
   gap: 12px;
+  grid-template-rows: auto auto auto 2fr auto;
   grid-template-areas:
     'close'
     'title'
+    'progress'
     'steps'
     'buttons';
   justify-content: center;
@@ -37,6 +39,7 @@ export const ModalCloseButton = styled(Close)`
   cursor: pointer;
   display: flex;
   grid-area: close;
+  margin-top: auto;
   margin-left: auto;
   padding: 5px;
   &:hover {
@@ -54,10 +57,11 @@ export const ModalTitle = styled.h2`
 export const ModalStepProgress = styled.div`
   align-items: center;
   display: grid;
+  grid-area: progress;
   grid-template-columns: repeat(7, 0.14fr);
   justify-content: center;
-  text-align: center;
   padding: 10px;
+  text-align: center;
 `;
 
 export const ModalCurrentStep = styled.div`

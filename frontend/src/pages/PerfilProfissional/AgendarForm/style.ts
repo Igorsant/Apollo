@@ -58,7 +58,6 @@ export const ModalStepProgress = styled.div`
   align-items: center;
   display: grid;
   grid-area: progress;
-  grid-template-columns: repeat(7, 0.14fr);
   justify-content: center;
   padding: 10px;
   text-align: center;

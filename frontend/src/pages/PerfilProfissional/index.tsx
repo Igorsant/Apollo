@@ -1,7 +1,7 @@
 import { Favorite, Phone, Room, Star, WhatsApp } from '@mui/icons-material';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Skeleton, Rating, Theme } from '@mui/material';
+import { Skeleton, Rating, Theme, Avatar } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -41,11 +41,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: '120px'
   }
 }));
-
-const Image = styled.img`
-  height: 200px;
-  width: 200px;
-`;
 
 const ProfilePicture = styled.div`
   display: flex;
@@ -170,10 +165,14 @@ export default function PerfilProfissional() {
           <ProfilePicture>
             {!profissional ? (
               <Skeleton variant="rectangular">
-                <Image />
+                <Avatar sx={{ width: 200, height: 200 }} />
               </Skeleton>
             ) : (
-              <Image src={api.defaults.baseURL! + profissional?.picturePath} loading="lazy" />
+              <Avatar
+                src={api.defaults.baseURL! + profissional?.picturePath}
+                alt={profissional?.fullName}
+                sx={{ width: 200, height: 200 }}
+              ></Avatar>
             )}
           </ProfilePicture>
 

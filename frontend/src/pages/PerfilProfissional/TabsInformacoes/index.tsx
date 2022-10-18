@@ -1,9 +1,11 @@
+import { Skeleton } from '@mui/material';
 import React, { useState } from 'react';
-import TabPanel from '../../../components/Tab/TabPanel/TabPanel';
+
+import { Avaliacoes } from './Avaliacoes';
 import ApolloTab from '../../../components/Tab/Tabs';
 import IProfissional from '../../../types/IProfissional';
-import { Avaliacoes } from './Avaliacoes';
 import ServicosDisponiveis from './ServicosDisponiveis';
+import TabPanel from '../../../components/Tab/TabPanel/TabPanel';
 
 interface TabsInformacoesProps {
   profissional: IProfissional | undefined;
@@ -24,6 +26,7 @@ export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, 
         ]}
       ></ApolloTab>
       <TabPanel value={tabValue} index={0}>
+        {!profissional && <Skeleton variant="text" />}
         {profissional?.aboutMe === null ? (
           <span style={{ color: 'gray' }}>O profissional não disponibilizou esta informação.</span>
         ) : (
@@ -31,10 +34,15 @@ export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, 
         )}
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
+        {!profissional && <Skeleton variant="text" />}
         <ServicosDisponiveis servicos={profissional?.services}></ServicosDisponiveis>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <Avaliacoes profissionalId={id}></Avaliacoes>
+        {!profissional ? (
+          <Skeleton variant="text" />
+        ) : (
+          <Avaliacoes profissionalId={id}></Avaliacoes>
+        )}
       </TabPanel>
     </>
   );

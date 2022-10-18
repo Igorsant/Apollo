@@ -1,10 +1,10 @@
 import { Favorite, Phone, Room, Star, WhatsApp } from '@mui/icons-material';
-import { Rating, Theme } from '@mui/material';
-import Box from '@mui/material/Box';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Skeleton, Rating, Theme } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Box from '@mui/material/Box';
 import styled from 'styled-components';
 
 import { AgendarForm, ServiceType } from './AgendarForm';
@@ -151,6 +151,11 @@ export default function PerfilProfissional() {
     setShowAgendar(true);
   };
 
+  const getAboutMe = (profissional: IProfissional) => {
+    if (!profissional?.workplace.complement) return '';
+    return profissional?.workplace.complement;
+  };
+
   return (
     <Box className={classes.root}>
       <Grid container>
@@ -163,19 +168,32 @@ export default function PerfilProfissional() {
           style={{ marginBottom: '1.2em', gap: '1em' }}
         >
           <ProfilePicture>
-            <Image src={api.defaults.baseURL! + profissional?.picturePath}></Image>
+            {!profissional ? (
+              <Skeleton variant="rectangular">
+                <Image />
+              </Skeleton>
+            ) : (
+              <Image src={api.defaults.baseURL! + profissional?.picturePath} loading="lazy" />
+            )}
           </ProfilePicture>
+
           <ProfessionalNameArea style={{ height: '100%', gap: '1em' }}>
             <Row>
               <ProfessionalNameArea style={{ gap: '0' }}>
                 <Row style={{ justifyContent: 'space-between' }}>
-                  <h3 style={{ fontSize: '1.2em', display: 'flex', alignItems: 'center' }}>
-                    {profissional?.fullName}
-                  </h3>
+                  {!profissional ? (
+                    <Skeleton variant="text" width="100%" />
+                  ) : (
+                    <h3 style={{ fontSize: '1.2em', display: 'flex', alignItems: 'center' }}>
+                      {profissional?.fullName}
+                    </h3>
+                  )}
+
                   <Button
                     variant="text"
                     startIcon={<Favorite htmlColor={isFavorite ? '#CD6538' : '#FFE3D8'} />}
                     onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}
+                    disabled={!profissional}
                     style={{
                       textTransform: 'none',
                       fontWeight: 'bold',
@@ -186,55 +204,75 @@ export default function PerfilProfissional() {
                     Salvar
                   </Button>
                 </Row>
+
                 <Row>
-                  <Rating
-                    readOnly
-                    value={Number.parseFloat(profissional?.averageRating ?? '0')}
-                    precision={0.5}
-                    icon={<Star color="primary" fontSize="inherit" />}
-                    emptyIcon={<Star htmlColor="#FFE3D8" fontSize="inherit" />}
-                  ></Rating>
-                  <span
-                    style={{
-                      marginLeft: '0.5em',
-                      fontSize: '0.8em',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}
-                  >
-                    ({profissional?.totalReviews}{' '}
-                    {profissional?.totalReviews === 1 ? 'avaliação' : 'avaliações'})
-                  </span>
+                  {!profissional ? (
+                    <Skeleton>
+                      <Rating></Rating>
+                    </Skeleton>
+                  ) : (
+                    <>
+                      <Rating
+                        readOnly
+                        value={Number.parseFloat(profissional?.averageRating ?? '0')}
+                        precision={0.5}
+                        icon={<Star color="primary" fontSize="inherit" />}
+                        emptyIcon={<Star htmlColor="#FFE3D8" fontSize="inherit" />}
+                      ></Rating>
+
+                      <span
+                        style={{
+                          marginLeft: '0.5em',
+                          fontSize: '0.8em',
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        ({profissional?.totalReviews}{' '}
+                        {profissional?.totalReviews === 1 ? 'avaliação' : 'avaliações'})
+                      </span>
+                    </>
+                  )}
                 </Row>
               </ProfessionalNameArea>
             </Row>
+
             <Row>
-              <Room color="primary" />
-              <span style={{ fontWeight: 'bold' }}>
-                {`${profissional?.workplace.street}, ${profissional?.workplace.streetNumber}`}{' '}
-              </span>
-              {profissional?.workplace.complement &&
-              profissional?.workplace.complement.length > 0 ? (
-                <span style={{ marginLeft: '0.5em' }}>({profissional?.workplace.complement})</span>
+              {!profissional ? (
+                <Skeleton variant="text" width="100px"></Skeleton>
               ) : (
-                ''
+                <>
+                  <Room color="primary" />
+                  <span style={{ fontWeight: 'bold' }}>
+                    {`${profissional?.workplace.street}, ${profissional?.workplace.streetNumber}`}{' '}
+                  </span>
+                  <span style={{ marginLeft: '0.5em' }}> {getAboutMe(profissional)}</span>
+                </>
               )}
             </Row>
             <Row style={{ gap: '1em', fontWeight: 'bold' }}>
-              {profissional?.workplace.phones.map((p, i) => (
-                <div
-                  key={`phone-${profissional?.id}-${i}`}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
-                >
-                  {p.isPhoneWhatsapp ? <WhatsApp color="primary" /> : <Phone color="primary" />}
-                  <span style={{ lineHeight: '24px', marginLeft: '0.25em' }}>
-                    {formatPhone(p.phone)}
-                  </span>
-                </div>
-              ))}
+              {profissional ? (
+                profissional?.workplace.phones.map((p, i) => (
+                  <div
+                    key={`phone-${profissional?.id}-${i}`}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
+                  >
+                    {p.isPhoneWhatsapp ? <WhatsApp color="primary" /> : <Phone color="primary" />}
+                    <span style={{ lineHeight: '24px', marginLeft: '0.25em' }}>
+                      {formatPhone(p.phone)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <Skeleton variant="text" width="100px"></Skeleton>
+              )}
             </Row>
             <Row>
-              <Button variant="contained" onClick={() => agendarProfissional()}>
+              <Button
+                variant="contained"
+                onClick={() => agendarProfissional()}
+                disabled={!profissional}
+              >
                 Agendar
               </Button>
             </Row>
@@ -242,7 +280,7 @@ export default function PerfilProfissional() {
         </Grid>
         <TabsInformacoes id={id} profissional={profissional}></TabsInformacoes>
       </Grid>
-      {showAgendar && (
+      {profissional && showAgendar && (
         <AgendarForm
           setShowAgendar={setShowAgendar}
           services={services}

@@ -1,5 +1,5 @@
 import { Delete, Edit, Star } from '@mui/icons-material';
-import { Grid, IconButton, ListItem, Rating, Typography } from '@mui/material';
+import { Grid, IconButton, ListItem, Rating, Skeleton, Typography } from '@mui/material';
 import { UserAvatar } from '../../../../components/UserAvatar/UserAvatar';
 import IReview from '../../../../types/IReview';
 import { Row } from '../../../BuscaProfissionais/ProfessionalCard/styles';
@@ -53,10 +53,14 @@ export const Avaliacao = ({ avaliacao, userOwnsReview, actions }: AvalicaoProps)
       >
         <Row style={{ width: '100%' }}>
           <Grid item padding="8px">
-            <UserAvatar
-              alt={avaliacao.customerName}
-              picturePath={avaliacao.customerPicturePath}
-            ></UserAvatar>
+            {!avaliacao ? (
+              <Skeleton variant="circular" width={40} height={40} />
+            ) : (
+              <UserAvatar
+                alt={avaliacao.customerName}
+                picturePath={avaliacao.customerPicturePath}
+              ></UserAvatar>
+            )}
           </Grid>
           <Column style={{ padding: '8px 0', width: '100%' }}>
             <Row>

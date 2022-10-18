@@ -98,7 +98,7 @@ const BuscarProfissionais = () => {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          minHeight: '100vh',
+          height: `${window.innerHeight / 1.25}px`,
           alignItems: 'center'
         }}
       >

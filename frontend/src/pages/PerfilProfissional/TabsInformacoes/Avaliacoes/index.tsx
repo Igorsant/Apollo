@@ -1,5 +1,5 @@
 import { FilterList, Star } from '@mui/icons-material';
-import { List, Typography, Divider, Rating, Button } from '@mui/material';
+import { List, Typography, Divider, Rating, Button, CircularProgress } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NotificationContext } from '../../../../components/NotificationProvider/NotificationProvider';
@@ -192,6 +192,7 @@ export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId }) => {
       </Typography>
       <List disablePadding sx={{ width: '100%', bgcolor: 'background.paper' }}>
         <Divider />
+        {!avaliacoes && <CircularProgress />}
         {avaliacoes?.map((avaliacao, index) => (
           <Avaliacao
             key={index}

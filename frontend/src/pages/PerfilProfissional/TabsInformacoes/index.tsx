@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
 
 import { Avaliacoes } from './Avaliacoes';
@@ -26,7 +26,7 @@ export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, 
         ]}
       ></ApolloTab>
       <TabPanel value={tabValue} index={0}>
-        {!profissional && <Skeleton variant="text" />}
+        {!profissional && <CircularProgress />}
         {profissional?.aboutMe === null ? (
           <span style={{ color: 'gray' }}>O profissional não disponibilizou esta informação.</span>
         ) : (
@@ -34,15 +34,11 @@ export const TabsInformacoes: React.FC<TabsInformacoesProps> = ({ profissional, 
         )}
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        {!profissional && <Skeleton variant="text" />}
+        {!profissional && <CircularProgress />}
         <ServicosDisponiveis servicos={profissional?.services}></ServicosDisponiveis>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        {!profissional ? (
-          <Skeleton variant="text" />
-        ) : (
-          <Avaliacoes profissionalId={id}></Avaliacoes>
-        )}
+        {!profissional ? <CircularProgress /> : <Avaliacoes profissionalId={id}></Avaliacoes>}
       </TabPanel>
     </>
   );

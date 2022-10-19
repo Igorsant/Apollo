@@ -50,6 +50,7 @@ export const Agendamentos = ({ agendamentos }: IAgendamentos) => {
       setData(moment(data).subtract(1, 'day').toDate());
     }
   };
+
   return (
     <Grid container justifyContent="flex-start" alignItems="flex-start" className={classes.root}>
       <Grid item xs={12} className={classes.title}>
@@ -68,7 +69,7 @@ export const Agendamentos = ({ agendamentos }: IAgendamentos) => {
         .filter((agendamento) => moment(agendamento.startTime).isSame(data, 'day'))
         .map((agendamento, index) => {
           return (
-            <Grid key={index} item xs={12} sm={6} md={6}>
+            <Grid key={index} item xs={12} md={6}>
               <Box className={classes.item}>
                 <Grid container justifyContent="space-between">
                   <Grid item>

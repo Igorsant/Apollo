@@ -1,12 +1,12 @@
-import { Button } from '../../../../../components/Button/ApolloButton';
 import { Grid } from '@material-ui/core';
-import { IAgendamento } from '../../../../../types/IAgendamento';
 import { makeStyles } from '@material-ui/core/styles';
-import { NotificationContext } from '../../../../../components/NotificationProvider/NotificationProvider';
-import { Card, CardActions, CardContent, CardHeader, Chip, Theme } from '@mui/material';
+import { Theme } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
+
+import { CardAgendamento } from '../../../../../components/CardAgendamento';
+import { IAgendamento } from '../../../../../types/IAgendamento';
+import { NotificationContext } from '../../../../../components/NotificationProvider/NotificationProvider';
 import api from '../../../../../services/api';
-import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -95,45 +95,13 @@ export const AgendamentosPendentes = ({ onAnswer }: IAgendamentosPendentes) => {
 
       <Grid item xs={12}>
         {agendamentos.map((agendamento, index) => (
-          <Card key={index} variant="elevation" color="secondary">
-            <CardHeader
-              title={agendamento.customer.nickname}
-              subheader={`${moment(agendamento.startTime)
-                .locale('pt-br')
-                .format('HH:mm')} - ${moment(agendamento.endTime)
-                .locale('pt-br')
-                .format('HH:mm')} (${moment(agendamento.startTime)
-                .locale('pt-br')
-                .format('DD/MM/yyyy')})`}
-            ></CardHeader>
-
-            <CardContent>
-              {agendamento.services.map((service, i) => (
-                <Chip key={`service-${i}`} sx={{ margin: '0 0.2rem' }} label={service.name} />
-              ))}
-            </CardContent>
-
-            <CardActions>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => {
-                  acceptScheduling(agendamento.id);
-                }}
-              >
-                Aceitar
-              </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => {
-                  refuseScheduling(agendamento.id);
-                }}
-              >
-                Cancelar
-              </Button>
-            </CardActions>
-          </Card>
+          <CardAgendamento
+            key={index}
+            agendamento={agendamento}
+            name={agendamento.customer.nickname.toString()}
+            onAccept={() => acceptScheduling(agendamento.id)}
+            onRefuse={() => refuseScheduling(agendamento.id)}
+          />
         ))}
       </Grid>
     </Grid>

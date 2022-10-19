@@ -108,21 +108,14 @@ const BuscarProfissionais = () => {
   }
 
   return (
-    <Grid container>
-      <Grid
-        container
-        item
-        gap={'0.5rem'}
-        sx={{ p: 5, color: 'gray' }}
-        md={16}
-        gridTemplateColumns={'1fr 1fr'}
-      >
-        <p style={{ width: '100%' }}>
-          {profissionais !== undefined &&
-            `${profissionais?.length}  ${
-              profissionais?.length === 1 ? ' profissional encontrado' : 'profissionais encontrados'
-            } `}
-        </p>
+    <Grid container sx={{ p: 5, color: 'gray', gap: 5 }}>
+      <p>
+        {profissionais !== undefined &&
+          `${profissionais?.length}  ${
+            profissionais?.length === 1 ? ' profissional encontrado' : 'profissionais encontrados'
+          } `}
+      </p>
+      <Grid container item spacing={2}>
         {profissionais.map((profissional, index) => {
           return (
             <ProfessionalCard

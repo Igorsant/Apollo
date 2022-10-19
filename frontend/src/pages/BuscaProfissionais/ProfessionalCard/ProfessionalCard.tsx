@@ -1,15 +1,22 @@
-import { Button, Card, Grid, IconButton, Rating } from '@mui/material';
+import {
+  Button,
+  Tooltip,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  IconButton,
+  Rating,
+  CardHeader
+} from '@mui/material';
+import { Phone, Room, Star, WhatsApp } from '@mui/icons-material';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Favorite from '@mui/icons-material/Favorite';
-import Phone from '@mui/icons-material/Phone';
-import Room from '@mui/icons-material/Room';
-import Star from '@mui/icons-material/Star';
-import WhatsApp from '@mui/icons-material/WhatsApp';
 
 import { formatPhone } from '../../../services/formatPhone';
-import { MainCardArea, ButtonArea, Row, ProfessionalNameArea } from './styles';
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
+import { Row } from './styles';
 import { UserAvatar } from '../../../components/UserAvatar/UserAvatar';
 import IProfissional from '../../../types/IProfissional';
 
@@ -56,87 +63,70 @@ export const ProfessionalCard = ({
   };
 
   return (
-    <Grid key={profissional.id} item md={true} width={'100%'} gap={'1rem'}>
-      <Card
-        onClick={() => navigate(`/profissional/perfil/${profissional.id}`)}
-        sx={{
-          cursor: 'pointer',
-          display: 'grid',
-          gridTemplateColumns: 'minmax(400px, 1fr) auto',
-          padding: '1rem',
-          userSelect: 'none'
-        }}
-      >
-        <MainCardArea>
-          <Row>
-            <UserAvatar picturePath={profissional.picturePath} alt={profissional.nickname} />
-            <ProfessionalNameArea>
-              <Row>
-                <h3>{profissional.fullName}</h3>
-                <IconButton onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}>
-                  <Favorite htmlColor={isFavorite ? '#CD6538' : '#FFE3D8'} />
-                </IconButton>
-              </Row>
-              <Row>
-                <Rating
-                  readOnly
-                  value={Number.parseFloat(profissional.averageRating ?? '0')}
-                  precision={0.5}
-                  icon={<Star color="primary" fontSize="inherit" />}
-                  emptyIcon={<Star htmlColor="#FFE3D8" fontSize="inherit" />}
-                ></Rating>
-                <span
-                  style={{
-                    marginLeft: '0.5em',
-                    fontSize: '0.8em',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  ({profissional.totalReviews}{' '}
-                  {profissional.totalReviews === 1 ? 'avaliação' : 'avaliações'})
-                </span>
-              </Row>
-            </ProfessionalNameArea>
-          </Row>
+    <Grid item xs={12} md={6} key={profissional.id}>
+      <Card>
+        <CardHeader
+          avatar={<UserAvatar picturePath={profissional.picturePath} alt={profissional.nickname} />}
+          action={
+            <Tooltip title="Favoritar">
+              <IconButton onClick={isFavorite ? desfavoritarProfissional : favoritarProfissional}>
+                <Favorite htmlColor={isFavorite ? '#CD6538' : '#FFE3D8'} />
+              </IconButton>
+            </Tooltip>
+          }
+          title={profissional.fullName}
+          subheader={
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <Rating
+                readOnly
+                value={Number.parseFloat(profissional.averageRating ?? '0')}
+                precision={0.5}
+                icon={<Star color="primary" fontSize="small" />}
+                emptyIcon={<Star htmlColor="#FFE3D8" fontSize="small" />}
+              ></Rating>
+              <span
+                style={{
+                  fontSize: '0.8em',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                ({profissional.totalReviews}{' '}
+                {profissional.totalReviews === 1 ? 'avaliação' : 'avaliações'})
+              </span>
+            </div>
+          }
+        />
+        <CardContent>
           <Row>
             <Room color="primary" />
             <span style={{ fontWeight: 'bold' }}>
-              {`${profissional.workplace.street}, ${profissional.workplace.streetNumber}`}{' '}
+              {`${profissional.workplace.street}, ${profissional.workplace.streetNumber}`}
             </span>
-            {profissional.workplace.complement && profissional.workplace.complement.length > 0 ? (
-              <span style={{ marginLeft: '0.5em' }}>({profissional.workplace.complement})</span>
-            ) : (
-              ''
+            {profissional.workplace.complement?.length > 0 && (
+              <span>({profissional.workplace.complement})</span>
             )}
           </Row>
-          <Row style={{ gap: '1em', fontWeight: 'bold' }}>
+          <Row style={{ gap: '1rem', fontWeight: 'bold' }}>
             {profissional.workplace.phones.map((p, i) => (
-              <div
-                key={`phone-${profissional.id}-${i}`}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
-              >
+              <Row key={`phone-${profissional.id}-${i}`} style={{ gap: '1rem' }}>
                 {p.isPhoneWhatsapp ? <WhatsApp color="primary" /> : <Phone color="primary" />}
-                <span style={{ lineHeight: '24px', marginLeft: '0.25em' }}>
-                  {formatPhone(p.phone)}
-                </span>
-              </div>
+                <span style={{ lineHeight: '2rem' }}>{formatPhone(p.phone)}</span>
+              </Row>
             ))}
           </Row>
-        </MainCardArea>
-        <ButtonArea>
+        </CardContent>
+        <CardActions>
           <Button
-            component={Button}
             variant="contained"
             onClick={(ev: any) => {
               ev.stopPropagation();
               agendarProfissional();
             }}
-            sx={{ textTransform: 'none', fontSize: '1.2em' }}
           >
             Agendar
           </Button>
-        </ButtonArea>
+        </CardActions>
       </Card>
     </Grid>
   );

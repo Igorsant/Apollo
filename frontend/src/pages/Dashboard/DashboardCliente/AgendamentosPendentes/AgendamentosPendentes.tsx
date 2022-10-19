@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Theme } from '@mui/material';
-import { Grid, List, ListItem, Divider } from '@material-ui/core';
-import { Cancel } from '@mui/icons-material';
-import moment from 'moment';
+import { Theme } from '@mui/material';
+import { Grid, List } from '@material-ui/core';
 import api from '../../../../services/api';
 import { IAgendamento } from '../../../../types/IAgendamento';
 import { NotificationContext } from '../../../../components/NotificationProvider/NotificationProvider';
 import { UserAvatar } from '../../../../components/UserAvatar/UserAvatar';
+import { CardAgendamento } from '../../../../components/CardAgendamento';
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -87,64 +86,22 @@ export const AgendamentosPendentes = () => {
         Agendamentos Pendentes
       </Grid>
       <Grid container justifyContent="flex-start" alignItems="flex-start" className={classes.root}>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
           <List className={classes.list}>
-            {agendamentos.map((agendamento, index) => {
-              return (
-                <div key={index}>
-                  <ListItem>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid
-                        item
-                        container
-                        direction="column"
-                        className={classes.dateTime}
-                        xs={4}
-                        sm={2}
-                      >
-                        <Grid item>
-                          {`${moment(agendamento.startTime)
-                            .locale('pt-br')
-                            .format('HH:mm')} - ${moment(agendamento.endTime)
-                            .locale('pt-br')
-                            .format('HH:mm')}`}
-                        </Grid>
-                        <Grid item>
-                          {moment(agendamento.startTime).locale('pt-br').format('DD/MM/yyyy')}
-                        </Grid>
-                      </Grid>
-
-                      <Grid
-                        item
-                        xs={6}
-                        md={4}
-                        className={classes.dateTime}
-                        style={{ display: 'flex', alignItems: 'center', gap: '1em' }}
-                      >
-                        <UserAvatar
-                          picturePath={agendamento.professional.picturePath}
-                          alt={agendamento.professional.nickname}
-                        />
-                        {agendamento.professional.nickname}
-                      </Grid>
-                      <Grid item xs={12} md={2} className={classes.services}>
-                        {agendamento.services.map((service) => service.name).join(', ')}
-                      </Grid>
-                      <Grid item xs={6} md={2} className={classes.item}>
-                        <Button
-                          className={classes.buttonIcon}
-                          onClick={cancelarAgendamento(agendamento.id)}
-                        >
-                          <Cancel fontSize="large" />
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-
-                  {agendamentos.length > index + 1 && <Divider />}
-                </div>
-              );
-            })}
+            {agendamentos.map((agendamento, index) => (
+              <CardAgendamento
+                key={index}
+                agendamento={agendamento}
+                avatar={
+                  <UserAvatar
+                    picturePath={agendamento.professional.picturePath}
+                    alt={agendamento.professional.nickname.toString()}
+                  />
+                }
+                name={agendamento.professional.nickname.toString()}
+                onRefuse={() => cancelarAgendamento(agendamento.id)}
+              />
+            ))}
           </List>
         </Grid>
       </Grid>

@@ -48,6 +48,12 @@ export const Step1 = ({
         <h2>Selecione serviços</h2>
         <Grid container gap={1} gridTemplateColumns={'repeat(auto-fit, minmax(min-content, 10%))'}>
           {servicesAvailable
+            .reduce((acc, next) => {
+              if (!acc.find((val) => val.id === next.id || val.name === next.name)) {
+                return [...acc, next];
+              }
+              return acc;
+            }, [] as ServiceType[])
             .filter((s) => !selectedServices.includes(s))
             .map((service) => (
               <Chip

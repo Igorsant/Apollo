@@ -126,6 +126,12 @@ export const ProfessionalCard = ({
           >
             Agendar
           </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate(`/profissional/perfil/${profissional.id}`)}
+          >
+            Ver perfil
+          </Button>
         </CardActions>
       </Card>
     </Grid>

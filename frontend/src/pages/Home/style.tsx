@@ -7,7 +7,7 @@ type Props = {
 export const Parallax = styled.div<Props>`
   background-image: url(${({ url }) => url});
 
-  min-height: 100vh;
+  min-height: calc(100vh - 180px);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,17 +21,36 @@ export const UpFirstContent = styled.div`
 `;
 
 export const DownFirstContent = styled.div`
-  height: 70vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  padding: 5%;
+  grid-template-rows: 1fr;
+  justify-content: stretch;
+  gap: 15px;
 `;
 
 export const DownGridContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  width: 60%;
-  gap: 10px;
+  justify-content: stretch;
+  grid-template-rows: 1fr;
+  gap: 15px;
+  grid-template-columns: 1fr 2fr;
+
+  & button {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin-top: 15px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-rows: 0.5fr 1fr;
+    gap: 5px;
+    grid-template-columns: 1fr;
+
+    & button {
+      grid-column-start: 1;
+      grid-column-end: 2;
+    }
+  }
 `;
 
 export const FirstParallax = styled.div`

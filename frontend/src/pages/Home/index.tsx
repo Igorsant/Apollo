@@ -80,7 +80,6 @@ const Home = () => {
                 />
                 <Button
                   variant="contained"
-                  style={{ gridColumnStart: '1', gridColumnEnd: '3' }}
                   onClick={() => searchProfessional()}
                   data-cy="searchProfessionalButton"
                 >

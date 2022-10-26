@@ -22,6 +22,7 @@ const Input = styled.input`
   background-color: var(--input);
   padding: 10px;
   border: none;
+  border-radius: 5px;
   font-size: 1em;
   width: 100%;
   box-sizing: border-box;

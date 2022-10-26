@@ -1,6 +1,7 @@
-import { ServicesButton } from '../../style';
-import { ServiceType } from '..';
 import styled from 'styled-components';
+import { Chip, Grid } from '@mui/material';
+
+import { ServiceType } from '..';
 import {
   getDayFromDate,
   getHoursFromDate,
@@ -40,9 +41,16 @@ export const Step4 = ({ services, day, totalTime, schedule }: Step4Interface) =>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <LabelContainer>
         <Label>Serviços Selecionados:</Label>
-        {services.map((service) => (
-          <ServicesButton key={service.name}>{service.name}</ServicesButton>
-        ))}
+        <Grid
+          container
+          gap={1}
+          padding={'0 10px'}
+          gridTemplateColumns={'repeat(auto-fit, minmax(min-content, 0.2fr))'}
+        >
+          {services.map((service) => (
+            <Chip color="primary" key={service.id} label={service.name} />
+          ))}
+        </Grid>
       </LabelContainer>
       <LabelContainer>
         <Label>Dia Selecionados:</Label>

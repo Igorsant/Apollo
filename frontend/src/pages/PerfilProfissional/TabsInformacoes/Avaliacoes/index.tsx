@@ -1,5 +1,13 @@
 import { FilterList, Star } from '@mui/icons-material';
-import { List, Typography, Divider, Rating, Button } from '@mui/material';
+import {
+  List,
+  Typography,
+  Divider,
+  Rating,
+  Button,
+  CircularProgress,
+  ListItem
+} from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NotificationContext } from '../../../../components/NotificationProvider/NotificationProvider';
@@ -163,7 +171,13 @@ export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId }) => {
         </div>
       )}
       <div
-        style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold', marginBottom: '0.6em' }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          fontWeight: 'bold',
+          marginBottom: '0.6em',
+          gap: '1rem'
+        }}
       >
         <FilterList color="primary" />
         Filtrar Avaliações:
@@ -190,16 +204,23 @@ export const Avaliacoes: React.FC<AvaliacoesProps> = ({ profissionalId }) => {
             avaliacoes?.length === 1 ? 'Avaliação' : 'Avaliações'
           } de clientes `}
       </Typography>
-      <List disablePadding sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         <Divider />
-        {avaliacoes?.map((avaliacao, index) => (
-          <Avaliacao
-            key={index}
-            avaliacao={avaliacao}
-            userOwnsReview={user && user.type === 'CUSTOMER' && user.id === avaliacao.customerId}
-            actions={{ setEditReview, deleteReview }}
-          />
-        ))}
+        {!avaliacoes && (
+          <ListItem>
+            <CircularProgress />
+          </ListItem>
+        )}
+        {avaliacoes
+          ?.sort((previousReview, currentReview) => currentReview.rating - previousReview.rating)
+          .map((avaliacao, index) => (
+            <Avaliacao
+              key={index}
+              avaliacao={avaliacao}
+              userOwnsReview={user && user.type === 'CUSTOMER' && user.id === avaliacao.customerId}
+              actions={{ setEditReview, deleteReview }}
+            />
+          ))}
       </List>
     </>
   );

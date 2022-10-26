@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Stepper, Step, StepLabel, Box } from '@mui/material';
+
 import { NotificationContext } from '../../../components/NotificationProvider/NotificationProvider';
 import { Step1, validateStep1 } from './steps/step1';
 import { Step2, validateStep2 } from './steps/step2';
@@ -16,8 +18,6 @@ import {
   ModalStepProgress
 } from './style';
 import api from '../../../services/api';
-import { HighlightStep, OtherSteps } from '../style';
-import { ActiveLine, Line } from './line';
 
 export type ServiceType = {
   id: number;
@@ -34,18 +34,14 @@ type AgendarFormType = {
 
 const stepStrings = [
   'Definir Serviços',
-  '-',
   'Definir Dia',
-  '-',
   'Definir Horários',
-  '-',
   'Confirmar Agendamentos'
 ];
 
 export const AgendarForm = ({ professionalId, services, setShowAgendar }: AgendarFormType) => {
-  const [choosenServices, setChoosenServices] = useState<ServiceType[]>([]);
+  const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
   const [indexStep, setIndexStep] = useState(0);
-  const [servicesAvailable, setServicesAvailable] = useState<ServiceType[]>(services);
   const [startDate, setStartDate] = useState(new Date());
   const [time, setTime] = useState<Date | null>(null);
   const { showNotification } = useContext(NotificationContext);
@@ -53,18 +49,17 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
   const steps = [
     <Step1
       key={0}
-      servicesAvailable={servicesAvailable}
-      setServicesAvailable={setServicesAvailable}
-      choosenServices={choosenServices}
-      setChoosenServices={setChoosenServices}
+      servicesAvailable={services}
+      selectedServices={selectedServices}
+      setSelectedServices={setSelectedServices}
     />,
     <Step2 key={1} startDate={startDate} setStartDate={setStartDate} />,
     <Step3 key={2} time={time} setTime={setTime} />,
     <Step4
       key={3}
       day={startDate}
-      services={choosenServices}
-      totalTime={choosenServices
+      services={selectedServices}
+      totalTime={selectedServices
         .map((s) => Number.parseInt(s.time))
         .reduce((acc, next) => {
           return acc + next;
@@ -74,13 +69,7 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
   ];
 
   const validateFuncions = [
-    () =>
-      validateStep1({
-        servicesAvailable,
-        setServicesAvailable,
-        choosenServices,
-        setChoosenServices
-      }),
+    () => validateStep1({ servicesAvailable: services, selectedServices, setSelectedServices }),
     () =>
       validateStep2({
         startDate,
@@ -94,8 +83,8 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
     () =>
       validateStep4({
         day: startDate,
-        services: choosenServices,
-        totalTime: choosenServices
+        services: selectedServices,
+        totalTime: selectedServices
           .map((s) => Number.parseInt(s.time))
           .reduce((acc, next) => {
             return acc + next;
@@ -111,7 +100,7 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
     const data = {
       professionalId,
       startTime: startDate,
-      serviceIds: choosenServices.map((s) => s.id)
+      serviceIds: selectedServices.map((s) => s.id)
     };
 
     api.post(`schedulings`, data).then((_) => {
@@ -149,25 +138,15 @@ export const AgendarForm = ({ professionalId, services, setShowAgendar }: Agenda
         <ModalCloseButton onClick={() => setShowAgendar(false)} />
         <ModalTitle>Agendar Serviço</ModalTitle>
         <ModalStepProgress>
-          {stepStrings.map((stepString, index) => {
-            const key = `step-${index}`;
-
-            if (stepString === '-') {
-              if (index <= indexStep * 2) {
-                return <ActiveLine key={key} />;
-              }
-
-              return <Line key={key} />;
-            }
-
-            const stepText = stepString;
-
-            if (index <= indexStep * 2) {
-              return <HighlightStep key={key}>{stepText}</HighlightStep>;
-            }
-
-            return <OtherSteps key={key}>{stepText}</OtherSteps>;
-          })}
+          <Box sx={{ width: '100%' }}>
+            <Stepper activeStep={indexStep} alternativeLabel>
+              {stepStrings.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Box>
         </ModalStepProgress>
 
         <ModalCurrentStep>{steps[indexStep]}</ModalCurrentStep>

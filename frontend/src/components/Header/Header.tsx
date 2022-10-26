@@ -22,9 +22,9 @@ export const Header: FC<HeaderProps> = ({ children, ...props }) => {
     return (
       <>
         <Logo to="/">
-          <img src={logo} alt="Logo da Apollo" width={150} />
+          <img src={logo} alt="Logo da Apollo" width={150} loading="lazy" />
         </Logo>
-        <NavBar style={{ display: 'flex' }} {...props}>
+        <NavBar {...props}>
           {isAuthenticated() ? (
             <LoggedUserOptions user={user} />
           ) : (

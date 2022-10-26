@@ -2,14 +2,11 @@ import styled from 'styled-components';
 
 export const Row = styled.div`
   display: flex;
+  align-items: center;
 
   &:nth-child(1) {
     align-items: center;
     gap: 1rem;
-  }
-
-  &:nth-child(1) img {
-    width: 100%;
   }
 
   &:nth-child(1) button {

@@ -96,8 +96,8 @@ const Home = () => {
             <Button
               component={Link}
               to="/profissional/login"
+              data-cy="redirProfissional"
               variant="contained"
-              data-cy="professionalLoginButton"
             >
               Sou profissional
             </Button>

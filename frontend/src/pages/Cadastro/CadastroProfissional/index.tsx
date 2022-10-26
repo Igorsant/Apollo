@@ -157,7 +157,12 @@ const CadastroProfissional = () => {
             <WorkHours formik={formik} />
 
             <Grid item xs={12} md={12} style={{ textAlign: 'center' }}>
-              <Button type="submit" variant="contained" style={{ width: '40%' }}>
+              <Button
+                type="submit"
+                data-cy="signinButton"
+                variant="contained"
+                style={{ width: '40%' }}
+              >
                 Criar conta
               </Button>
             </Grid>

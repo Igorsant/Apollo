@@ -45,6 +45,7 @@ export const WorkInfo = ({ formik }: any) => {
             value={formik.values.workplace.city}
             onChange={formik.handleChange}
             placeholder="Ex.: Fortaleza"
+            data-cy="signinCidade"
             label={'Cidade:'}
             errorMessage={formik.errors.workplace?.city as string}
           />
@@ -55,6 +56,7 @@ export const WorkInfo = ({ formik }: any) => {
             value={formik.values.workplace.street}
             onChange={formik.handleChange}
             placeholder="Ex.: Rua Andrade Mello"
+            data-cy="signinRua"
             label={'Rua:'}
             errorMessage={formik.errors.workplace?.street as string}
           />
@@ -66,6 +68,7 @@ export const WorkInfo = ({ formik }: any) => {
             onChange={formik.handleChange}
             label={'Número:'}
             placeholder="Ex.: 123"
+            data-cy="signinNumero"
             style={{ width: '100%' }}
             errorMessage={formik.errors.workplace?.streetNumber as string}
           />
@@ -76,6 +79,7 @@ export const WorkInfo = ({ formik }: any) => {
             value={formik.values.complement}
             onChange={formik.handleChange}
             placeholder="Ex.: Do lado do restaurante da esquina"
+            data-cy="signinComplemento"
             label={'Complemento:'}
             errorMessage={formik.errors.workplace?.complement as string}
           />
@@ -86,6 +90,7 @@ export const WorkInfo = ({ formik }: any) => {
             value={formik.values.workplace.phones[0].phone}
             onChange={formik.handleChange}
             placeholder="Ex.: 8512345678"
+            data-cy="signinTelefone1"
             label={'Telefone 1:'}
             errorMessage={formik.errors.workplace?.phones[0]?.phone as string}
           />
@@ -96,6 +101,7 @@ export const WorkInfo = ({ formik }: any) => {
             value={phone2.phone}
             onChange={handleChange}
             placeholder="Ex.: 85912345678"
+            data-cy="signinTelefone2"
             label={'Telefone 2:'}
             errorMessage={
               formik.errors.workplace?.phones.length > 1
@@ -107,6 +113,7 @@ export const WorkInfo = ({ formik }: any) => {
         <Grid item xs={12} md={6}>
           <FormControlLabel
             style={{ color: 'black' }}
+            data-cy="signinTelefoneWhats1"
             label="É whatsapp?"
             control={
               <Checkbox
@@ -120,6 +127,7 @@ export const WorkInfo = ({ formik }: any) => {
         <Grid item xs={12} md={6}>
           <FormControlLabel
             style={{ color: 'black' }}
+            data-cy="signinTelefoneWhats2"
             label="É whatsapp?"
             control={
               <Checkbox

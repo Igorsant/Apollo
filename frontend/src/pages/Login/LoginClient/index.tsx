@@ -84,6 +84,7 @@ const Login = () => {
                 type="email"
                 name="email"
                 value={form.email}
+                data-cy="loginEmailTextInput"
                 onChange={handleChange}
                 label="Email:"
               ></TextInputLaranja>
@@ -93,12 +94,13 @@ const Login = () => {
                 name="password"
                 type="password"
                 value={form.password}
+                data-cy="loginPasswordTextInput"
                 onChange={handleChange}
                 label="Senha:"
               ></TextInputLaranja>
             </Grid>
             <Grid item xs={12} md={12}>
-              <Button type="submit" variant="contained" style={{ width: '100%' }}>
+              <Button type="submit" variant="contained" data-cy="loginSB" style={{ width: '100%' }}>
                 Entrar
               </Button>
             </Grid>
@@ -107,6 +109,7 @@ const Login = () => {
                 component={Link}
                 to="/profissional/login"
                 variant="text"
+                data-cy="redirProfissional"
                 style={{ textTransform: 'none' }}
               >
                 Profissional? Clique aqui!

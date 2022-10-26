@@ -1,0 +1,13 @@
+FROM node:16
+
+WORKDIR /app
+
+COPY . .
+
+RUN yarn
+
+EXPOSE 3000
+
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+CMD ["yarn", "start"]

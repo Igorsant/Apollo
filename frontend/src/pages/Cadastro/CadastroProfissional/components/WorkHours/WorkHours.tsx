@@ -111,6 +111,7 @@ export const WorkHours = ({ formik }: any) => {
                   <WorkHourInput
                     type="text"
                     value={state.workHours[weekday].startTime}
+                    data-cy="workhourStart"
                     onChange={handleChange(weekday, 'startTime')}
                     placeholder="hh:mm"
                   />
@@ -120,11 +121,14 @@ export const WorkHours = ({ formik }: any) => {
                   <WorkHourInput
                     type="text"
                     value={state.workHours[weekday].endTime}
+                    data-cy="workhourEnd"
                     onChange={handleChange(weekday, 'endTime')}
                     placeholder="hh:mm"
                   />
                 </div>
-                <WorkHourButton onClick={addWorkHour(weekday)}>+</WorkHourButton>
+                <WorkHourButton onClick={addWorkHour(weekday)} data-cy="workhourAdd">
+                  +
+                </WorkHourButton>
               </WorkHourInputWrapper>
             </WorkHourDay>
           </WorkHourDayWrapper>

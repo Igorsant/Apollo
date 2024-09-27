@@ -21,6 +21,7 @@ export const ProfileInfo = ({ handleChangeImage, formik, profissional }: Profile
         name="pictureBase64"
         value={formik.values.pictureBase64}
         onChangeImage={handleChangeImage}
+        data-cy="profilePhoto"
         label="Foto de Perfil:"
       ></ImageInput>
     </Grid>
@@ -31,6 +32,7 @@ export const ProfileInfo = ({ handleChangeImage, formik, profissional }: Profile
           value={formik.values.fullName}
           onChange={formik.handleChange}
           errorMessage={formik.errors.fullName as string}
+          data-cy="profileName"
           label="Nome:"
           placeholder="Ex.: Felipe Gonçalves"
         ></TextInputLaranja>
@@ -42,6 +44,7 @@ export const ProfileInfo = ({ handleChangeImage, formik, profissional }: Profile
           value={formik.values.nickname}
           onChange={formik.handleChange}
           errorMessage={formik.errors.nickname as string}
+          data-cy="profileAlias"
           label="Apelido:"
           placeholder="Ex.: Felipe312"
         ></TextInputLaranja>
@@ -54,6 +57,7 @@ export const ProfileInfo = ({ handleChangeImage, formik, profissional }: Profile
           name="aboutMe"
           value={formik.values.aboutMe}
           onChange={formik.handleChange}
+          data-cy="profileProfessionalAbouts"
           placeholder="Conte um pouco sobre você para seus clientes"
         />
       </Grid>

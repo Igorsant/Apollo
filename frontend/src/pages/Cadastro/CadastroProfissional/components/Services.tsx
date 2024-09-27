@@ -118,6 +118,7 @@ export const Services = ({ formik }: any) => {
             name={`current-service-name`}
             value={curService.name}
             onChange={(ev) => setCurService({ ...curService, name: ev.target.value })}
+            data-cy="signinNomeServico"
             label={'Nome do serviço:'}
             placeholder="Ex.: Corte de cabelo"
           />
@@ -127,6 +128,7 @@ export const Services = ({ formik }: any) => {
             name="current-service-price"
             value={curService.startingPrice}
             onChange={(ev) => setCurService({ ...curService, startingPrice: ev.target.value })}
+            data-cy="signinValorServico"
             label={'Valor do serviço:'}
             placeholder="Ex.: 30.00"
             prefix="R$"
@@ -137,13 +139,18 @@ export const Services = ({ formik }: any) => {
             name={`current-service-time`}
             value={curService.estimatedTime}
             onChange={(ev) => setCurService({ ...curService, estimatedTime: ev.target.value })}
+            data-cy="signinTempoEstimado"
             label={'Tempo estimado:'}
             placeholder="Ex.: 30"
             postfix="min."
           />
         </Grid>
         <Grid item sm={true} flexGrow={'1'}>
-          <PlusButton variant="contained" onClick={editIndex !== null ? handleEdit : handleAdd}>
+          <PlusButton
+            variant="contained"
+            data-cy="signinAddServico"
+            onClick={editIndex !== null ? handleEdit : handleAdd}
+          >
             {editIndex !== null ? <EditIcon /> : <span>+</span>}
           </PlusButton>
         </Grid>

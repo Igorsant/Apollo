@@ -19,6 +19,7 @@ export const ContactInfo = ({ formik }: Props) => {
           value={formik.values.email}
           onChange={formik.handleChange}
           errorMessage={formik.errors.email}
+          data-cy="profileEmail"
           label="Email:"
           placeholder="Ex.: exemplo@email.com"
         ></TextInputLaranja>
@@ -29,6 +30,7 @@ export const ContactInfo = ({ formik }: Props) => {
           value={formik.values.phone}
           onChange={formik.handleChange}
           errorMessage={formik.errors.phone}
+          data-cy="profilePhone"
           label="Telefone(apenas números):"
           placeholder="Ex.: 85999999999"
         ></TextInputLaranja>
